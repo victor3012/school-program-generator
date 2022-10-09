@@ -12,8 +12,7 @@ public class RestServiceApplication {
         SpringApplication app = new SpringApplication(ConsoleRunner.class);
 
         Properties properties = new Properties();
-
-        properties.put("server.port", "8888");
+        properties.put("server.port", "8083");
 
         app.setDefaultProperties(properties);
         app.run(args);

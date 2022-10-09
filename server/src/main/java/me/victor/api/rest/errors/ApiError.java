@@ -1,4 +1,4 @@
-package me.victor.api.rest.errors.handlers;
+package me.victor.api.rest.errors;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.http.HttpStatus;

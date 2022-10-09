@@ -1,5 +1,8 @@
-package me.victor.api.rest.errors;
+package me.victor.exceptions;
 
+/**
+ * Error 404 - Not Found
+ */
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException() {
         super();
