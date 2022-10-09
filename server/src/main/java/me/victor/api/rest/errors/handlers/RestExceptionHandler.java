@@ -10,12 +10,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = { IllegalArgumentException.class, IllegalStateException.class })
+    @ExceptionHandler(value = {IllegalArgumentException.class, IllegalStateException.class})
     protected ResponseEntity<ApiError> handleBadRequest(ResourceNotFoundException ex, WebRequest request) {
-
+        return null;
     }
 
     private ApiError getError(RuntimeException ex) {
-
+        return null;
     }
 }
