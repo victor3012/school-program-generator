@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class TestController {
     @GetMapping("/home")
-    public String handleHome() {
-        throw new ResourceNotFoundException("test");
+    public void handleHome() {
+
     }
 
     @GetMapping("/test")

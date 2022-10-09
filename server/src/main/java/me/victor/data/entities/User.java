@@ -25,14 +25,18 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "is_email_confirmed")
+    private boolean isEmailConfirmed;
+
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String password) {
+    public User(String firstName, String lastName, String email, String password, boolean isEmailConfirmed) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.isEmailConfirmed = isEmailConfirmed;
     }
 
     public int getId() {
@@ -77,6 +81,15 @@ public class User {
 
     public User setPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+    public boolean isEmailConfirmed() {
+        return isEmailConfirmed;
+    }
+
+    public User setEmailConfirmed(boolean emailConfirmed) {
+        isEmailConfirmed = emailConfirmed;
         return this;
     }
 }

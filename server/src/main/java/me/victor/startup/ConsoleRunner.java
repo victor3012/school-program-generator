@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @EntityScan("me.victor.data.entities")
-@EnableJpaRepositories(basePackages = "me.victor.data.repositories")
+@EnableJpaRepositories(basePackages = "me.victor.data.dao")
 @ComponentScan("me.victor")
 public class ConsoleRunner implements CommandLineRunner {
     @Override
