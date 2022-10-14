@@ -1,8 +1,6 @@
 package me.victor.api.rest.errors;
 
-import me.victor.api.rest.errors.ApiError;
-import me.victor.exceptions.DataFormatException;
-import me.victor.exceptions.ResourceNotFoundException;
+import me.victor.exceptions.RestException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -13,25 +11,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-
-    @ExceptionHandler(value = {DataFormatException.class, IllegalArgumentException.class, IllegalStateException.class})
-    protected ResponseEntity<ApiError> handleInputExceptions(RuntimeException ex) {
-        ApiError error = getError(HttpStatus.BAD_REQUEST, ex);
-        return new ResponseEntity<>(error, error.getStatus());
-    }
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ResponseBody
-    protected ApiError handleResourceException(RuntimeException ex) {
-        return getError(HttpStatus.NOT_FOUND, ex);
+    @ExceptionHandler(RestException.class)
+    protected ResponseEntity<ApiError> handleResourceException(RestException ex) {
+        return new ResponseEntity<>(getError(ex.getStatus(), ex), ex.getStatus());
     }
 
     @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     protected ApiError handleUnknownException(RuntimeException ex) {
-        return new ApiError(HttpStatus.BAD_REQUEST, ex);
+        return new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex);
     }
 
     private ApiError getError(HttpStatus status, RuntimeException ex) {

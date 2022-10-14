@@ -1,19 +1,17 @@
 package me.victor.exceptions;
 
+import org.springframework.http.HttpStatus;
+
 /**
  * Error 404 - Not Found
  */
-public class ResourceNotFoundException extends RuntimeException {
-    public ResourceNotFoundException() {
-        super();
-    }
-    public ResourceNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
+public class ResourceNotFoundException extends RestException {
     public ResourceNotFoundException(String message) {
         super(message);
     }
-    public ResourceNotFoundException(Throwable cause) {
-        super(cause);
+
+    @Override
+    public HttpStatus getStatus() {
+        return HttpStatus.NOT_FOUND;
     }
 }

@@ -4,7 +4,6 @@ import me.victor.data.dao.UserRepository;
 import me.victor.data.dto.user.ChangePasswordUserDTO;
 import me.victor.data.dto.user.CreateUserDTO;
 import me.victor.data.entities.User;
-import me.victor.exceptions.DataFormatException;
 import me.victor.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
