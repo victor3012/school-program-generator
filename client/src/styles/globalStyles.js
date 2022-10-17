@@ -9,7 +9,9 @@ export default StyleSheet.create({
         color: styleVar.black
     },
     link: {
-        textDecorationLine: 'underline',
-        textDecorationColor: styleVar.blue
+        fontSize: styleVar.mediumFontSize,
+        lineHeight: 1.25 * styleVar.mediumFontSize,
+        letterSpacing: 0.25,
+        color: styleVar.blue
     }
 });

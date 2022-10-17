@@ -1,5 +1,5 @@
 import { Link } from "@react-navigation/native";
-import { SafeAreaView, View } from "react-native";
+import { SafeAreaView, Text, View } from "react-native";
 import { useEffect, useState } from "react";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
@@ -10,7 +10,12 @@ import authStyles from "./authStyles.js";
 import styleVar from "../../styles/styleVar";
 import globalStyles from "../../styles/globalStyles";
 
-export default function Login({ updateAuthTitle, route }) {
+export default function Login({
+    route,
+    updateAuthTitle,
+    updateInputStatus,
+    getContainerBorderTopColor
+}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordShown, setPasswordShown] = useState(false);
@@ -51,42 +56,16 @@ export default function Login({ updateAuthTitle, route }) {
         }
     }
 
-    const updateInputStatus = (key, value) => {
-        if (inputStatuses[key] === value) {
-            return;
-        }
-
-        setInputStatuses((oldInputStatuses) => {
-            let newInputStatuses = {};
-            Object.assign(newInputStatuses, oldInputStatuses);
-            newInputStatuses[key] = value;
-
-            return newInputStatuses;
-        })
-    }
-
-    const getContainerBorderTopColor = () => {
-        if (formStatus == 2) {
-            return styleVar.red;
-        }
-
-        if (formStatus == 1) {
-            return styleVar.blue;
-        }
-
-        return styleVar.blueShadow;
-    }
-
     return (
         <SafeAreaView style={authStyles.container}>
-            <View style={[authStyles.formContainer, { borderTopColor: getContainerBorderTopColor() }]}>
+            <View style={[authStyles.formContainer, { borderTopColor: getContainerBorderTopColor(formStatus) }]}>
                 <Input
                     label="Email"
                     placeholder="Email"
                     hitSlop={10}
                     onChange={(newEmail) => setEmail(newEmail)}
-                    onError={() => updateInputStatus('email', 2)}
-                    onErrorResolve={() => updateInputStatus('email', 1)}
+                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 2)}
+                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 1)}
                     required
                     validator={validators.email}
                     textContentType='emailAddress' />
@@ -97,8 +76,8 @@ export default function Login({ updateAuthTitle, route }) {
                         placeholder="Password"
                         hitSlop={10}
                         onChange={(newPassword) => setPassword(newPassword)}
-                        onError={() => updateInputStatus('password', 2)}
-                        onErrorResolve={() => updateInputStatus('password', 1)}
+                        onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 2)}
+                        onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 1)}
                         required
                         validator={validators.password}
                         textContentType='password'
@@ -108,23 +87,25 @@ export default function Login({ updateAuthTitle, route }) {
                     <Icon name={passwordShown ? 'eye-outline' : 'eye-off-outline'}
                         size={styleVar.mediumIconSize}
                         style={authStyles.eyeIcon}
-                        hitSlop={20}
+                        hitSlop={30}
                         onPress={() => setPasswordShown(ps => !ps)} />
                 </View>
 
                 <OpacityButton style={authStyles.button}
                     onPress={loginHandler}
                     disabled={formStatus != 1}>
-                    Login
+                    Log in
                 </OpacityButton>
 
-                <Link to={{ screen: 'Register' }} style={globalStyles.link}>
-                    Don't have an account yet? Click here to register.
-                </Link>
+                <View style={authStyles.linkContainer}>
+                    <Text style={globalStyles.text}>
+                        Don't have an account yet?
+                    </Text>
+                    <Link to={{ screen: 'SignUp' }} hitSlop={30} style={authStyles.link}>
+                        Sign up
+                    </Link>
+                </View>
             </View>
         </SafeAreaView>
     )
 }
-
-//eye-outline
-//eye-off-outline

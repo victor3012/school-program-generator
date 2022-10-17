@@ -30,7 +30,7 @@ export default StyleSheet.create({
     },
     eyeIcon: {
         position: 'absolute',
-        bottom: 9,
+        top: 55.5,
         left: 270
     },
     button: {
@@ -39,5 +39,13 @@ export default StyleSheet.create({
         borderRadius: 20,
         paddingVertical: 0,
         paddingHorizontal: 0
+    },
+    linkContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    link: {
+        ...globalStyles.link,
+        marginLeft: 4
     }
 })

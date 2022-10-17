@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
-import { validate } from "react-native-web/dist/cjs/exports/StyleSheet/validate";
+import { Platform, StyleSheet, Text, TextInput, View } from "react-native";
 import styleVar from "../styles/styleVar";
 
 export default function Input(
@@ -9,6 +8,7 @@ export default function Input(
         validator,
         defaultValue = '',
         style: customStyles = {},
+        containerStyle = {},
         onChange: onChangeText,
         onFocus,
         onBlur,
@@ -70,10 +70,17 @@ export default function Input(
         if (!beenFocused) {
             setBeenFocused(true);
         }
-        
-        validate(e.nativeEvent.text);
+
+        if (Platform.OS === 'web') {
+            validate(e.nativeEvent.text);
+        }
 
         setFocused(false);
+    }
+    const endEditingHandler = (e) => {
+        if (Platform.OS !== 'web') {
+            validate(e.nativeEvent.text);
+        }
     }
 
     const getInputBorderColor = () => {
@@ -107,21 +114,14 @@ export default function Input(
     }
 
     return (
-        <View style={styles.container}>
-            {(label || error) &&
+        <View style={[styles.container, containerStyle]}>
+            {label &&
                 <View style={styles.textContainer}>
-                    {label &&
-                        <Text style={styles.text}>
-                            {label}
-                            {required &&
-                                <Text style={{ color: getInputBorderColor() }}>*</Text>}
-                        </Text>
-                    }
-                    {error &&
-                        <Text style={{ ...styles.text, color: styleVar.red }}>
-                            {' - ' + error}
-                        </Text>
-                    }
+                    <Text style={styles.text}>
+                        {label}
+                    </Text>
+                    {required &&
+                        <Text style={{ color: getInputBorderColor() }}>*</Text>}
                 </View>
             }
 
@@ -135,9 +135,18 @@ export default function Input(
                 onChangeText={changeTextHandler}
                 onFocus={focusHandler}
                 onBlur={blurHandler}
+                onEndEditing={endEditingHandler}
                 {...args}
             />
-        </View >
+
+            {(error) &&
+                <View style={styles.textContainer}>
+                    <Text style={{ ...styles.text, color: styleVar.red }}>
+                        {error}
+                    </Text>
+                </View>
+            }
+        </View>
     )
 }
 
@@ -164,6 +173,6 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         borderWidth: 2,
         borderColor: 'rgb(180, 214, 250)',
-        backgroundColor: styleVar.blueShadow,
+        backgroundColor: styleVar.blueShadow
     }
 })

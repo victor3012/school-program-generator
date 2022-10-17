@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/AntDesign";
 import styleVar from "../../styles/styleVar";
 
 import Login from "./Login";
-import Register from "./Register";
+import SignUp from "./SignUp";
 
 const Tab = createBottomTabNavigator();
 
@@ -20,12 +20,38 @@ export default function Auth({ navigation, route }) {
     }, []);
 
     const LoginComponent = useCallback((args) => {
-        return <Login {...args} updateAuthTitle={() => setAuthTitle('Login')} />
+        return <Login {...args} updateAuthTitle={() => setAuthTitle('Login')} updateInputStatus={updateInputStatus} getContainerBorderTopColor={getContainerBorderTopColor} />
     }, [])
 
-    const RegisterComponent = useCallback((args) => {
-        return <Register {...args} updateAuthTitle={() => setAuthTitle('Register')} />
+    const SignUpComponent = useCallback((args) => {
+        return <SignUp {...args} updateAuthTitle={() => setAuthTitle('Sign up')} updateInputStatus={updateInputStatus} getContainerBorderTopColor={getContainerBorderTopColor} />
     }, [])
+
+    const updateInputStatus = (inputStatuses, setInputStatuses, key, value) => {
+        if (inputStatuses[key] === value) {
+            return;
+        }
+
+        setInputStatuses((oldInputStatuses) => {
+            let newInputStatuses = {};
+            Object.assign(newInputStatuses, oldInputStatuses);
+            newInputStatuses[key] = value;
+
+            return newInputStatuses;
+        })
+    }
+
+    const getContainerBorderTopColor = (formStatus) => {
+        if (formStatus == 2) {
+            return styleVar.red;
+        }
+
+        if (formStatus == 1) {
+            return styleVar.blue;
+        }
+
+        return styleVar.blueShadow;
+    }
 
     return (
         <Tab.Navigator sceneContainerStyle={styles.container}>
@@ -37,9 +63,10 @@ export default function Auth({ navigation, route }) {
                 name="Login" component={LoginComponent} />
             <Tab.Screen options={{
                 ...options,
+                tabBarLabel: 'Sign Up',
                 tabBarIcon: () => <Icon name='adduser' size={styleVar.mediumIconSize} />
-            }} initialParams={{ title: 'Register' }}
-                name="Register" component={RegisterComponent} />
+            }} initialParams={{ title: 'Sign up' }}
+                name="SignUp" component={SignUpComponent} />
         </Tab.Navigator>
     )
 }

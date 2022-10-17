@@ -23,6 +23,7 @@ export default function App() {
             options={{ drawerIcon: () => <Icon name='home' size={styleVar.mediumIconSize} /> }} />
           <Drawer.Screen options={({ route }) => ({
             drawerIcon: () => <Icon name='user' size={styleVar.mediumIconSize} />,
+            drawerLabel: 'Profile',
             headerStyle: { backgroundColor: styleVar.blue },
             headerTitleStyle: { color: styleVar.white },
             headerTintColor: styleVar.white,

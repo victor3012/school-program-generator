@@ -1,14 +1,14 @@
 const emailRegExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 const passwordRegExp = new RegExp(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[._\-!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|])([\s]{0,0})[\w\d._\-!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+/);
-const stringRegExp = new RegExp(/[a-zA-Z]*/);
+const stringRegExp = new RegExp(/[a-zA-Z\-\s]*/);
 
 const required = (value) => {
     if (!value) {
-        throw new Error('required');
+        throw new Error('Required');
     }
 }
 
-const match = (value, regexp, msg = 'invalid') => {
+const match = (value, regexp, msg = 'Invalid') => {
     const result = value.match(regexp);
 
     if (!result || result[0] != value) {
@@ -16,7 +16,7 @@ const match = (value, regexp, msg = 'invalid') => {
     }
 }
 
-const equal = (value, valueToEqual, msg = 'fields don\'t match') => {
+const equal = (value, valueToEqual, msg = 'Fields don\'t match') => {
     if (value != valueToEqual) {
         throw new Error(msg);
     }
@@ -24,13 +24,13 @@ const equal = (value, valueToEqual, msg = 'fields don\'t match') => {
 
 const minLength = (value, length) => {
     if (value.length < length) {
-        throw new Error(`must be at least ${length} characters long`);
+        throw new Error(`Must be at least ${length} characters long`);
     }
 }
 
 const maxLength = (value, length) => {
     if (value.length > length) {
-        throw new Error(`cannot exceed length of ${length} characters`);
+        throw new Error(`Cannot exceed length of ${length} characters`);
     }
 }
 
@@ -44,22 +44,16 @@ export default {
         required(value);
         minLength(value, 6);
         maxLength(value, 50);
-        match(value, passwordRegExp, 'must have at least 1 small letter, capital letter, a digit and a special character');
+        match(value, passwordRegExp, 'Must have at least 1 small letter, capital letter, a digit and a special character');
     },
     repass: (password) => {
         return (value) => {
-            equal(value, password, 'doesn\'t match password');
+            equal(value, password, 'Doesn\'t match password');
         }
     },
-    firstName: (value) => {
+    name: (value) => {
         required(value);
         maxLength(value, 50);
-        match(value, stringRegExp, 'can only contain letters');
-    },
-    lastName: (value) => {
-        maxLength(value, 50);
-        if (value) {
-            match(value, stringRegExp, 'can only contain letters');
-        }
+        match(value, stringRegExp, 'Can only contain letters');
     }
 }
