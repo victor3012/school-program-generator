@@ -1,10 +1,14 @@
-import { useState } from "react";
-import { Platform, StyleSheet, Text, TextInput, View } from "react-native";
+import { useRef, useState } from "react";
+import { Platform, StyleSheet, Text, TextInput, View, Animated, TouchableNativeFeedbackBase } from "react-native";
 import styleVar from "../styles/styleVar";
+
+const startingLabelX = 0;
+const startingLabelY = 35;
 
 export default function Input(
     {
         label,
+        placeholder,
         validator,
         defaultValue = '',
         style: customStyles = {},
@@ -22,7 +26,9 @@ export default function Input(
     const [error, setError] = useState(null);
     const [beenFocused, setBeenFocused] = useState(false);
 
-    const validate = (value) => {
+    const labelXY = useRef(new Animated.ValueXY({ x: startingLabelX, y: startingLabelY })).current;
+
+    const validate = (value, showError = beenFocused) => {
         if (validator) {
             try {
                 validator(value);
@@ -33,6 +39,10 @@ export default function Input(
 
                 setError(null);
             } catch (err) {
+                if (!showError) {
+                    return;
+                }
+
                 if (onError) {
                     onError();
                 }
@@ -49,9 +59,7 @@ export default function Input(
             onChangeText(value);
         }
 
-        if (beenFocused) {
-            validate(value);
-        }
+        validate(value);
     }
 
     const focusHandler = () => {
@@ -59,10 +67,16 @@ export default function Input(
             onFocus();
         }
 
+        Animated.spring(labelXY, { toValue: { x: startingLabelX, y: 0 }, useNativeDriver: true }).start();
+
         setFocused(true);
     }
 
-    const blurHandler = (e) => {
+    const blurHandler = (e, isDefaultEventOnAndroid = true) => {
+        if (Platform.OS === 'android' && isDefaultEventOnAndroid) {
+            return;
+        }
+
         if (onBlur) {
             onBlur();
         }
@@ -71,16 +85,21 @@ export default function Input(
             setBeenFocused(true);
         }
 
-        if (Platform.OS === 'web') {
-            validate(e.nativeEvent.text);
+        validate(e.nativeEvent.text, true);
+
+        if (!e.nativeEvent.text) {
+            Animated.spring(labelXY, { toValue: { x: startingLabelX, y: startingLabelY }, useNativeDriver: true }).start();
         }
 
         setFocused(false);
     }
-    const endEditingHandler = (e) => {
-        if (Platform.OS !== 'web') {
-            validate(e.nativeEvent.text);
+
+    const androidBlurHandler = (e) => {
+        if (Platform.OS !== 'android') {
+            return;
         }
+
+        blurHandler(e, false);
     }
 
     const getInputBorderColor = () => {
@@ -116,13 +135,23 @@ export default function Input(
     return (
         <View style={[styles.container, containerStyle]}>
             {label &&
-                <View style={styles.textContainer}>
-                    <Text style={styles.text}>
+                <Animated.View selectable={false}
+                    pointerEvents="none"
+                    style={[styles.textContainer,
+                    styles.label,
+                    {
+                        position: 'relative',
+                        transform: [
+                            { translateX: labelXY.x },
+                            { translateY: labelXY.y }]
+                    }]}
+                >
+                    <Text selectable={false} style={styles.text}>
                         {label}
                     </Text>
                     {required &&
-                        <Text style={{ color: getInputBorderColor() }}>*</Text>}
-                </View>
+                        <Text selectable={false} style={{ color: getInputBorderColor() }}>*</Text>}
+                </Animated.View>
             }
 
             <TextInput style={{
@@ -135,24 +164,26 @@ export default function Input(
                 onChangeText={changeTextHandler}
                 onFocus={focusHandler}
                 onBlur={blurHandler}
-                onEndEditing={endEditingHandler}
+                onEndEditing={androidBlurHandler}
+                placeholder={label ? '' : placeholder}
                 {...args}
             />
 
-            {(error) &&
+            {
+                (error) &&
                 <View style={styles.textContainer}>
                     <Text style={{ ...styles.text, color: styleVar.red }}>
                         {error}
                     </Text>
                 </View>
             }
-        </View>
+        </View >
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 20,
+        marginTop: 12,
     },
     text: {
         fontSize: styleVar.mediumFontSize,
@@ -163,16 +194,20 @@ const styles = StyleSheet.create({
         maxWidth: 300,
         flexWrap: 'wrap'
     },
+    label: {
+        zIndex: 1
+    },
     formTextInput: {
         outlineStyle: 'none',
         marginTop: 5,
         width: 300,
         height: 40,
+        paddingTop: 5,
         paddingHorizontal: 20,
         fontSize: styleVar.mediumFontSize,
         borderRadius: 50,
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: 'rgb(180, 214, 250)',
-        backgroundColor: styleVar.blueShadow
+        backgroundColor: styleVar.blueShadow,
     }
 })

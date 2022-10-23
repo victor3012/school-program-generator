@@ -68,100 +68,98 @@ export default function SignUp({
     }
 
     return (
-        <SafeAreaView style={authStyles.container}>
-            <View style={[authStyles.formContainer, { borderTopColor: getContainerBorderTopColor(formStatus) }]}>
-                <View style={{ width: 300, flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Input
-                        label="First name"
-                        placeholder="First name"
-                        hitSlop={10}
-                        onChange={(newFirstName) => setFirstName(newFirstName)}
-                        onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'firstName', 2)}
-                        onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'firstName', 1)}
-                        required
-                        validator={validators.name}
-                        style={{ width: 142 }}
-                        containerStyle={{ width: 142 }} />
-                    <Input
-                        label="Last name"
-                        placeholder="Last name"
-                        hitSlop={10}
-                        onChange={(newLastName) => setLastName(newLastName)}
-                        onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'lastName', 2)}
-                        onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'lastName', 1)}
-                        required
-                        validator={validators.name}
-                        style={{ width: 142 }}
-                        containerStyle={{ width: 142 }} />
-                </View>
-
+        <View style={[authStyles.formContainer, { borderTopColor: getContainerBorderTopColor(formStatus) }]}>
+            <View style={{ width: 300, flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Input
-                    label="Email"
-                    placeholder="Email"
+                    label="First name"
+                    placeholder="First name"
                     hitSlop={10}
-                    onChange={(newEmail) => setEmail(newEmail)}
-                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 2)}
-                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 1)}
+                    onChange={(newFirstName) => setFirstName(newFirstName)}
+                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'firstName', 2)}
+                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'firstName', 1)}
                     required
-                    validator={validators.email} />
-
-                <View>
-                    <Input
-                        label="Password"
-                        placeholder="Password"
-                        hitSlop={10}
-                        onChange={(newPassword) => setPassword(newPassword)}
-                        onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 2)}
-                        onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 1)}
-                        required
-                        validator={validators.password}
-                        textContentType='password'
-                        passwordRules='required: lower; required: upper; required: digit; required: [-];'
-                        secureTextEntry={!passwordShown} />
-
-                    <Icon name={passwordShown ? 'eye-outline' : 'eye-off-outline'}
-                        size={styleVar.mediumIconSize}
-                        style={authStyles.eyeIcon}
-                        hitSlop={30}
-                        onPress={() => setPasswordShown(ps => !ps)} />
-                </View>
-
-                <View>
-                    <Input
-                        label="Repeat password"
-                        placeholder="Repeat password"
-                        hitSlop={10}
-                        onChange={(newRepass) => setRepass(newRepass)}
-                        onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'repass', 2)}
-                        onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'repass', 1)}
-                        required
-                        validator={validators.repass(password)}
-                        textContentType='password'
-                        passwordRules='required: lower; required: upper; required: digit; required: [-];'
-                        secureTextEntry={!repassShown} />
-
-                    <Icon name={repassShown ? 'eye-outline' : 'eye-off-outline'}
-                        size={styleVar.mediumIconSize}
-                        style={authStyles.eyeIcon}
-                        hitSlop={30}
-                        onPress={() => setRepassShown(rs => !rs)} />
-                </View>
-
-                <OpacityButton style={authStyles.button}
-                    onPress={signUpHandler}
-                    disabled={formStatus != 1}>
-                    Sign up
-                </OpacityButton>
-
-                <View style={authStyles.linkContainer}>
-                    <Text style={globalStyles.text}>
-                        Already have an account?
-                    </Text>
-                    <Link to={{ screen: 'Login' }} hitSlop={30} style={authStyles.link}>
-                        Log in
-                    </Link>
-                </View>
+                    validator={validators.name}
+                    style={{ width: 142 }}
+                    containerStyle={{ width: 142 }} />
+                <Input
+                    label="Last name"
+                    placeholder="Last name"
+                    hitSlop={10}
+                    onChange={(newLastName) => setLastName(newLastName)}
+                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'lastName', 2)}
+                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'lastName', 1)}
+                    required
+                    validator={validators.name}
+                    style={{ width: 142 }}
+                    containerStyle={{ width: 142 }} />
             </View>
-        </SafeAreaView>
+
+            <Input
+                label="Email"
+                placeholder="Email"
+                hitSlop={10}
+                onChange={(newEmail) => setEmail(newEmail)}
+                onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 2)}
+                onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 1)}
+                required
+                validator={validators.email} />
+
+            <View>
+                <Input
+                    label="Password"
+                    placeholder="Password"
+                    hitSlop={10}
+                    onChange={(newPassword) => setPassword(newPassword)}
+                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 2)}
+                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 1)}
+                    required
+                    validator={validators.password}
+                    textContentType='password'
+                    passwordRules='required: lower; required: upper; required: digit; required: [-];'
+                    secureTextEntry={!passwordShown} />
+
+                <Icon name={passwordShown ? 'eye-outline' : 'eye-off-outline'}
+                    size={styleVar.mediumIconSize}
+                    style={authStyles.eyeIcon}
+                    hitSlop={30}
+                    onPress={() => setPasswordShown(ps => !ps)} />
+            </View>
+
+            <View>
+                <Input
+                    label="Repeat password"
+                    placeholder="Repeat password"
+                    hitSlop={10}
+                    onChange={(newRepass) => setRepass(newRepass)}
+                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'repass', 2)}
+                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'repass', 1)}
+                    required
+                    validator={validators.repass(password)}
+                    textContentType='password'
+                    passwordRules='required: lower; required: upper; required: digit; required: [-];'
+                    secureTextEntry={!repassShown} />
+
+                <Icon name={repassShown ? 'eye-outline' : 'eye-off-outline'}
+                    size={styleVar.mediumIconSize}
+                    style={authStyles.eyeIcon}
+                    hitSlop={30}
+                    onPress={() => setRepassShown(rs => !rs)} />
+            </View>
+
+            <OpacityButton style={authStyles.button}
+                onPress={signUpHandler}
+                disabled={formStatus != 1}>
+                Sign up
+            </OpacityButton>
+
+            <View style={authStyles.linkContainer}>
+                <Text style={globalStyles.text}>
+                    Already have an account?
+                </Text>
+                <Link to={{ screen: 'Login' }} hitSlop={30} style={authStyles.link}>
+                    Log in
+                </Link>
+            </View>
+        </View>
     )
 }

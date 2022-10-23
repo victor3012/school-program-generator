@@ -3,10 +3,6 @@ import styleVar from "../../styles/styleVar";
 import globalStyles from "../../styles/globalStyles";
 
 export default StyleSheet.create({
-    container: {
-        alignContent: 'center',
-        justifyContent: 'center'
-    },
     formContainer: {
         margin: 20,
         backgroundColor: styleVar.white,
@@ -16,6 +12,7 @@ export default StyleSheet.create({
         padding: 30,
         paddingTop: 10,
         alignItems: "center",
+        justifyContent: "center",
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -30,7 +27,7 @@ export default StyleSheet.create({
     },
     eyeIcon: {
         position: 'absolute',
-        top: 55.5,
+        top: 48,
         left: 270
     },
     button: {

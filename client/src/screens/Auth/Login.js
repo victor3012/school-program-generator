@@ -57,55 +57,53 @@ export default function Login({
     }
 
     return (
-        <SafeAreaView style={authStyles.container}>
-            <View style={[authStyles.formContainer, { borderTopColor: getContainerBorderTopColor(formStatus) }]}>
+        <View style={[authStyles.formContainer, { borderTopColor: getContainerBorderTopColor(formStatus) }]}>
+            <Input
+                label="Email"
+                placeholder="Email"
+                hitSlop={10}
+                onChange={(newEmail) => setEmail(newEmail)}
+                onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 2)}
+                onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 1)}
+                required
+                validator={validators.email}
+                textContentType='emailAddress' />
+
+            <View>
                 <Input
-                    label="Email"
-                    placeholder="Email"
+                    label="Password"
+                    placeholder="Password"
                     hitSlop={10}
-                    onChange={(newEmail) => setEmail(newEmail)}
-                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 2)}
-                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 1)}
+                    onChange={(newPassword) => setPassword(newPassword)}
+                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 2)}
+                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 1)}
                     required
-                    validator={validators.email}
-                    textContentType='emailAddress' />
-
-                <View>
-                    <Input
-                        label="Password"
-                        placeholder="Password"
-                        hitSlop={10}
-                        onChange={(newPassword) => setPassword(newPassword)}
-                        onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 2)}
-                        onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 1)}
-                        required
-                        validator={validators.password}
-                        textContentType='password'
-                        passwordRules='required: lower; required: upper; required: digit; required: [-];'
-                        secureTextEntry={!passwordShown}
-                    />
-                    <Icon name={passwordShown ? 'eye-outline' : 'eye-off-outline'}
-                        size={styleVar.mediumIconSize}
-                        style={authStyles.eyeIcon}
-                        hitSlop={30}
-                        onPress={() => setPasswordShown(ps => !ps)} />
-                </View>
-
-                <OpacityButton style={authStyles.button}
-                    onPress={loginHandler}
-                    disabled={formStatus != 1}>
-                    Log in
-                </OpacityButton>
-
-                <View style={authStyles.linkContainer}>
-                    <Text style={globalStyles.text}>
-                        Don't have an account yet?
-                    </Text>
-                    <Link to={{ screen: 'SignUp' }} hitSlop={30} style={authStyles.link}>
-                        Sign up
-                    </Link>
-                </View>
+                    validator={validators.password}
+                    textContentType='password'
+                    passwordRules='required: lower; required: upper; required: digit; required: [-];'
+                    secureTextEntry={!passwordShown}
+                />
+                <Icon name={passwordShown ? 'eye-outline' : 'eye-off-outline'}
+                    size={styleVar.mediumIconSize}
+                    style={authStyles.eyeIcon}
+                    hitSlop={30}
+                    onPress={() => setPasswordShown(ps => !ps)} />
             </View>
-        </SafeAreaView>
+
+            <OpacityButton style={authStyles.button}
+                onPress={loginHandler}
+                disabled={formStatus != 1}>
+                Log in
+            </OpacityButton>
+
+            <View style={authStyles.linkContainer}>
+                <Text style={globalStyles.text}>
+                    Don't have an account yet?
+                </Text>
+                <Link to={{ screen: 'SignUp' }} hitSlop={30} style={authStyles.link}>
+                    Sign up
+                </Link>
+            </View>
+        </View>
     )
 }
