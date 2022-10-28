@@ -10,7 +10,7 @@ export default function EyeIconButton({ passwordShown, setPasswordShown }) {
             onPress={() => setPasswordShown(ps => !ps)}>
             <Icon name={passwordShown ? 'eye-outline' : 'eye-off-outline'}
                 size={styleVar.mediumIconSize}
-                color='gray' />
+                color={styleVar.gray} />
         </TouchableOpacity>
     )
 }
