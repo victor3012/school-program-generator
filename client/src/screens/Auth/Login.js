@@ -1,13 +1,12 @@
 import { Link } from "@react-navigation/native";
-import { SafeAreaView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { useEffect, useState } from "react";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import Input from "../../components/Input";
 import OpacityButton from "../../components/OpacityButton";
+import EyeIconButton from "../../components/Auth/EyeIconButton";
 import validators from './validators.js';
 import authStyles from "./authStyles.js";
-import styleVar from "../../styles/styleVar";
 import globalStyles from "../../styles/globalStyles";
 
 export default function Login({
@@ -57,7 +56,7 @@ export default function Login({
     }
 
     return (
-        <View style={[authStyles.formContainer, { borderTopColor: getContainerBorderTopColor(formStatus) }]}>
+        <ScrollView contentContainerStyle={[authStyles.formContainer, { borderTopColor: getContainerBorderTopColor(formStatus) }]}>
             <Input
                 label="Email"
                 placeholder="Email"
@@ -83,11 +82,8 @@ export default function Login({
                     passwordRules='required: lower; required: upper; required: digit; required: [-];'
                     secureTextEntry={!passwordShown}
                 />
-                <Icon name={passwordShown ? 'eye-outline' : 'eye-off-outline'}
-                    size={styleVar.mediumIconSize}
-                    style={authStyles.eyeIcon}
-                    hitSlop={30}
-                    onPress={() => setPasswordShown(ps => !ps)} />
+
+                <EyeIconButton passwordShown={passwordShown} setPasswordShown={setPasswordShown} />
             </View>
 
             <OpacityButton style={authStyles.button}
@@ -104,6 +100,6 @@ export default function Login({
                     Sign up
                 </Link>
             </View>
-        </View>
+        </ScrollView>
     )
 }

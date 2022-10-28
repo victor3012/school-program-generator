@@ -24,10 +24,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#3678DD"
-      }
+      },
+      "package": "com.captainsalami.PMZ"
     },
     "web": {
       "favicon": "./assets/favicon2.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2df902bb-08bc-4e6d-8246-a94fb62b9ad4"
+      }
     }
   }
 }

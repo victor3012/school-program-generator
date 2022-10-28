@@ -1,3 +1,6 @@
+//screenbg l: white d: 'rgb(25,23,18)'
+//navmainbg l: rgb(242,242,242)  d: 'rgb(35,33,30)'
+
 export default {
     white: 'white',
     blue: 'dodgerblue',
@@ -6,6 +9,10 @@ export default {
     red: 'red',
     redShadow: '#ffcccc',
     black: 'rgb(28, 30, 33)',
+    smallIconSize: 16,
     mediumIconSize: 20,
-    mediumFontSize: 16
+    largeIconSize: 26,
+    smallFontSize: 12,
+    mediumFontSize: 16,
+    largeFontSize: 22,
 }

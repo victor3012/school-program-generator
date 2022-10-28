@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Platform, StyleSheet, Text, TextInput, View, Animated, TouchableNativeFeedbackBase } from "react-native";
+import { Platform, StyleSheet, Text, TextInput, View, Animated } from "react-native";
 import styleVar from "../styles/styleVar";
 
 const startingLabelX = 0;
@@ -202,7 +202,6 @@ const styles = StyleSheet.create({
         marginTop: 5,
         width: 300,
         height: 40,
-        paddingTop: 5,
         paddingHorizontal: 20,
         fontSize: styleVar.mediumFontSize,
         borderRadius: 50,

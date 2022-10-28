@@ -1,13 +1,12 @@
 import { Link } from "@react-navigation/native";
-import { SafeAreaView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { useEffect, useState } from "react";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import Input from "../../components/Input";
 import OpacityButton from "../../components/OpacityButton";
+import EyeIconButton from "../../components/Auth/EyeIconButton";
 import validators from "./validators.js";
 import authStyles from "./authStyles.js";
-import styleVar from "../../styles/styleVar";
 import globalStyles from "../../styles/globalStyles";
 
 export default function SignUp({
@@ -68,7 +67,7 @@ export default function SignUp({
     }
 
     return (
-        <View style={[authStyles.formContainer, { borderTopColor: getContainerBorderTopColor(formStatus) }]}>
+        <ScrollView contentContainerStyle={[globalStyles.basicContainer, authStyles.formContainer, { borderTopColor: getContainerBorderTopColor(formStatus) }]}>
             <View style={{ width: 300, flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Input
                     label="First name"
@@ -118,11 +117,7 @@ export default function SignUp({
                     passwordRules='required: lower; required: upper; required: digit; required: [-];'
                     secureTextEntry={!passwordShown} />
 
-                <Icon name={passwordShown ? 'eye-outline' : 'eye-off-outline'}
-                    size={styleVar.mediumIconSize}
-                    style={authStyles.eyeIcon}
-                    hitSlop={30}
-                    onPress={() => setPasswordShown(ps => !ps)} />
+                <EyeIconButton passwordShown={passwordShown} setPasswordShown={setPasswordShown} />
             </View>
 
             <View>
@@ -139,11 +134,7 @@ export default function SignUp({
                     passwordRules='required: lower; required: upper; required: digit; required: [-];'
                     secureTextEntry={!repassShown} />
 
-                <Icon name={repassShown ? 'eye-outline' : 'eye-off-outline'}
-                    size={styleVar.mediumIconSize}
-                    style={authStyles.eyeIcon}
-                    hitSlop={30}
-                    onPress={() => setRepassShown(rs => !rs)} />
+                <EyeIconButton passwordShown={repassShown} setPasswordShown={setRepassShown} />
             </View>
 
             <OpacityButton style={authStyles.button}
@@ -160,6 +151,6 @@ export default function SignUp({
                     Log in
                 </Link>
             </View>
-        </View>
+        </ScrollView>
     )
 }
