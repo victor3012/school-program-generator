@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
 import WelcomePage from "./WelcomePage";
-// import Schools from "./Schools";  TODO
+import Schools from "./Schools"; 
 
 import styleVar from '../../styles/styleVar';
 import globalStyles from '../../styles/globalStyles';
@@ -12,7 +12,7 @@ export default function Home() {
     return (
         isAuth
             ? <View style={styles.container}>
-                {/* <Schools /> */}
+                <Schools />
             </View>
             : <WelcomePage />
     );

@@ -6,6 +6,6 @@ export const schools = [
     { id: '5', name: 'Основно училище "Черноризец Храбър"', teachersCount: 41, roomsCount: 19 },
 ]
 
-export const isAuth = false;
+export const isAuth = true;
 
-export const isAdmin = false;
+export const isAdmin = true;
