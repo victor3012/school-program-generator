@@ -11,7 +11,6 @@ import globalStyles from "../../styles/globalStyles";
 
 export default function Login({
     route,
-    updateAuthTitle,
     updateInputStatus,
     getContainerBorderTopColor
 }) {
@@ -24,10 +23,6 @@ export default function Login({
         password: 0
     });
     const [formStatus, setFormStatus] = useState(0); // 0 -> neutral; 1 -> focused; 2 -> error
-
-    useEffect(() => {
-        updateAuthTitle();
-    }, [route.params])
 
     useEffect(() => {
         setFormStatus(() => {
@@ -56,7 +51,7 @@ export default function Login({
     }
 
     return (
-        <ScrollView contentContainerStyle={[authStyles.formContainer, { borderTopColor: getContainerBorderTopColor(formStatus) }]}>
+        <ScrollView contentContainerStyle={[globalStyles.basicContainer, authStyles.formContainer, { borderTopColor: getContainerBorderTopColor(formStatus) }]}>
             <Input
                 label="Email"
                 placeholder="Email"

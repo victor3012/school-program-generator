@@ -11,7 +11,6 @@ import globalStyles from "../../styles/globalStyles";
 
 export default function SignUp({
     route,
-    updateAuthTitle,
     updateInputStatus,
     getContainerBorderTopColor
 }) {
@@ -31,10 +30,6 @@ export default function SignUp({
         lastName: 0,
     });
     const [formStatus, setFormStatus] = useState(0); // 0 -> not filled in; 1 -> valid for submiting; 2 -> error
-
-    useEffect(() => {
-        updateAuthTitle();
-    }, [route.params])
 
     useEffect(() => {
         setFormStatus(() => {

@@ -1,4 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useRoute } from "@react-navigation/native";
 import { useCallback } from "react";
 import { StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
@@ -14,17 +15,13 @@ const options = {
     tabBarLabelStyle: { fontSize: styleVar.mediumFontSize }
 }
 
-export default function Auth({ navigation, route }) {
-    const setAuthTitle = useCallback((title) => {
-        navigation.setParams({ title });
-    }, []);
-
+export default function Auth() {
     const LoginComponent = useCallback((args) => {
-        return <Login {...args} updateAuthTitle={() => setAuthTitle('Login')} updateInputStatus={updateInputStatus} getContainerBorderTopColor={getContainerBorderTopColor} />
+        return <Login {...args} updateInputStatus={updateInputStatus} getContainerBorderTopColor={getContainerBorderTopColor} />
     }, [])
 
     const SignUpComponent = useCallback((args) => {
-        return <SignUp {...args} updateAuthTitle={() => setAuthTitle('Sign up')} updateInputStatus={updateInputStatus} getContainerBorderTopColor={getContainerBorderTopColor} />
+        return <SignUp {...args} updateInputStatus={updateInputStatus} getContainerBorderTopColor={getContainerBorderTopColor} />
     }, [])
 
     const updateInputStatus = (inputStatuses, setInputStatuses, key, value) => {
@@ -59,14 +56,12 @@ export default function Auth({ navigation, route }) {
                 ...options,
                 tabBarIcon: () => <Icon name='login' size={styleVar.mediumIconSize} />,
                 tabBarActiveTintColor: styleVar.blue
-            }} initialParams={{ title: 'Login' }}
-                name="Login" component={LoginComponent} />
+            }} name="Login" component={LoginComponent} />
             <Tab.Screen options={{
                 ...options,
                 tabBarLabel: 'Sign Up',
                 tabBarIcon: () => <Icon name='adduser' size={styleVar.mediumIconSize} />
-            }} initialParams={{ title: 'Sign up' }}
-                name="SignUp" component={SignUpComponent} />
+            }} name="SignUp" component={SignUpComponent} />
         </Tab.Navigator>
     )
 }
