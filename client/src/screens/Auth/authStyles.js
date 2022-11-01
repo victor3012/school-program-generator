@@ -3,35 +3,13 @@ import styleVar from "../../styles/styleVar";
 import globalStyles from "../../styles/globalStyles";
 
 export default StyleSheet.create({
-    container: {
-        alignContent: 'center',
-        justifyContent: 'center'
-    },
-    formContainer: {
-        margin: 20,
-        backgroundColor: styleVar.white,
-        borderRadius: 20,
+    formContainer: { // basic container required
         borderTopColor: styleVar.blueShadow,
         borderTopWidth: 5,
-        padding: 30,
         paddingTop: 10,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.35,
-        shadowRadius: 4,
-        elevation: 5
     },
     passwordContainer: {
         position: "relative"
-    },
-    eyeIcon: {
-        position: 'absolute',
-        top: 55.5,
-        left: 270
     },
     button: {
         width: 300,

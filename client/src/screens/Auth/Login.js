@@ -1,18 +1,16 @@
 import { Link } from "@react-navigation/native";
-import { SafeAreaView, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { useEffect, useState } from "react";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
+import Form from "../../components/Form";
 import Input from "../../components/Input";
 import OpacityButton from "../../components/OpacityButton";
+import EyeIconButton from "../../components/Auth/EyeIconButton";
 import validators from './validators.js';
 import authStyles from "./authStyles.js";
-import styleVar from "../../styles/styleVar";
 import globalStyles from "../../styles/globalStyles";
 
 export default function Login({
-    route,
-    updateAuthTitle,
     updateInputStatus,
     getContainerBorderTopColor
 }) {
@@ -25,10 +23,6 @@ export default function Login({
         password: 0
     });
     const [formStatus, setFormStatus] = useState(0); // 0 -> neutral; 1 -> focused; 2 -> error
-
-    useEffect(() => {
-        updateAuthTitle();
-    }, [route.params])
 
     useEffect(() => {
         setFormStatus(() => {
@@ -57,55 +51,47 @@ export default function Login({
     }
 
     return (
-        <SafeAreaView style={authStyles.container}>
-            <View style={[authStyles.formContainer, { borderTopColor: getContainerBorderTopColor(formStatus) }]}>
+        <Form borderTopColor={getContainerBorderTopColor(formStatus)}>
+            <Input
+                label="Email"
+                hitSlop={10}
+                onChange={(newEmail) => setEmail(newEmail)}
+                onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 2)}
+                onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 1)}
+                required
+                validator={validators.email}
+                textContentType='emailAddress' />
+
+            <View>
                 <Input
-                    label="Email"
-                    placeholder="Email"
+                    label="Password"
                     hitSlop={10}
-                    onChange={(newEmail) => setEmail(newEmail)}
-                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 2)}
-                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 1)}
+                    onChange={(newPassword) => setPassword(newPassword)}
+                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 2)}
+                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 1)}
                     required
-                    validator={validators.email}
-                    textContentType='emailAddress' />
+                    validator={validators.password}
+                    textContentType='password'
+                    passwordRules='required: lower; required: upper; required: digit; required: [-];'
+                    secureTextEntry={!passwordShown} />
 
-                <View>
-                    <Input
-                        label="Password"
-                        placeholder="Password"
-                        hitSlop={10}
-                        onChange={(newPassword) => setPassword(newPassword)}
-                        onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 2)}
-                        onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 1)}
-                        required
-                        validator={validators.password}
-                        textContentType='password'
-                        passwordRules='required: lower; required: upper; required: digit; required: [-];'
-                        secureTextEntry={!passwordShown}
-                    />
-                    <Icon name={passwordShown ? 'eye-outline' : 'eye-off-outline'}
-                        size={styleVar.mediumIconSize}
-                        style={authStyles.eyeIcon}
-                        hitSlop={30}
-                        onPress={() => setPasswordShown(ps => !ps)} />
-                </View>
-
-                <OpacityButton style={authStyles.button}
-                    onPress={loginHandler}
-                    disabled={formStatus != 1}>
-                    Log in
-                </OpacityButton>
-
-                <View style={authStyles.linkContainer}>
-                    <Text style={globalStyles.text}>
-                        Don't have an account yet?
-                    </Text>
-                    <Link to={{ screen: 'SignUp' }} hitSlop={30} style={authStyles.link}>
-                        Sign up
-                    </Link>
-                </View>
+                <EyeIconButton passwordShown={passwordShown} setPasswordShown={setPasswordShown} />
             </View>
-        </SafeAreaView>
+
+            <OpacityButton style={authStyles.button}
+                onPress={loginHandler}
+                disabled={formStatus != 1}>
+                Log in
+            </OpacityButton>
+
+            <View style={authStyles.linkContainer}>
+                <Text style={globalStyles.text}>
+                    Don't have an account yet?
+                </Text>
+                <Link to={{ screen: 'SignUp' }} hitSlop={30} style={authStyles.link}>
+                    Sign up
+                </Link>
+            </View>
+        </Form>
     )
 }

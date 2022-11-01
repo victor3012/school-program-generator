@@ -1,12 +1,16 @@
-import { useState } from "react";
-import { Platform, StyleSheet, Text, TextInput, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Platform, StyleSheet, Text, TextInput, View, Animated } from "react-native";
 import styleVar from "../styles/styleVar";
+
+const startingLabelX = 0;
+const startingLabelY = 35;
 
 export default function Input(
     {
+        value,
         label,
+        placeholder,
         validator,
-        defaultValue = '',
         style: customStyles = {},
         containerStyle = {},
         onChange: onChangeText,
@@ -22,7 +26,16 @@ export default function Input(
     const [error, setError] = useState(null);
     const [beenFocused, setBeenFocused] = useState(false);
 
-    const validate = (value) => {
+    const labelXY = useRef(new Animated.ValueXY({ x: startingLabelX, y: startingLabelY })).current;
+
+    useEffect(() => {
+        if (value) {
+            setBeenFocused(true);
+            Animated.spring(labelXY, { toValue: { x: startingLabelX, y: 0 }, useNativeDriver: true }).start();
+        }
+    }, [value])
+
+    const validate = (value, showError = beenFocused) => {
         if (validator) {
             try {
                 validator(value);
@@ -33,6 +46,10 @@ export default function Input(
 
                 setError(null);
             } catch (err) {
+                if (!showError) {
+                    return;
+                }
+
                 if (onError) {
                     onError();
                 }
@@ -43,44 +60,51 @@ export default function Input(
     }
 
     const changeTextHandler = (value) => {
-        value = value.trim();
-
         if (onChangeText) {
             onChangeText(value);
         }
 
-        if (beenFocused) {
-            validate(value);
-        }
+        validate(value);
     }
 
-    const focusHandler = () => {
+    const focusHandler = (e) => {
         if (onFocus) {
-            onFocus();
+            onFocus(e.nativeEvent.text);
         }
+
+        Animated.spring(labelXY, { toValue: { x: startingLabelX, y: 0 }, useNativeDriver: true }).start();
 
         setFocused(true);
     }
 
-    const blurHandler = (e) => {
+    const blurHandler = (e, isDefaultEventOnAndroid = true) => {
+        if (Platform.OS === 'android' && isDefaultEventOnAndroid) {
+            return;
+        }
+
         if (onBlur) {
-            onBlur();
+            onBlur(e);
         }
 
         if (!beenFocused) {
             setBeenFocused(true);
         }
 
-        if (Platform.OS === 'web') {
-            validate(e.nativeEvent.text);
+        validate(e.nativeEvent.text, true);
+
+        if (!e.nativeEvent.text) {
+            Animated.spring(labelXY, { toValue: { x: startingLabelX, y: startingLabelY }, useNativeDriver: true }).start();
         }
 
         setFocused(false);
     }
-    const endEditingHandler = (e) => {
-        if (Platform.OS !== 'web') {
-            validate(e.nativeEvent.text);
+
+    const androidBlurHandler = (e) => {
+        if (Platform.OS !== 'android') {
+            return;
         }
+
+        blurHandler(e, false);
     }
 
     const getInputBorderColor = () => {
@@ -116,13 +140,23 @@ export default function Input(
     return (
         <View style={[styles.container, containerStyle]}>
             {label &&
-                <View style={styles.textContainer}>
-                    <Text style={styles.text}>
+                <Animated.View selectable={false}
+                    pointerEvents="none"
+                    style={[styles.textContainer,
+                    styles.label,
+                    {
+                        position: 'relative',
+                        transform: [
+                            { translateX: labelXY.x },
+                            { translateY: labelXY.y }]
+                    }]}
+                >
+                    <Text selectable={false} style={styles.text}>
                         {label}
                     </Text>
                     {required &&
-                        <Text style={{ color: getInputBorderColor() }}>*</Text>}
-                </View>
+                        <Text selectable={false} style={{ color: getInputBorderColor() }}>*</Text>}
+                </Animated.View>
             }
 
             <TextInput style={{
@@ -131,28 +165,28 @@ export default function Input(
                 borderColor: getInputBorderColor(),
                 backgroundColor: getInputBackgroundColor()
             }}
-                defaultValue={defaultValue}
                 onChangeText={changeTextHandler}
                 onFocus={focusHandler}
                 onBlur={blurHandler}
-                onEndEditing={endEditingHandler}
-                {...args}
-            />
-
-            {(error) &&
+                onEndEditing={androidBlurHandler}
+                placeholder={label ? '' : placeholder}
+                value={value}
+                {...args} />
+            {
+                (error) &&
                 <View style={styles.textContainer}>
                     <Text style={{ ...styles.text, color: styleVar.red }}>
                         {error}
                     </Text>
                 </View>
             }
-        </View>
+        </View >
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 20,
+        marginTop: 12,
     },
     text: {
         fontSize: styleVar.mediumFontSize,
@@ -163,6 +197,9 @@ const styles = StyleSheet.create({
         maxWidth: 300,
         flexWrap: 'wrap'
     },
+    label: {
+        zIndex: 1
+    },
     formTextInput: {
         outlineStyle: 'none',
         marginTop: 5,
@@ -171,8 +208,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         fontSize: styleVar.mediumFontSize,
         borderRadius: 50,
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: 'rgb(180, 214, 250)',
-        backgroundColor: styleVar.blueShadow
+        backgroundColor: styleVar.blueShadow,
     }
 })

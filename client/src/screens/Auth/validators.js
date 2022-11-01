@@ -2,9 +2,9 @@ const emailRegExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"
 const passwordRegExp = new RegExp(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[._\-!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|])([\s]{0,0})[\w\d._\-!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+/);
 const stringRegExp = new RegExp(/[a-zA-Z\-\s]*/);
 
-const required = (value) => {
+const required = (value, msg = 'Required') => {
     if (!value) {
-        throw new Error('Required');
+        throw new Error(msg);
     }
 }
 
@@ -36,24 +36,24 @@ const maxLength = (value, length) => {
 
 export default {
     email: (value) => {
-        required(value);
+        required(value, 'Email is required');
         maxLength(value, 320);
-        match(value, emailRegExp);
+        match(value, emailRegExp, 'Invalid email');
     },
     password: (value) => {
-        required(value);
+        required(value, 'Password is required');
         minLength(value, 6);
         maxLength(value, 50);
-        match(value, passwordRegExp, 'Must have at least 1 small letter, capital letter, a digit and a special character');
+        match(value, passwordRegExp, 'Must have at least 1 small letter, a capital letter, a digit and a special character');
     },
     repass: (password) => {
         return (value) => {
-            equal(value, password, 'Doesn\'t match password');
+            equal(value, password, 'Password fields don\'t match');
         }
     },
     name: (value) => {
-        required(value);
+        required(value, 'Name is required');
         maxLength(value, 50);
-        match(value, stringRegExp, 'Can only contain letters');
+        match(value, stringRegExp, 'Name can only contain letters');
     }
 }
