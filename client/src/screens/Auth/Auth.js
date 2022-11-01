@@ -17,11 +17,11 @@ const options = {
 
 export default function Auth() {
     const LoginComponent = useCallback((args) => {
-        return <Login {...args} updateInputStatus={updateInputStatus} getContainerBorderTopColor={getContainerBorderTopColor} />
+        return <Login {...args} updateInputStatus={updateInputStatus} />
     }, [])
 
     const SignUpComponent = useCallback((args) => {
-        return <SignUp {...args} updateInputStatus={updateInputStatus} getContainerBorderTopColor={getContainerBorderTopColor} />
+        return <SignUp {...args} updateInputStatus={updateInputStatus} />
     }, [])
 
     const updateInputStatus = (inputStatuses, setInputStatuses, key, value) => {
@@ -36,18 +36,6 @@ export default function Auth() {
 
             return newInputStatuses;
         })
-    }
-
-    const getContainerBorderTopColor = (formStatus) => {
-        if (formStatus == 2) {
-            return styleVar.red;
-        }
-
-        if (formStatus == 1) {
-            return styleVar.blue;
-        }
-
-        return styleVar.blueShadow;
     }
 
     return (

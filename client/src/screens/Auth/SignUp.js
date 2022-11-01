@@ -9,11 +9,9 @@ import EyeIconButton from "../../components/Auth/EyeIconButton";
 import validators from "./validators.js";
 import authStyles from "./authStyles.js";
 import globalStyles from "../../styles/globalStyles";
+import { getFormStatus } from "../../services/util";
 
-export default function SignUp({
-    updateInputStatus,
-    getContainerBorderTopColor
-}) {
+export default function SignUp({ updateInputStatus }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -29,23 +27,6 @@ export default function SignUp({
         firstName: 0,
         lastName: 0,
     });
-    const [formStatus, setFormStatus] = useState(0); // 0 -> not filled in; 1 -> valid for submiting; 2 -> error
-
-    useEffect(() => {
-        setFormStatus(() => {
-            const values = Object.values(inputStatuses);
-
-            if (values.includes(2)) {
-                return 2;
-            }
-
-            if (values.includes(0)) {
-                return 0;
-            }
-
-            return 1;
-        })
-    }, [inputStatuses])
 
     const signUpHandler = () => {
         try {
@@ -62,7 +43,7 @@ export default function SignUp({
     }
 
     return (
-        <Form borderTopColor={getContainerBorderTopColor(formStatus)}>
+        <Form inputStatuses={inputStatuses}>
             <View style={{ width: 300, flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Input
                     label="First name"
@@ -129,7 +110,7 @@ export default function SignUp({
 
             <OpacityButton style={authStyles.button}
                 onPress={signUpHandler}
-                disabled={formStatus != 1}>
+                disabled={getFormStatus(inputStatuses) != 1}>
                 Sign up
             </OpacityButton>
 
