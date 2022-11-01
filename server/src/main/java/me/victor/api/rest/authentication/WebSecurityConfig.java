@@ -1,7 +1,5 @@
 package me.victor.api.rest.authentication;
 
-import me.victor.api.rest.errors.RestExceptionHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
