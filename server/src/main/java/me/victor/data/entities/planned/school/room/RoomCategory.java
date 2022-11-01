@@ -1,6 +1,6 @@
-package me.victor.data.entities.school.room;
+package me.victor.data.entities.planned.school.room;
 
-import me.victor.data.entities.school.School;
+import me.victor.data.entities.planned.school.School;
 
 import javax.persistence.*;
 

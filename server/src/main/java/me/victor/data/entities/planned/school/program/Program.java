@@ -1,7 +1,7 @@
-package me.victor.data.entities.school.program;
+package me.victor.data.entities.planned.school.program;
 
-import me.victor.data.entities.school.lessons.GroupLesson;
-import me.victor.data.entities.school.School;
+import me.victor.data.entities.planned.school.lessons.GroupLesson;
+import me.victor.data.entities.planned.school.School;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

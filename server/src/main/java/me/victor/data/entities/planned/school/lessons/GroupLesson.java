@@ -1,4 +1,4 @@
-package me.victor.data.entities.school.lessons;
+package me.victor.data.entities.planned.school.lessons;
 
 import javax.persistence.*;
 import java.util.List;

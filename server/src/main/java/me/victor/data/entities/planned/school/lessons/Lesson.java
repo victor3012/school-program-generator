@@ -1,9 +1,9 @@
-package me.victor.data.entities.school.lessons;
+package me.victor.data.entities.planned.school.lessons;
 
-import me.victor.data.entities.school.Grade;
-import me.victor.data.entities.school.room.Room;
-import me.victor.data.entities.school.School;
-import me.victor.data.entities.school.Teacher;
+import me.victor.data.entities.planned.school.Grade;
+import me.victor.data.entities.planned.school.room.Room;
+import me.victor.data.entities.planned.school.School;
+import me.victor.data.entities.planned.school.Teacher;
 
 import javax.persistence.*;
 import java.util.List;

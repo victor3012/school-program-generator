@@ -1,7 +1,6 @@
-package me.victor.data.entities.school;
+package me.victor.data.entities.planned.school;
 
-import me.victor.data.entities.enums.Position;
-import me.victor.data.entities.school.School;
+import me.victor.data.entities.planned.enums.Position;
 
 import javax.persistence.*;
 import java.util.List;
