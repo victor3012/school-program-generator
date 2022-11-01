@@ -16,6 +16,9 @@ public class Teacher extends ObjectWithId {
     @Column(nullable = false)
     private String email;
 
+    @Column(name = "teacher_role", nullable = false)
+    private TeacherRole teacherRole;
+
     public Teacher() {
 
     }
