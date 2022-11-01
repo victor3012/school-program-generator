@@ -1,7 +1,8 @@
 import { Link } from "@react-navigation/native";
-import { ScrollView, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { useEffect, useState } from "react";
 
+import Form from "../../components/Form";
 import Input from "../../components/Input";
 import OpacityButton from "../../components/OpacityButton";
 import EyeIconButton from "../../components/Auth/EyeIconButton";
@@ -10,7 +11,6 @@ import authStyles from "./authStyles.js";
 import globalStyles from "../../styles/globalStyles";
 
 export default function SignUp({
-    route,
     updateInputStatus,
     getContainerBorderTopColor
 }) {
@@ -62,11 +62,10 @@ export default function SignUp({
     }
 
     return (
-        <ScrollView contentContainerStyle={[globalStyles.basicContainer, authStyles.formContainer, { borderTopColor: getContainerBorderTopColor(formStatus) }]}>
+        <Form borderTopColor={getContainerBorderTopColor(formStatus)}>
             <View style={{ width: 300, flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Input
                     label="First name"
-                    placeholder="First name"
                     hitSlop={10}
                     onChange={(newFirstName) => setFirstName(newFirstName)}
                     onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'firstName', 2)}
@@ -77,7 +76,6 @@ export default function SignUp({
                     containerStyle={{ width: 142 }} />
                 <Input
                     label="Last name"
-                    placeholder="Last name"
                     hitSlop={10}
                     onChange={(newLastName) => setLastName(newLastName)}
                     onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'lastName', 2)}
@@ -90,7 +88,6 @@ export default function SignUp({
 
             <Input
                 label="Email"
-                placeholder="Email"
                 hitSlop={10}
                 onChange={(newEmail) => setEmail(newEmail)}
                 onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 2)}
@@ -101,7 +98,6 @@ export default function SignUp({
             <View>
                 <Input
                     label="Password"
-                    placeholder="Password"
                     hitSlop={10}
                     onChange={(newPassword) => setPassword(newPassword)}
                     onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 2)}
@@ -118,7 +114,6 @@ export default function SignUp({
             <View>
                 <Input
                     label="Repeat password"
-                    placeholder="Repeat password"
                     hitSlop={10}
                     onChange={(newRepass) => setRepass(newRepass)}
                     onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'repass', 2)}
@@ -146,6 +141,6 @@ export default function SignUp({
                     Log in
                 </Link>
             </View>
-        </ScrollView>
+        </Form>
     )
 }

@@ -51,7 +51,7 @@ export default function Auth() {
     }
 
     return (
-        <Tab.Navigator sceneContainerStyle={styles.container}>
+        <Tab.Navigator>
             <Tab.Screen options={{
                 ...options,
                 tabBarIcon: () => <Icon name='login' size={styleVar.mediumIconSize} />,
@@ -65,12 +65,3 @@ export default function Auth() {
         </Tab.Navigator>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        alignContent: 'center',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center'
-    }
-})

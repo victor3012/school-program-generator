@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Platform, StyleSheet, Text, TextInput, View, Animated } from "react-native";
 import styleVar from "../styles/styleVar";
 
@@ -7,10 +7,10 @@ const startingLabelY = 35;
 
 export default function Input(
     {
+        value,
         label,
         placeholder,
         validator,
-        defaultValue = '',
         style: customStyles = {},
         containerStyle = {},
         onChange: onChangeText,
@@ -27,6 +27,13 @@ export default function Input(
     const [beenFocused, setBeenFocused] = useState(false);
 
     const labelXY = useRef(new Animated.ValueXY({ x: startingLabelX, y: startingLabelY })).current;
+
+    useEffect(() => {
+        if (value) {
+            setBeenFocused(true);
+            Animated.spring(labelXY, { toValue: { x: startingLabelX, y: 0 }, useNativeDriver: true }).start();
+        }
+    }, [value])
 
     const validate = (value, showError = beenFocused) => {
         if (validator) {
@@ -53,8 +60,6 @@ export default function Input(
     }
 
     const changeTextHandler = (value) => {
-        value = value.trim();
-
         if (onChangeText) {
             onChangeText(value);
         }
@@ -62,9 +67,9 @@ export default function Input(
         validate(value);
     }
 
-    const focusHandler = () => {
+    const focusHandler = (e) => {
         if (onFocus) {
-            onFocus();
+            onFocus(e.nativeEvent.text);
         }
 
         Animated.spring(labelXY, { toValue: { x: startingLabelX, y: 0 }, useNativeDriver: true }).start();
@@ -78,7 +83,7 @@ export default function Input(
         }
 
         if (onBlur) {
-            onBlur();
+            onBlur(e);
         }
 
         if (!beenFocused) {
@@ -160,15 +165,13 @@ export default function Input(
                 borderColor: getInputBorderColor(),
                 backgroundColor: getInputBackgroundColor()
             }}
-                defaultValue={defaultValue}
                 onChangeText={changeTextHandler}
                 onFocus={focusHandler}
                 onBlur={blurHandler}
                 onEndEditing={androidBlurHandler}
                 placeholder={label ? '' : placeholder}
-                {...args}
-            />
-
+                value={value}
+                {...args} />
             {
                 (error) &&
                 <View style={styles.textContainer}>

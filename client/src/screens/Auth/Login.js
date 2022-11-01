@@ -1,7 +1,8 @@
 import { Link } from "@react-navigation/native";
-import { ScrollView, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { useEffect, useState } from "react";
 
+import Form from "../../components/Form";
 import Input from "../../components/Input";
 import OpacityButton from "../../components/OpacityButton";
 import EyeIconButton from "../../components/Auth/EyeIconButton";
@@ -10,7 +11,6 @@ import authStyles from "./authStyles.js";
 import globalStyles from "../../styles/globalStyles";
 
 export default function Login({
-    route,
     updateInputStatus,
     getContainerBorderTopColor
 }) {
@@ -51,10 +51,9 @@ export default function Login({
     }
 
     return (
-        <ScrollView contentContainerStyle={[globalStyles.basicContainer, authStyles.formContainer, { borderTopColor: getContainerBorderTopColor(formStatus) }]}>
+        <Form borderTopColor={getContainerBorderTopColor(formStatus)}>
             <Input
                 label="Email"
-                placeholder="Email"
                 hitSlop={10}
                 onChange={(newEmail) => setEmail(newEmail)}
                 onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 2)}
@@ -66,7 +65,6 @@ export default function Login({
             <View>
                 <Input
                     label="Password"
-                    placeholder="Password"
                     hitSlop={10}
                     onChange={(newPassword) => setPassword(newPassword)}
                     onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 2)}
@@ -75,8 +73,7 @@ export default function Login({
                     validator={validators.password}
                     textContentType='password'
                     passwordRules='required: lower; required: upper; required: digit; required: [-];'
-                    secureTextEntry={!passwordShown}
-                />
+                    secureTextEntry={!passwordShown} />
 
                 <EyeIconButton passwordShown={passwordShown} setPasswordShown={setPasswordShown} />
             </View>
@@ -95,6 +92,6 @@ export default function Login({
                     Sign up
                 </Link>
             </View>
-        </ScrollView>
+        </Form>
     )
 }

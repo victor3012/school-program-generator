@@ -1,31 +1,11 @@
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { StyleSheet, TouchableOpacity } from "react-native";
 
-import styleVar from "../../styles/styleVar";
+import InputIconButton from '../InputIconButton';
 
 export default function EyeIconButton({ passwordShown, setPasswordShown }) {
     return (
-        <TouchableOpacity style={styles.button}
-            hitSlop={15}
-            onPress={() => setPasswordShown(ps => !ps)}>
-            <Icon name={passwordShown ? 'eye-outline' : 'eye-off-outline'}
-                size={styleVar.mediumIconSize}
-                color={styleVar.gray} />
-        </TouchableOpacity>
+        <InputIconButton
+            Icon={(args) => <Icon {...args} name={passwordShown ? 'eye-outline' : 'eye-off-outline'} />}
+            onPress={() => setPasswordShown(ps => !ps)} />
     )
 }
-
-const styles = StyleSheet.create({
-    button: {
-        position: 'absolute',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: 40,
-        top: 38,
-        right: 0,
-        width: 2 * styleVar.mediumIconSize,
-        paddingRight: 3,
-        borderTopRightRadius: 20,
-        borderBottomRightRadius: 20,
-    },
-})
