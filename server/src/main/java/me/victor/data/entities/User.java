@@ -25,17 +25,21 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "is_admin")
+    private boolean isAdmin;
+
     @Column(name = "is_email_confirmed")
     private boolean isEmailConfirmed;
 
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String password, boolean isEmailConfirmed) {
+    public User(String firstName, String lastName, String email, String password, boolean isAdmin, boolean isEmailConfirmed) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.isAdmin = isAdmin;
         this.isEmailConfirmed = isEmailConfirmed;
     }
 
@@ -81,6 +85,15 @@ public class User {
 
     public User setPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public User setAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
         return this;
     }
 

@@ -1,18 +1,24 @@
 package me.victor.services;
 
+import me.victor.api.rest.authentication.JwtTokenUtil;
 import me.victor.data.dao.UserRepository;
 import me.victor.data.dto.user.ChangePasswordUserDTO;
 import me.victor.data.dto.user.CreateUserDTO;
 import me.victor.data.entities.User;
 import me.victor.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.WebRequest;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final JwtTokenUtil jwtTokenUtil;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, JwtTokenUtil jwtTokenUtil) {
         this.userRepository = userRepository;
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
     public void createUser(CreateUserDTO dto) {
@@ -43,5 +49,15 @@ public class UserService {
         this.userRepository.save(user);
     }
 
+    public Optional<User> getByEmail(String email) {
+        return this.userRepository.findByEmail(email);
+    }
 
+    public User getUserByRequest(WebRequest request) {
+        String jwtToken = request.getHeader("x-authorization");
+        String email = jwtTokenUtil.getEmailFromToken(jwtToken);
+
+        return getByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Unknown user"));
+    }
 }

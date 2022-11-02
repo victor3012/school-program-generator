@@ -1,14 +1,15 @@
 package me.victor.data.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table
 @Entity(name = "subjects")
 public class Subject extends ObjectWithId {
     @Column(unique = true, nullable = false)
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private School school;
 
     public Subject() {
     }

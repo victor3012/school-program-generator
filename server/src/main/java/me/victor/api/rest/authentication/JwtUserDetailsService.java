@@ -23,7 +23,6 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println(username);
         me.victor.data.entities.User user = userService.getByEmail(username)
                 .orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
 

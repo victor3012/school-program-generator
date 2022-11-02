@@ -20,6 +20,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     protected ApiError handleUnknownException(RuntimeException ex) {
+        ex.printStackTrace();
         return new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex);
     }
 

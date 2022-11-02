@@ -1,8 +1,7 @@
 package me.victor.data.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "teachers")
@@ -16,8 +15,11 @@ public class Teacher extends ObjectWithId {
     @Column(nullable = false)
     private String email;
 
-    @Column(name = "teacher_role", nullable = false)
-    private TeacherRole teacherRole;
+    @ElementCollection
+    private List<TeacherRole> teacherRoles;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    private School school;
 
     public Teacher() {
 
@@ -53,6 +55,24 @@ public class Teacher extends ObjectWithId {
 
     public Teacher setEmail(String email) {
         this.email = email;
+        return this;
+    }
+
+    public List<TeacherRole> getTeacherRoles() {
+        return teacherRoles;
+    }
+
+    public Teacher setTeacherRoles(List<TeacherRole> teacherRoles) {
+        this.teacherRoles = teacherRoles;
+        return this;
+    }
+
+    public School getSchool() {
+        return school;
+    }
+
+    public Teacher setSchool(School school) {
+        this.school = school;
         return this;
     }
 }

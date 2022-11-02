@@ -16,11 +16,11 @@ public abstract class ObjectWithId {
 
     }
 
-    protected long getId() {
+    public long getId() {
         return id;
     }
 
-    protected ObjectWithId setId(long id) {
+    public ObjectWithId setId(long id) {
         this.id = id;
         return this;
     }
