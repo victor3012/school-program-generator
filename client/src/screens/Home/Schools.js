@@ -8,18 +8,11 @@ import globalStyles from "../../styles/globalStyles";
 import styleVar from "../../styles/styleVar";
 
 import { schools, isAdmin, isAuth } from "../../mockdata";
+import PressableBox from "../../components/PressableBox";
+import CreateSchool from "./CreateSchool";
 
 export default function Schools() {
     const linkTo = useLinkTo();
-
-    const createSchoolButtonHandler = () => {
-        if (!isAdmin) {
-            alert("Your account has not been granted permission to create schools");
-            return;
-        }
-
-        alert('TODO: create school');
-    }
 
     return (
         <View>
@@ -29,13 +22,7 @@ export default function Schools() {
 
             <View style={styles.container}>
                 {schools.map(school =>
-                    <Pressable key={school.id}
-                        onPress={() => linkTo({ screen: 'School', params: { id: school.id } })}
-                        style={({ pressed }) => [globalStyles.basicContainer, styles.schoolBox, {
-                            backgroundColor: pressed ? styleVar.blueShadow : styleVar.white,
-                        }]}
-                        selectable={false}
-                        adjustsFontSizeToFit={true}>
+                    <PressableBox key={school.id} onPress={() => linkTo({ screen: 'School', params: { id: school.id } })}>
                         <>
                             <Text selectable={false} adjustsFontSizeToFit={true} style={[globalStyles.text, { textAlign: 'center' }]}>
                                 {school.name}
@@ -60,18 +47,9 @@ export default function Schools() {
                                 </View>
                             </View>
                         </>
-                    </Pressable >
+                    </PressableBox>
                 )}
-                <Pressable onPress={createSchoolButtonHandler}
-                    style={({ pressed }) => [globalStyles.basicContainer, styles.schoolBox, {
-                        backgroundColor: pressed ? styleVar.blueShadow : styleVar.white,
-                        padding: 0
-                    }]}
-                    selectable={false}>
-                    <AntDesignIcon name="plus"
-                        size={65}
-                        color={isAdmin ? styleVar.blue : styleVar.gray} />
-                </Pressable>
+                <CreateSchool isAdmin={isAdmin} />
             </View >
         </View>
     )

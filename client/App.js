@@ -8,9 +8,7 @@ import Icon from 'react-native-vector-icons/AntDesign'
 
 import Auth from './src/screens/Auth/Auth';
 import Home from './src/screens/Home/Home';
-import STEM from './src/screens/STEM';
 import styleVar from './src/styles/styleVar';
-import CreateSchool from './src/screens/CreateSchool';
 
 const Drawer = createDrawerNavigator();
 
@@ -53,8 +51,6 @@ export default function App() {
             headerTintColor: styleVar.white,
             headerTitle: routeToTitle[getFocusedRouteNameFromRoute(route)] || getFocusedRouteNameFromRoute(route) || routeToTitle.Login
           })} name="Auth" component={Auth} />
-          <Drawer.Screen name="STEM" component={CreateSchool}
-            options={{ drawerIcon: () => <Icon name='table' size={styleVar.mediumIconSize} /> }} />
         </Drawer.Navigator>
       </NavigationContainer>
     </View >

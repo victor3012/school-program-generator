@@ -9,11 +9,9 @@ import EyeIconButton from "../../components/Auth/EyeIconButton";
 import validators from './validators.js';
 import authStyles from "./authStyles.js";
 import globalStyles from "../../styles/globalStyles";
+import { getFormStatus } from "../../services/util";
 
-export default function Login({
-    updateInputStatus,
-    getContainerBorderTopColor
-}) {
+export default function Login({ updateInputStatus }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordShown, setPasswordShown] = useState(false);
@@ -22,23 +20,6 @@ export default function Login({
         email: 0,
         password: 0
     });
-    const [formStatus, setFormStatus] = useState(0); // 0 -> neutral; 1 -> focused; 2 -> error
-
-    useEffect(() => {
-        setFormStatus(() => {
-            const values = Object.values(inputStatuses);
-
-            if (values.includes(2)) {
-                return 2;
-            }
-
-            if (values.includes(0)) {
-                return 0;
-            }
-
-            return 1;
-        })
-    }, [inputStatuses])
 
     const loginHandler = () => {
         try {
@@ -51,7 +32,7 @@ export default function Login({
     }
 
     return (
-        <Form borderTopColor={getContainerBorderTopColor(formStatus)}>
+        <Form inputStatuses={inputStatuses}>
             <Input
                 label="Email"
                 hitSlop={10}
@@ -80,7 +61,7 @@ export default function Login({
 
             <OpacityButton style={authStyles.button}
                 onPress={loginHandler}
-                disabled={formStatus != 1}>
+                disabled={getFormStatus(inputStatuses) != 1}>
                 Log in
             </OpacityButton>
 
