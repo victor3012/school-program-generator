@@ -2,10 +2,6 @@ package me.victor.data.entities;
 
 import javax.persistence.*;
 
-/**
- * This entity represents a registered user with its credentials.
- **/
-
 @Entity
 @Table(name = "users")
 public class User extends ObjectWithId {
