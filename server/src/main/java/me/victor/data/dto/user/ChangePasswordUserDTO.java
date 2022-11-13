@@ -1,15 +1,15 @@
 package me.victor.data.dto.user;
 
 public class ChangePasswordUserDTO {
-    private int id;
+    private long id;
     private String currentPassword;
     private String newPassword;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public ChangePasswordUserDTO setId(int id) {
+    public ChangePasswordUserDTO setId(long id) {
         this.id = id;
         return this;
     }

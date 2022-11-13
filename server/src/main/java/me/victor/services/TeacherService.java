@@ -2,9 +2,11 @@ package me.victor.services;
 
 import me.victor.data.dao.TeacherRepository;
 import me.victor.data.entities.Teacher;
+import me.victor.data.entities.TeacherRole;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TeacherService {
@@ -28,5 +30,17 @@ public class TeacherService {
 
     public boolean isTeacherInSchool(long schoolId, String email) {
         return this.teacherRepository.existsBySchoolIdAndEmail(schoolId, email);
+    }
+
+    public void save(Teacher teacher) {
+        this.teacherRepository.save(teacher);
+    }
+
+    public Optional<Teacher> getTeacherInSchool(long schoolId, String email) {
+        return this.teacherRepository.findByEmailAndSchoolId(email, schoolId);
+    }
+
+    public void saveAll(List<Teacher> teachers) {
+        this.teacherRepository.saveAll(teachers);
     }
 }

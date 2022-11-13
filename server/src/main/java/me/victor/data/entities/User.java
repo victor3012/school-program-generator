@@ -8,11 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+public class User extends ObjectWithId {
     @Column(name = "first_name")
     private String firstName;
 
@@ -41,15 +37,6 @@ public class User {
         this.password = password;
         this.isAdmin = isAdmin;
         this.isEmailConfirmed = isEmailConfirmed;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public User setId(int id) {
-        this.id = id;
-        return this;
     }
 
     public String getFirstName() {

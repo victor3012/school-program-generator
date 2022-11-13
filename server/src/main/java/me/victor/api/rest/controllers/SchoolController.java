@@ -3,6 +3,7 @@ package me.victor.api.rest.controllers;
 import me.victor.data.dto.school.AggregatedSchoolDTO;
 import me.victor.data.dto.school.CreateSchoolDTO;
 import me.victor.data.dto.school.ExtendedAggregatedSchoolDTO;
+import me.victor.data.dto.school.UpdateSchoolDTO;
 import me.victor.data.entities.School;
 import me.victor.data.entities.User;
 import me.victor.exceptions.DataFormatException;
@@ -26,12 +27,20 @@ public class SchoolController {
     }
 
     @PostMapping
-    public School postSchool(WebRequest request, @Valid @RequestBody CreateSchoolDTO dto) {
+    public ExtendedAggregatedSchoolDTO postSchool(WebRequest request, @Valid @RequestBody CreateSchoolDTO dto) {
         User user = this.userService.getUserByRequest(request);
 
         this.schoolService.createSchool(dto, user);
 
-        return this.schoolService.getSchoolByName(dto.getName()).get();
+        return this.schoolService.getSchoolAggregatedInformation(
+                this.schoolService.getSchoolByName(dto.getName()).get().getId(), user);
+    }
+
+    @PutMapping("/{id}")
+    public ExtendedAggregatedSchoolDTO updateSchool(WebRequest request, @PathVariable long id, @Valid @RequestBody UpdateSchoolDTO dto) {
+        User user = this.userService.getUserByRequest(request);
+        School school = this.schoolService.updateSchool(id, dto, user);
+        return this.schoolService.getSchoolAggregatedInformation(school);
     }
 
     @GetMapping
@@ -42,17 +51,10 @@ public class SchoolController {
     }
 
     @GetMapping("/{id}")
-    public ExtendedAggregatedSchoolDTO getSchool(WebRequest request, @PathVariable String id) {
-        long idLong;
-
-        try {
-            idLong = Long.parseLong(id);
-        } catch (Exception ex) {
-            throw new DataFormatException("Invalid school id");
-        }
-
+    public ExtendedAggregatedSchoolDTO getSchool(WebRequest request, @PathVariable long id) {
         User user = this.userService.getUserByRequest(request);
+        this.schoolService.ensureTeacher(id, user);
 
-        return this.schoolService.getSchoolAggregatedInformation(idLong, user);
+        return this.schoolService.getSchoolAggregatedInformation(id, user);
     }
 }

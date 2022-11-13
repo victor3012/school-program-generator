@@ -25,6 +25,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ApiError getError(HttpStatus status, RuntimeException ex) {
+        ex.printStackTrace();
         return new ApiError(status, ex.getMessage(), ex);
     }
 }
