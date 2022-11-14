@@ -1,5 +1,6 @@
 package me.victor.api.rest.authentication;
 
+import me.victor.data.dto.user.AuthenticationResponseDTO;
 import me.victor.exceptions.BadCredentialsException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,12 +26,14 @@ public class JwtAuthenticationController {
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) {
         authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
 
-        final UserDetails userDetails = userDetailsService
+        final UserDetails userDetails = this.userDetailsService
                 .loadUserByUsername(authenticationRequest.getEmail());
 
         final String token = jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new JwtResponse(token));
+        return ResponseEntity.ok(this.userDetailsService
+                .getUserDetailsByEmail(authenticationRequest.getEmail())
+                .setToken(token));
     }
 
     private void authenticate(String username, String password) {
