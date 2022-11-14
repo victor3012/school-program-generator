@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class AuthenticationResponseDTO implements Serializable {
     private static final long serialVersionUID = -8091879091924046844L;
-    private String token;
+    private String accessToken;
     private String firstName;
     private String lastName;
     private String email;
@@ -14,11 +14,11 @@ public class AuthenticationResponseDTO implements Serializable {
     }
 
     public String getToken() {
-        return token;
+        return accessToken;
     }
 
-    public AuthenticationResponseDTO setToken(String jwtToken) {
-        this.token = jwtToken;
+    public AuthenticationResponseDTO setToken(String accessToken) {
+        this.accessToken = accessToken;
         return this;
     }
 

@@ -63,7 +63,7 @@ public class AuthenticationController {
 
     @GetMapping(value = "/api/login/persistent")
     public AuthenticationResponseDTO persistentLogin(WebRequest request) {
-        String token = request.getHeader("accessToken");
+        String token = request.getHeader("X-Authorization");
         String email = this.jwtTokenUtil.getEmailFromToken(token);
         UserDetails details = this.userDetailsService.loadUserByUsername(email);
         token = this.jwtTokenUtil.generateToken(details);
