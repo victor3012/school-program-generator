@@ -22,8 +22,11 @@ public class UserService {
     }
 
     public void createUser(CreateUserDTO dto) {
-        this.userRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new IllegalStateException("An account with this email already exists"));
+        Optional<User> requested = this.userRepository.findByEmail(dto.getEmail());
+
+        if (requested.isPresent()) {
+            throw new IllegalStateException("An account with this email already exists");
+        }
 
         User user = new User()
                 .setFirstName(dto.getFirstName())

@@ -3,6 +3,7 @@ package me.victor.api.rest.authentication;
 import java.util.ArrayList;
 
 import me.victor.data.dto.user.AuthenticationResponseDTO;
+import me.victor.data.dto.user.CreateUserDTO;
 import me.victor.exceptions.BadCredentialsException;
 import me.victor.services.UserService;
 import org.springframework.security.core.userdetails.User;
@@ -28,6 +29,10 @@ public class JwtUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
 
         return new User(user.getEmail(), encoder.encode(user.getPassword()), new ArrayList<>());
+    }
+
+    public UserDetails newUser(CreateUserDTO dto) {
+        return new User(dto.getEmail(), encoder.encode(dto.getPassword()), new ArrayList<>());
     }
 
     public AuthenticationResponseDTO getUserDetailsByEmail(String email) {
