@@ -1,6 +1,6 @@
-import { Link } from "@react-navigation/native";
+import { Link, useLinkTo } from "@react-navigation/native";
 import { Text, View } from "react-native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Form from "../../components/Form";
 import Input from "../../components/Input";
@@ -10,8 +10,12 @@ import validators from './validators.js';
 import authStyles from "./authStyles.js";
 import globalStyles from "../../styles/globalStyles";
 import { getFormStatus } from "../../services/util";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function Login({ updateInputStatus }) {
+    const linkTo = useLinkTo();
+    const { login } = useContext(AuthContext);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordShown, setPasswordShown] = useState(false);
@@ -21,11 +25,14 @@ export default function Login({ updateInputStatus }) {
         password: 0
     });
 
-    const loginHandler = () => {
+    const loginHandler = async () => {
         try {
             validators.email(email);
             validators.password(password);
-            alert('Successful login!');
+
+            await login({ email, password });
+
+            linkTo('/');
         } catch (err) {
             alert(err);
         }

@@ -1,6 +1,9 @@
-import { Link } from "@react-navigation/native";
+import { Link, useLinkTo } from "@react-navigation/native";
 import { Text, View } from "react-native";
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
+
+import { AuthContext } from "../../contexts/AuthContext";
+import { getFormStatus } from "../../services/util";
 
 import Form from "../../components/Form";
 import Input from "../../components/Input";
@@ -9,9 +12,12 @@ import EyeIconButton from "../../components/Auth/EyeIconButton";
 import validators from "./validators.js";
 import authStyles from "./authStyles.js";
 import globalStyles from "../../styles/globalStyles";
-import { getFormStatus } from "../../services/util";
 
 export default function SignUp({ updateInputStatus }) {
+    const linkTo = useLinkTo();
+
+    const { register } = useContext(AuthContext);
+
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -28,7 +34,7 @@ export default function SignUp({ updateInputStatus }) {
         lastName: 0,
     });
 
-    const signUpHandler = () => {
+    const signUpHandler = async () => {
         try {
             validators.name(firstName);
             validators.name(lastName);
@@ -36,7 +42,9 @@ export default function SignUp({ updateInputStatus }) {
             validators.password(password);
             validators.repass(password)(repass);
 
-            alert('Successful registration!');
+            await register({ firstName, lastName, email, password });
+
+            linkTo('/');
         } catch (err) {
             alert(err);
         }

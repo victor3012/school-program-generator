@@ -10,11 +10,6 @@ import SignUp from "./SignUp";
 
 const Tab = createBottomTabNavigator();
 
-const options = {
-    headerShown: false,
-    tabBarLabelStyle: { fontSize: styleVar.mediumFontSize }
-}
-
 export default function Auth() {
     const LoginComponent = useCallback((args) => {
         return <Login {...args} updateInputStatus={updateInputStatus} />
@@ -39,14 +34,15 @@ export default function Auth() {
     }
 
     return (
-        <Tab.Navigator>
+        <Tab.Navigator screenOptions={{
+            headerShown: false,
+            tabBarLabelStyle: { fontSize: styleVar.mediumFontSize }
+        }}>
             <Tab.Screen options={{
-                ...options,
                 tabBarIcon: () => <Icon name='login' size={styleVar.mediumIconSize} />,
                 tabBarActiveTintColor: styleVar.blue
             }} name="Login" component={LoginComponent} />
             <Tab.Screen options={{
-                ...options,
                 tabBarLabel: 'Sign Up',
                 tabBarIcon: () => <Icon name='adduser' size={styleVar.mediumIconSize} />
             }} name="SignUp" component={SignUpComponent} />
