@@ -44,7 +44,7 @@ public class AuthenticationController {
 
         return this.userDetailsService
                 .getUserDetailsByEmail(dto.getEmail())
-                .setToken(token);
+                .setAccessToken(token);
     }
 
     @PostMapping(value = "/api/login")
@@ -58,7 +58,7 @@ public class AuthenticationController {
 
         return this.userDetailsService
                 .getUserDetailsByEmail(authenticationRequest.getEmail())
-                .setToken(token);
+                .setAccessToken(token);
     }
 
     @GetMapping(value = "/api/login/persistent")
@@ -69,7 +69,7 @@ public class AuthenticationController {
         token = this.jwtTokenUtil.generateToken(details);
 
         return this.userDetailsService.getUserDetailsByEmail(email)
-                .setToken(token);
+                .setAccessToken(token);
     }
 
     private void authenticate(String username, String password) {

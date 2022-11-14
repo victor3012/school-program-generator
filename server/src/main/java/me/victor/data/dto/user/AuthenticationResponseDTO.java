@@ -13,11 +13,11 @@ public class AuthenticationResponseDTO implements Serializable {
         return serialVersionUID;
     }
 
-    public String getToken() {
+    public String getAccessToken() {
         return accessToken;
     }
 
-    public AuthenticationResponseDTO setToken(String accessToken) {
+    public AuthenticationResponseDTO setAccessToken(String accessToken) {
         this.accessToken = accessToken;
         return this;
     }
