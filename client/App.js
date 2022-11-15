@@ -15,6 +15,7 @@ import styleVar from './src/styles/styleVar';
 import authStyles from './src/screens/Auth/authStyles';
 import OpacityButton from './src/components/OpacityButton';
 import ProfileOverview from './src/components/ProfileOverview';
+import ErrorBoundary from './src/ErrorBoundary';
 
 const Drawer = createDrawerNavigator();
 
@@ -52,11 +53,13 @@ const linking = {
 // Reanimated 2 causes unexpected errors, bugs --> <Drawer.Navigator useLegacyImplementation={true}>
 export default function App() {
   return (
-    <AuthProvider>
-      <View style={styles.container}>
-        <DrawerNavigation />
-      </View >
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <View style={styles.container}>
+          <DrawerNavigation />
+        </View >
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 
