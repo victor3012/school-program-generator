@@ -15,7 +15,6 @@ export function AuthProvider({ children }) {
                 setUser(res);
             } catch (err) {
                 setUser(null);
-                throw err;
             }
         })()
     }, []);
@@ -42,17 +41,12 @@ export function AuthProvider({ children }) {
         await service.logout();
     }
 
-    const isAdmin = () => {
-        //TODO
-    }
-
     return (
         <AuthContext.Provider value={{
             user,
             login, register, logout,
             isAuth: Boolean(user?.[ACCESS_TOKEN]),
             authLoaded: (user !== undefined),
-            isAdmin
         }}>
             {children}
         </AuthContext.Provider>

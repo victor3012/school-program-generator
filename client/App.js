@@ -14,6 +14,7 @@ import HomeStack from './src/screens/Home/Home';
 import styleVar from './src/styles/styleVar';
 import authStyles from './src/screens/Auth/authStyles';
 import OpacityButton from './src/components/OpacityButton';
+import ProfileOverview from './src/components/ProfileOverview';
 
 const Drawer = createDrawerNavigator();
 
@@ -82,17 +83,19 @@ function DrawerNavigation() {
                 headerTitle: 'Schools',
               })} />
 
-            <Drawer.Screen options={({ route }) => ({
-              drawerIcon: ({ focused }) => <AntDesignIcon
-                name='user'
-                size={styleVar.mediumIconSize}
-                color={focused ? styleVar.blue : styleVar.gray} />,
-              drawerLabel: 'Profile',
-              headerStyle: { backgroundColor: styleVar.blue },
-              headerTitleStyle: { color: styleVar.white },
-              headerTintColor: styleVar.white,
-              headerTitle: routeToTitle[getFocusedRouteNameFromRoute(route)] || getFocusedRouteNameFromRoute(route) || routeToTitle.Login
-            })} name="Auth" component={Auth} />
+            {authContext.isAuth ||
+              <Drawer.Screen options={({ route }) => ({
+                drawerIcon: ({ focused }) => <AntDesignIcon
+                  name='user'
+                  size={styleVar.mediumIconSize}
+                  color={focused ? styleVar.blue : styleVar.gray} />,
+                drawerLabel: 'Profile',
+                headerStyle: { backgroundColor: styleVar.blue },
+                headerTitleStyle: { color: styleVar.white },
+                headerTintColor: styleVar.white,
+                headerTitle: routeToTitle[getFocusedRouteNameFromRoute(route)] || getFocusedRouteNameFromRoute(route) || routeToTitle.Login
+              })} name="Auth" component={Auth} />
+            }
           </>
           :
           <Drawer.Screen name='Loading...' component={Loader} />
@@ -112,7 +115,14 @@ function CustomDrawer({ authContext, ...props }) {
   }
 
   return (
-    <DrawerContentScrollView>
+    <DrawerContentScrollView contentContainerStyle={[
+      { height: '100%' },
+      isAuth && { paddingTop: 0 }
+    ]}>
+      {isAuth &&
+        <ProfileOverview user={authContext.user} />
+      }
+
       <DrawerItemList {...props} />
 
       {isAuth &&
@@ -123,7 +133,7 @@ function CustomDrawer({ authContext, ...props }) {
             margin: 0,
             backgroundColor: styleVar.white,
             width: '100%',
-            position: 'fixed',
+            position: 'absolute',
             bottom: 0,
             borderTopWidth: 1,
             borderTopColor: styleVar.blueShadow
@@ -135,7 +145,6 @@ function CustomDrawer({ authContext, ...props }) {
     </DrawerContentScrollView>
   )
 }
-
 
 function Loader() {
   return <ActivityIndicator size='large' style={{ height: 0.8 * Dimensions.get('window').height }} color={styleVar.darkBlue} />
