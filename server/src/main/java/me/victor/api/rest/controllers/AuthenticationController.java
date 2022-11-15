@@ -7,17 +7,14 @@ import me.victor.data.dto.user.AuthenticationResponseDTO;
 import me.victor.data.dto.user.CreateUserDTO;
 import me.victor.exceptions.BadCredentialsException;
 import me.victor.services.UserService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 
 @RestController
 @CrossOrigin

@@ -1,7 +1,5 @@
 package me.victor.api.rest.authentication;
 
-import java.util.ArrayList;
-
 import me.victor.data.dto.user.AuthenticationResponseDTO;
 import me.victor.data.dto.user.CreateUserDTO;
 import me.victor.exceptions.BadCredentialsException;
@@ -13,6 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {

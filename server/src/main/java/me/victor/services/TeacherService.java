@@ -2,7 +2,6 @@ package me.victor.services;
 
 import me.victor.data.dao.TeacherRepository;
 import me.victor.data.entities.Teacher;
-import me.victor.data.entities.TeacherRole;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

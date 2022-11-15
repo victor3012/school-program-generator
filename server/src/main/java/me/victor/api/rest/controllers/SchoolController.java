@@ -6,7 +6,6 @@ import me.victor.data.dto.school.ExtendedAggregatedSchoolDTO;
 import me.victor.data.dto.school.UpdateSchoolDTO;
 import me.victor.data.entities.School;
 import me.victor.data.entities.User;
-import me.victor.exceptions.DataFormatException;
 import me.victor.services.SchoolService;
 import me.victor.services.UserService;
 import org.springframework.web.bind.annotation.*;
