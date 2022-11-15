@@ -13,13 +13,11 @@ import me.victor.data.entities.User;
 import me.victor.exceptions.DataFormatException;
 import me.victor.exceptions.InsufficientPermissionsException;
 import me.victor.exceptions.ResourceNotFoundException;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

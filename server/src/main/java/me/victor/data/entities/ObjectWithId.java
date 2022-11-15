@@ -1,6 +1,5 @@
 package me.victor.data.entities;
 
-import javax.annotation.Generated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;

@@ -2,7 +2,6 @@ package me.victor.services;
 
 import me.victor.data.dao.RoomRepository;
 import me.victor.data.entities.Room;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
