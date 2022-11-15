@@ -39,9 +39,6 @@ public class JwtUserDetailsService implements UserDetailsService {
         me.victor.data.entities.User account = userService.getByEmail(email)
                 .orElseThrow(() -> new BadCredentialsException("Invalid account"));
 
-        return new AuthenticationResponseDTO()
-                .setEmail(account.getEmail())
-                .setFirstName(account.getFirstName())
-                .setLastName(account.getLastName());
+        return new AuthenticationResponseDTO(account);
     }
 }
