@@ -12,10 +12,10 @@ import { AuthContext, AuthProvider } from './src/contexts/AuthContext';
 import Auth from './src/screens/Auth/Auth';
 import HomeStack from './src/screens/Home/Home';
 import styleVar from './src/styles/styleVar';
-import authStyles from './src/screens/Auth/authStyles';
 import OpacityButton from './src/components/OpacityButton';
 import ProfileOverview from './src/components/ProfileOverview';
 import ErrorBoundary from './src/components/ErrorBoundary';
+import Loader from './src/components/Loader';
 
 const Drawer = createDrawerNavigator();
 
@@ -149,9 +149,6 @@ function CustomDrawer({ authContext, ...props }) {
   )
 }
 
-function Loader() {
-  return <ActivityIndicator size='large' style={{ height: 0.8 * Dimensions.get('window').height }} color={styleVar.darkBlue} />
-}
 
 const styles = StyleSheet.create({
   container: {

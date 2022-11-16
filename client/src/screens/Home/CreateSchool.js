@@ -1,18 +1,19 @@
 import { useContext, useState } from "react";
 import { StyleSheet, View } from 'react-native';
+import { useLinkTo } from "@react-navigation/native";
 
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
+import { AuthContext } from "../../contexts/AuthContext";
 import Input from "../../components/Input";
 import PressableBox from "../../components/PressableBox";
-import styleVar from '../../styles/styleVar';
-
-import { AuthContext } from "../../contexts/AuthContext";
-import { required, maxLength } from "../../services/validators";
-import { FORM_STATUS, getFormStatus } from "../../services/util";
-import { createSchool } from "../../services/schools";
-import { useLinkTo } from "@react-navigation/native";
 import ResponsiveModal from "../../components/ResponsiveModal";
+
+import { required, maxLength } from "../../services/validators";
+import { FORM_STATUS } from "../../services/util";
+import { createSchool } from "../../services/schools";
+
+import styleVar from '../../styles/styleVar';
 
 const ACCESS_ERROR_MSG = "Your account has not been granted permission to create schools";
 

@@ -3,21 +3,19 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import WelcomePage from "../Home/WelcomePage";
-import { isAdmin } from '../../mockdata';
 import styleVar from "../../styles/styleVar";
 import globalStyles from "../../styles/globalStyles";
 import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect, useLinkTo } from "@react-navigation/native";
-import { get } from "../../services/api";
 import { getSchoolById } from "../../services/schools";
 import OpacityButton from "../../components/OpacityButton";
+import Loader from "../../components/Loader";
 
 const Tab = createBottomTabNavigator();
 
 export default function SchoolStack({ route, navigation }) {
     const linkTo = useLinkTo();
-    const [school, setSchool] = useState({});
+    const [school, setSchool] = useState(null);
 
     useEffect(() => {
         navigation.getParent().setOptions({ headerRight: AllSchoolsButton })
@@ -31,7 +29,7 @@ export default function SchoolStack({ route, navigation }) {
                 const res = await getSchoolById(route.params.id);
                 setSchool(res);
             } catch {
-                setSchool({});
+                setSchool(null);
                 linkTo('/schools');
             }
         })()
@@ -60,70 +58,82 @@ export default function SchoolStack({ route, navigation }) {
 
     return (
         <Tab.Navigator screenOptions={{ headerShown: false }}>
-            <Tab.Screen
-                name="Teachers"
-                options={{
-                    tabBarIcon: ({ focused }) => <FontAwesomeIcon name="chalkboard-teacher"
-                        size={styleVar.mediumIconSize}
-                        color={focused ? styleVar.blue : styleVar.gray} />,
-                    tabBarItemStyle: {
-                        flex: 1
-                    }
-                }}
-                initialParams={{ id: route.params.id }}
-                component={Teachers} />
-            <Tab.Screen
-                name="Rooms"
-                options={{
-                    tabBarIcon: ({ focused }) => <MaterialCommunityIcon name="google-classroom"
-                        size={styleVar.mediumIconSize}
-                        color={focused ? styleVar.blue : styleVar.gray} />,
-                    tabBarItemStyle: {
-                        flex: 1,
-                    }
-                }}
-                initialParams={{ id: route.params.id }}
-                component={Rooms} />
-            <Tab.Screen
-                name="SchoolInfo"
-                options={{
-                    tabBarLabel: 'School',
-                    tabBarIcon: ({ focused }) => <FontAwesomeIcon name="school"
-                        size={styleVar.mediumIconSize}
-                        color={focused ? styleVar.blue : styleVar.gray} />,
-                    tabBarItemStyle: {
-                        flex: 1.5
-                    },
+            {school !== null
+                ?
+                <>
+                    <Tab.Screen
+                        name="Teachers"
+                        options={{
+                            tabBarIcon: ({ focused }) => <FontAwesomeIcon name="chalkboard-teacher"
+                                size={styleVar.mediumIconSize}
+                                color={focused ? styleVar.blue : styleVar.gray} />,
+                            tabBarItemStyle: {
+                                flex: 1
+                            }
+                        }}
+                        initialParams={{ id: route.params.id }}
+                        component={Teachers} />
+                    <Tab.Screen
+                        name="Rooms"
+                        options={{
+                            tabBarIcon: ({ focused }) => <MaterialCommunityIcon name="google-classroom"
+                                size={styleVar.mediumIconSize}
+                                color={focused ? styleVar.blue : styleVar.gray} />,
+                            tabBarItemStyle: {
+                                flex: 1,
+                            }
+                        }}
+                        initialParams={{ id: route.params.id }}
+                        component={Rooms} />
+                    <Tab.Screen
+                        name="SchoolInfo"
+                        options={{
+                            tabBarLabel: 'School',
+                            tabBarIcon: ({ focused }) => <FontAwesomeIcon name="school"
+                                size={styleVar.mediumIconSize}
+                                color={focused ? styleVar.blue : styleVar.gray} />,
+                            tabBarItemStyle: {
+                                flex: 1.5
+                            },
+                            tabBarLabelStyle: {
+                                fontSize: styleVar.mediumFontSize
+                            }
+                        }}
+                        initialParams={{ id: route.params.id }}
+                        component={SchoolComponent} />
+                    <Tab.Screen
+                        name="Subjects"
+                        options={{
+                            tabBarIcon: ({ focused }) => <FontAwesomeIcon name="book"
+                                size={styleVar.mediumIconSize}
+                                color={focused ? styleVar.blue : styleVar.gray} />,
+                            tabBarItemStyle: {
+                                flex: 1,
+                            }
+                        }}
+                        initialParams={{ id: route.params.id }}
+                        component={Subjects} />
+                    <Tab.Screen
+                        name="Requests"
+                        options={{
+                            tabBarIcon: ({ focused }) => <MaterialCommunityIcon name="order-bool-descending-variant"
+                                size={styleVar.mediumIconSize}
+                                color={focused ? styleVar.blue : styleVar.gray} />,
+                            tabBarItemStyle: {
+                                flex: 1
+                            }
+                        }}
+                        initialParams={{ id: route.params.id }}
+                        component={Requests} />
+                </>
+                :
+                <Tab.Screen name="Loading..." options={{
+                    tabBarIconStyle: { display: 'none' },
                     tabBarLabelStyle: {
                         fontSize: styleVar.mediumFontSize
                     }
-                }}
-                initialParams={{ id: route.params.id }}
-                component={SchoolComponent} />
-            <Tab.Screen
-                name="Subjects"
-                options={{
-                    tabBarIcon: ({ focused }) => <FontAwesomeIcon name="book"
-                        size={styleVar.mediumIconSize}
-                        color={focused ? styleVar.blue : styleVar.gray} />,
-                    tabBarItemStyle: {
-                        flex: 1,
-                    }
-                }}
-                initialParams={{ id: route.params.id }}
-                component={Subjects} />
-            <Tab.Screen
-                name="Requests"
-                options={{
-                    tabBarIcon: ({ focused }) => <MaterialCommunityIcon name="order-bool-descending-variant"
-                        size={styleVar.mediumIconSize}
-                        color={focused ? styleVar.blue : styleVar.gray} />,
-                    tabBarItemStyle: {
-                        flex: 1
-                    }
-                }}
-                initialParams={{ id: route.params.id }}
-                component={Requests} />
+                }} component={Loader} />
+            }
         </Tab.Navigator>
     )
 }
