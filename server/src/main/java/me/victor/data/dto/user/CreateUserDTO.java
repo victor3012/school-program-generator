@@ -1,18 +1,15 @@
 package me.victor.data.dto.user;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class CreateUserDTO {
-    @NotNull(message = "First name should be at least 3 symbols long")
-    @Size(min = 3, message = "First name should be at least 3 symbols long")
+    @NotNull(message = "First name must not be empty")
+    @NotEmpty(message = "First name must not be empty")
     @Size(max = 255, message = "First name should be less than 255 symbols")
     private String firstName;
 
-    @NotNull(message = "Lst name should be at least 3 symbols long")
-    @Size(min = 3, message = "Last name should be at least 3 symbols long")
+    @NotNull(message = "Last name must not be empty")
+    @NotEmpty(message = "Last name must not be empty")
     @Size(max = 255, message = "Last name should be less than 255 symbols")
     private String lastName;
 

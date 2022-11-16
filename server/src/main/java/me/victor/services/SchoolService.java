@@ -37,6 +37,10 @@ public class SchoolService {
         this.userRepository = userRepository;
     }
 
+    public Optional<School> getSchool(long id) {
+        return this.schoolRepository.findById(id);
+    }
+
     public void createSchool(CreateSchoolDTO dto, User user) {
         String name = dto.getName();
 
@@ -113,11 +117,15 @@ public class SchoolService {
     }
 
     public void ensureDirector(long schoolId, User user, String message) {
-        List<TeacherRole> roles = getRoles(schoolId, user);
+        ensurePower(schoolId, user, message, TeacherRole.DIRECTOR);
+    }
 
-        if (!roles.contains(TeacherRole.DIRECTOR)) {
-            throw new InsufficientPermissionsException(message);
-        }
+    public void ensureSystemAdministrator(long schoolId, User user) {
+        ensureSystemAdministrator(schoolId, user, "Only system administrators can access this");
+    }
+
+    public void ensureSystemAdministrator(long schoolId, User user, String message) {
+        ensurePower(schoolId, user, message, TeacherRole.SYSTEM_ADMINISTRATOR);
     }
 
     public void ensureTeacher(long schoolId, User user) {
@@ -125,9 +133,13 @@ public class SchoolService {
     }
 
     public void ensureTeacher(long schoolId, User user, String message) {
+        ensurePower(schoolId, user, message, TeacherRole.TEACHER);
+    }
+
+    public void ensurePower(long schoolId, User user, String message, TeacherRole role) {
         List<TeacherRole> roles = getRoles(schoolId, user);
 
-        if (getHighestRolePower(roles) >= TeacherRole.TEACHER.getPower()) {
+        if (getHighestRolePower(roles) < role.getPower()) {
             throw new InsufficientPermissionsException(message);
         }
     }
