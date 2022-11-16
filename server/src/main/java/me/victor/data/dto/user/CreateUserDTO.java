@@ -1,9 +1,30 @@
 package me.victor.data.dto.user;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class CreateUserDTO {
+    @NotNull(message = "First name should be at least 3 symbols long")
+    @Size(min = 3, message = "First name should be at least 3 symbols long")
+    @Size(max = 255, message = "First name should be less than 255 symbols")
     private String firstName;
+
+    @NotNull(message = "Lst name should be at least 3 symbols long")
+    @Size(min = 3, message = "Last name should be at least 3 symbols long")
+    @Size(max = 255, message = "Last name should be less than 255 symbols")
     private String lastName;
+
+    @NotNull(message = "Email format is invalid")
+    @Email(message = "Email format is invalid")
     private String email;
+
+    @NotNull(message = "Password should be at least 6 symbols")
+    @Size(min = 6, message = "Password should be at least 6 symbols")
+    @Size(max = 50, message = "Password can be up to 50 symbols")
+    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[._\\-!\"`'#%&,:;<>=@{}~$()*+/\\\\?\\[\\]^|])([\\s]{0})[\\w\\d._\\-!\"`'#%&,:;<>=@{}~$()*+/\\\\?\\[\\]^|]+",
+            message = "Password must consist of at least 1 small letter, 1 capital letter, a digit, and a special character")
     private String password;
 
     public String getFirstName() {

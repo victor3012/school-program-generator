@@ -46,12 +46,27 @@ public class ApiError {
         return status;
     }
 
+    public ApiError setStatus(HttpStatus status) {
+        this.status = status;
+        return this;
+    }
+
     public String getMessage() {
         return message;
     }
 
+    public ApiError setMessage(String message) {
+        this.message = message;
+        return this;
+    }
+
     public String getDebugMessage() {
         return debugMessage;
+    }
+
+    public ApiError setDebugMessage(String debugMessage) {
+        this.debugMessage = debugMessage;
+        return this;
     }
 
     public LocalDateTime getTimestamp() {

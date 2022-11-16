@@ -52,7 +52,7 @@ public class SchoolService {
                 .setFirstName(user.getFirstName())
                 .setLastName(user.getLastName())
                 .setEmail(user.getEmail())
-                .setTeacherRoles(List.of(TeacherRole.DIRECTOR, TeacherRole.SYSTEM_ADMINISTRATOR));
+                .setTeacherRoles(List.of(TeacherRole.DIRECTOR));
 
         teacher.setSchool(school);
 
@@ -127,7 +127,7 @@ public class SchoolService {
     public void ensureTeacher(long schoolId, User user, String message) {
         List<TeacherRole> roles = getRoles(schoolId, user);
 
-        if (!roles.contains(TeacherRole.DIRECTOR)) {
+        if (getHighestRolePower(roles) >= TeacherRole.TEACHER.getPower()) {
             throw new InsufficientPermissionsException(message);
         }
     }
@@ -177,5 +177,17 @@ public class SchoolService {
         this.teacherService.saveAll(school.getTeachers());
 
         return school;
+    }
+
+    private int getHighestRolePower(List<TeacherRole> roles) {
+        int power = 0;
+
+        for (TeacherRole role : roles) {
+            if (power < role.getPower()) {
+                power = role.getPower();
+            }
+        }
+
+        return power;
     }
 }

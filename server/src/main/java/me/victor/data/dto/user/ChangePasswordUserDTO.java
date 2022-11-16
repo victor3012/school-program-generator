@@ -1,8 +1,18 @@
 package me.victor.data.dto.user;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class ChangePasswordUserDTO {
     private long id;
     private String currentPassword;
+
+    @NotNull(message = "Password should be at least 6 symbols")
+    @Size(min = 6, message = "Password should be at least 6 symbols")
+    @Size(max = 50, message = "Password can be up to 50 symbols")
+    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[._\\-!\"`'#%&,:;<>=@{}~$()*+/\\\\?\\[\\]^|])([\\s]{0})[\\w\\d._\\-!\"`'#%&,:;<>=@{}~$()*+/\\\\?\\[\\]^|]+",
+            message = "Password must consist of at least 1 small letter, 1 capital letter, a digit, and a special character")
     private String newPassword;
 
     public long getId() {
