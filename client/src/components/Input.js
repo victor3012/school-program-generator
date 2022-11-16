@@ -19,6 +19,7 @@ export default function Input(
         onError,
         onErrorResolve,
         required = false,
+        showError = true,
         ...args
     }
 ) {
@@ -173,7 +174,7 @@ export default function Input(
                 value={value}
                 {...args} />
             {
-                (error) &&
+                showError && error &&
                 <View style={styles.textContainer}>
                     <Text style={{ ...styles.text, color: styleVar.red }}>
                         {error}

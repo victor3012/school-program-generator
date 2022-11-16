@@ -1,85 +1,98 @@
-import { useState } from "react";
-import { StyleSheet, Text, View, Image, Modal } from 'react-native';
+import { useContext, useState } from "react";
+import { StyleSheet, View } from 'react-native';
 
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
-import Form from "../../components/Form";
 import Input from "../../components/Input";
-import OpacityButton from '../../components/OpacityButton';
 import PressableBox from "../../components/PressableBox";
-import globalStyles from '../../styles/globalStyles';
 import styleVar from '../../styles/styleVar';
 
+import { AuthContext } from "../../contexts/AuthContext";
 import { required, maxLength } from "../../services/validators";
-import { getFormStatus } from "../../services/util";
+import { FORM_STATUS, getFormStatus } from "../../services/util";
+import { createSchool } from "../../services/schools";
+import { useLinkTo } from "@react-navigation/native";
+import ResponsiveModal from "../../components/ResponsiveModal";
 
+const ACCESS_ERROR_MSG = "Your account has not been granted permission to create schools";
 
 const validateSchoolName = (value) => {
     required(value, 'School name is required');
     maxLength(value);
 }
 
-export default function CreateSchool({ isAdmin }) {
+export default function CreateSchool() {
+    const { user } = useContext(AuthContext);
+
+    const linkTo = useLinkTo();
+
     const [visible, setVisible] = useState(false);
     const [schoolName, setSchoolName] = useState('');
     const [status, setStatus] = useState(0);
 
-    const createSchoolButtonHandler = () => {
-        if (!isAdmin) {
-            alert("Your account has not been granted permission to create schools");
+    const openCreateButtonHandler = () => {
+        if (!user.admin) {
+            alert(ACCESS_ERROR_MSG);
             return;
         }
 
         setVisible(true);
     }
 
+    const submitHandler = async () => {
+        if (!user.admin) {
+            throw new Error(ACCESS_ERROR_MSG);
+        }
+
+        const newSN = schoolName.trim();
+        setSchoolName(newSN);
+
+        validateSchoolName(newSN);
+
+        const school = await createSchool(newSN);
+
+        return school.id;
+    }
+
+    const successHandler = (schoolId) => {
+        linkTo(`/schools/${schoolId}`);
+    }
+
+    const errorHandler = (error) => {
+        alert(error.message);
+    }
+
+    const resetHandler = () => {
+        setSchoolName('');
+    }
+
 
     return (
         <View>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={visible}>
-                <View style={styles.modal}>
-                    <Form inputStatuses={{ status }} style={{paddingTop: 20}}>
-                        <Text style={[globalStyles.text, styles.title]}>
-                            Create new school
-                        </Text>
+            <ResponsiveModal title='Create new school'
+                visible={visible} setVisible={setVisible}
+                onSubmit={submitHandler}
+                onFulfill={successHandler}
+                onError={errorHandler}
+                onReset={resetHandler}
+                inputStatuses={{ status }}
+            >
+                <Input label='School name'
+                    showError={false}
+                    required
+                    value={schoolName}
+                    validator={validateSchoolName}
+                    onChange={(value) => setSchoolName(value)}
+                    onError={() => setStatus(FORM_STATUS.INVALID)}
+                    onErrorResolve={() => setStatus(FORM_STATUS.VALID)}
+                />
+            </ResponsiveModal>
 
-                        <Input label='School name'
-                            required
-                            validator={validateSchoolName}
-                            onChange={(value) => setSchoolName(value)}
-                            onError={() => setStatus(2)}
-                            onErrorResolve={() => setStatus(1)} />
-
-
-                        <View style={styles.buttonsContainer}>
-                            <OpacityButton onPress={() => setVisible(false)}
-                                style={{ marginBottom: 0 }}
-                                disabled={getFormStatus({ status }) != 1}>
-                                Submit
-                            </OpacityButton>
-
-                            <OpacityButton onPress={() => setVisible(false)}
-                                style={{
-                                    marginBottom: 0,
-                                    backgroundColor: styleVar.white
-                                }}
-                                textStyle={{ color: styleVar.blue }}>
-                                Cancel
-                            </OpacityButton>
-                        </View>
-
-                    </Form>
-                </View>
-            </Modal >
-
-            <PressableBox onPress={createSchoolButtonHandler}
+            <PressableBox onPress={openCreateButtonHandler}
                 style={{ padding: 0 }}>
                 <AntDesignIcon name="plus"
                     size={65}
-                    color={isAdmin ? styleVar.blue : styleVar.gray} />
+                    color={user.admin ? styleVar.blue : styleVar.gray} />
             </PressableBox>
         </View >
     );

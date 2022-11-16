@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { getFormStatus } from "../services/util";
+import { getFormStatus, FORM_STATUS } from "../services/util";
 import globalStyles from "../styles/globalStyles";
 import styleVar from "../styles/styleVar";
 
 const getContainerBorderTopColor = (formStatus) => {
-    if (formStatus == 2) {
+    if (formStatus == FORM_STATUS.INVALID) {
         return styleVar.red;
     }
 
-    if (formStatus == 1) {
+    if (formStatus == FORM_STATUS.VALID) {
         return styleVar.blue;
     }
 
@@ -20,10 +20,10 @@ export default function Form({ children,
     style: customStyle,
     inputStatuses = {},
     ...args }) {
-    const [formStatus, setFormStatus] = useState(0); // 0 -> not filled in; 1 -> valid for submiting; 2 -> error
+    const [formStatus, setFormStatus] = useState(FORM_STATUS.DEFAULT); // 0 -> not filled in; 1 -> valid for submiting; 2 -> error
 
     useEffect(() => {
-        setFormStatus(getFormStatus(inputStatuses))
+        setFormStatus(getFormStatus(inputStatuses));
     }, [inputStatuses])
 
     return (

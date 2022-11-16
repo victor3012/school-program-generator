@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { get, post, HOST, ACCESS_TOKEN } from './api';
 
 export async function login({ email, password }) {
-    const response = await post(`${HOST}/api/login`, { email, password });
+    const response = await post(`${HOST}/login`, { email, password });
 
     await AsyncStorage.setItem(ACCESS_TOKEN, response[ACCESS_TOKEN]);
 
@@ -16,7 +16,7 @@ export async function persistentLogin() {
     }
 
     try {
-        const response = await get(`${HOST}/api/login/persistent`);
+        const response = await get(`${HOST}/login/persistent`);
 
         await AsyncStorage.setItem(ACCESS_TOKEN, response[ACCESS_TOKEN]);
 
@@ -31,7 +31,7 @@ export async function persistentLogin() {
 }
 
 export async function register({ firstName, lastName, email, password }) {
-    const response = await post(`${HOST}/api/register`, { firstName, lastName, email, password });
+    const response = await post(`${HOST}/register`, { firstName, lastName, email, password });
 
     await AsyncStorage.setItem(ACCESS_TOKEN, response[ACCESS_TOKEN]);
 
@@ -39,7 +39,7 @@ export async function register({ firstName, lastName, email, password }) {
 }
 
 export async function logout() {
-    // post(`${HOST}/api/logout`);
+    // post(`${HOST}/logout`);
 
     await AsyncStorage.removeItem(ACCESS_TOKEN);
 }
