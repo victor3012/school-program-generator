@@ -22,7 +22,7 @@ export async function persistentLogin() {
 
         return response;
     } catch (error) {
-        console.error(error);
+        console.error(error.message);
 
         await AsyncStorage.removeItem(ACCESS_TOKEN);
 

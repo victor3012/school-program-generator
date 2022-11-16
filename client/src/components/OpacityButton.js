@@ -12,7 +12,7 @@ export default function OpacityButton({
     ...props }) {
 
     return (
-        <TouchableOpacity hitSlop={10} hit
+        <TouchableOpacity hitSlop={10}
             style={[styles.button, additionalStyles, disabled ? { backgroundColor: 'grey' } : {}]}
             onPress={onPress}
             disabled={disabled}
