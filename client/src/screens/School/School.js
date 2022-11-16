@@ -8,18 +8,56 @@ import { isAdmin } from '../../mockdata';
 import styleVar from "../../styles/styleVar";
 import globalStyles from "../../styles/globalStyles";
 import { useCallback, useEffect, useState } from "react";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useLinkTo } from "@react-navigation/native";
 import { get } from "../../services/api";
+import { getSchoolById } from "../../services/schools";
+import OpacityButton from "../../components/OpacityButton";
 
 const Tab = createBottomTabNavigator();
 
-const school = {
-    name: 'PMG Valeri Lilov',
-    content: 'Welcome to the school of the chess master Valeri "The Tiger" Lilov!)'
-}
+export default function SchoolStack({ route, navigation }) {
+    const linkTo = useLinkTo();
+    const [school, setSchool] = useState({});
 
+    useEffect(() => {
+        navigation.getParent().setOptions({ headerRight: AllSchoolsButton })
 
-export default function SchoolStack({ route }) {
+        return () => navigation.getParent().setOptions({ headerRight: () => null })
+    }, [navigation])
+
+    useFocusEffect(useCallback(() => {
+        (async () => {
+            try {
+                const res = await getSchoolById(route.params.id);
+                setSchool(res);
+            } catch {
+                setSchool({});
+                linkTo('/schools');
+            }
+        })()
+    }, [route]))
+
+    const Teachers = (props) => <Component title='Teachers' school={school} {...props} />
+    const Rooms = (props) => <Component title='Rooms' school={school} {...props} />
+
+    const SchoolComponent = (props) => <School school={school} {...props} />
+
+    const Subjects = (props) => <Component title='Subjects' school={school} {...props} />
+    const Requests = (props) => <Component title='Requests' school={school} {...props} />
+
+    const AllSchoolsButton = () => {
+        return (
+            <OpacityButton
+                onPress={() => navigation.navigate('Home', { screen: 'Schools' })}
+                textStyle={{ color: styleVar.blue }}
+                style={{
+                    backgroundColor: styleVar.white
+                }}>
+                All Schools
+            </OpacityButton >
+        )
+    }
+
     return (
         <Tab.Navigator screenOptions={{ headerShown: false }}>
             <Tab.Screen
@@ -33,7 +71,7 @@ export default function SchoolStack({ route }) {
                     }
                 }}
                 initialParams={{ id: route.params.id }}
-                component={(props) => <Component {...props} title='Teachers' />} />
+                component={Teachers} />
             <Tab.Screen
                 name="Rooms"
                 options={{
@@ -45,11 +83,11 @@ export default function SchoolStack({ route }) {
                     }
                 }}
                 initialParams={{ id: route.params.id }}
-                component={(props) => <Component {...props} title='Rooms' />} />
+                component={Rooms} />
             <Tab.Screen
                 name="SchoolInfo"
                 options={{
-                    tabBarLabel: school.name,
+                    tabBarLabel: 'School',
                     tabBarIcon: ({ focused }) => <FontAwesomeIcon name="school"
                         size={styleVar.mediumIconSize}
                         color={focused ? styleVar.blue : styleVar.gray} />,
@@ -61,7 +99,7 @@ export default function SchoolStack({ route }) {
                     }
                 }}
                 initialParams={{ id: route.params.id }}
-                component={School} />
+                component={SchoolComponent} />
             <Tab.Screen
                 name="Subjects"
                 options={{
@@ -73,7 +111,7 @@ export default function SchoolStack({ route }) {
                     }
                 }}
                 initialParams={{ id: route.params.id }}
-                component={(props) => <Component {...props} title='Subjects' />} />
+                component={Subjects} />
             <Tab.Screen
                 name="Requests"
                 options={{
@@ -85,13 +123,12 @@ export default function SchoolStack({ route }) {
                     }
                 }}
                 initialParams={{ id: route.params.id }}
-                component={(props) => <Component {...props} title='Requests' />} />
+                component={Requests} />
         </Tab.Navigator>
     )
 }
 
-function School({ route, navigation }) {
-    const [content, setContent] = useState([]);
+function School({ route, navigation, school }) {
 
     useFocusEffect(useCallback(() => {
         navigation
@@ -100,20 +137,16 @@ function School({ route, navigation }) {
             .setOptions({ title: school.name, headerTitle: school.name })
     }, []))
 
-    useFocusEffect(useCallback(() => {
-        get("http://localhost:8083/api/schools")
-    }, []));
-
     return (
         <>
             <Text>
-                {school.content} {route.params?.id}
+                {school.name} {route.params?.id}
             </Text>
         </>
     )
 }
 
-function Component({ navigation, route, title }) {
+function Component({ navigation, route, title, school }) {
     useFocusEffect(useCallback(() => {
         navigation
             .getParent()
@@ -125,3 +158,4 @@ function Component({ navigation, route, title }) {
         <Text>{title} {route.params?.id}</Text>
     )
 }
+

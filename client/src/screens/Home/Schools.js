@@ -1,5 +1,5 @@
-import { useLinkTo } from "@react-navigation/native";
-import { Text, View, Pressable, StyleSheet, Platform } from "react-native";
+import { useFocusEffect, useLinkTo } from "@react-navigation/native";
+import { Text, View, StyleSheet, Platform } from "react-native";
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import Separator from "../../components/Separator";
@@ -7,12 +7,25 @@ import Separator from "../../components/Separator";
 import globalStyles from "../../styles/globalStyles";
 import styleVar from "../../styles/styleVar";
 
-import { schools, isAdmin, isAuth } from "../../mockdata";
 import PressableBox from "../../components/PressableBox";
 import CreateSchool from "./CreateSchool";
+import { useCallback, useState } from "react";
+import { getSchools } from "../../services/schools";
 
 export default function Schools() {
     const linkTo = useLinkTo();
+    const [schools, setSchools] = useState([]);
+
+    useFocusEffect(useCallback(() => {
+        (async () => {
+            try {
+                const res = await getSchools();
+                setSchools(res);
+            } catch (err) {
+                alert(err.message);
+            }
+        })()
+    }, []))
 
     return (
         <View>
@@ -22,7 +35,7 @@ export default function Schools() {
 
             <View style={styles.container}>
                 {schools.map(school =>
-                    <PressableBox key={school.id} onPress={() => linkTo({ screen: 'School', params: { id: school.id } })}>
+                    <PressableBox key={school.id} onPress={() => linkTo(`/schools/${school.id}`)}>
                         <>
                             <Text selectable={false} adjustsFontSizeToFit={true} style={[globalStyles.text, { textAlign: 'center' }]}>
                                 {school.name}
@@ -49,7 +62,7 @@ export default function Schools() {
                         </>
                     </PressableBox>
                 )}
-                <CreateSchool isAdmin={isAdmin} />
+                <CreateSchool />
             </View >
         </View>
     )

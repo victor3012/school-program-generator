@@ -15,7 +15,7 @@ import styleVar from './src/styles/styleVar';
 import authStyles from './src/screens/Auth/authStyles';
 import OpacityButton from './src/components/OpacityButton';
 import ProfileOverview from './src/components/ProfileOverview';
-import ErrorBoundary from './src/ErrorBoundary';
+import ErrorBoundary from './src/components/ErrorBoundary';
 
 const Drawer = createDrawerNavigator();
 
@@ -35,8 +35,9 @@ const linking = {
           SignUp: 'signup',
         },
       },
+      Schools: '/schools',
       School: {
-        path: '/school/:id',
+        path: '/schools/:id',
         screens: {
           SchoolInfo: '',
           Teachers: 'teachers',
@@ -44,8 +45,7 @@ const linking = {
           Subjects: 'subjects',
           Requests: 'requests',
         }
-      },
-      Schools: '/schools',
+      }
     }
   }
 };

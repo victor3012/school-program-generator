@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 
 export const HOST = 'http://localhost:8083';
 export const ACCESS_TOKEN = 'accessToken';
