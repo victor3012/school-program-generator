@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "rooms", uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "school_id" }) })
-public class Room extends ObjectWithId {
+public class Room extends ObjectWithId implements Comparable<Room> {
     @Column(nullable = false)
     private String name;
 
@@ -12,10 +12,6 @@ public class Room extends ObjectWithId {
     private School school;
 
     public Room() {
-    }
-
-    public Room(String name) {
-        this.name = name;
     }
 
     public String getName() {
@@ -34,5 +30,11 @@ public class Room extends ObjectWithId {
     public Room setSchool(School school) {
         this.school = school;
         return this;
+    }
+
+
+    @Override
+    public int compareTo(Room other) {
+        return this.name.compareTo(other.getName());
     }
 }

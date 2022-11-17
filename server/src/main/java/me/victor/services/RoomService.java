@@ -29,6 +29,7 @@ public class RoomService {
     public List<RetrieveRoomDTO> getRoomsInSchool(long id) {
         return getRoomsBySchoolId(id)
                 .stream()
+                .sorted()
                 .map(x -> new RetrieveRoomDTO()
                         .setId(x.getId())
                         .setName(x.getName()))
