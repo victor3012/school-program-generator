@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 import { useContext, useState } from "react";
 
 import { AuthContext } from "../../contexts/AuthContext";
-import { getFormStatus } from "../../services/util";
+import { getFormStatus, updateInputStatus, FORM_STATUS } from "../../services/util";
 
 import Form from "../../components/Form";
 import Input from "../../components/Input";
@@ -13,7 +13,7 @@ import validators from "./validators.js";
 import authStyles from "./authStyles.js";
 import globalStyles from "../../styles/globalStyles";
 
-export default function SignUp({ updateInputStatus }) {
+export default function SignUp() {
     const linkTo = useLinkTo();
 
     const { register } = useContext(AuthContext);
@@ -27,11 +27,11 @@ export default function SignUp({ updateInputStatus }) {
     const [repassShown, setRepassShown] = useState(false);
 
     const [inputStatuses, setInputStatuses] = useState({// -1 -> not required; 0 -> neutral yet; 1 -> focused; 2 -> error
-        email: 0,
-        password: 0,
-        repass: 0,
-        firstName: 0,
-        lastName: 0,
+        email: FORM_STATUS.DEFAULT,
+        password: FORM_STATUS.DEFAULT,
+        repass: FORM_STATUS.DEFAULT,
+        firstName: FORM_STATUS.DEFAULT,
+        lastName: FORM_STATUS.DEFAULT,
     });
 
     const signUpHandler = async () => {
@@ -46,7 +46,7 @@ export default function SignUp({ updateInputStatus }) {
 
             linkTo('/');
         } catch (err) {
-            alert(err);
+            alert(err.message);
         }
     }
 
@@ -57,8 +57,8 @@ export default function SignUp({ updateInputStatus }) {
                     label="First name"
                     hitSlop={10}
                     onChange={(newFirstName) => setFirstName(newFirstName)}
-                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'firstName', 2)}
-                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'firstName', 1)}
+                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'firstName', FORM_STATUS.INVALID)}
+                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'firstName', FORM_STATUS.VALID)}
                     required
                     validator={validators.name}
                     style={{ width: 142 }}
@@ -67,8 +67,8 @@ export default function SignUp({ updateInputStatus }) {
                     label="Last name"
                     hitSlop={10}
                     onChange={(newLastName) => setLastName(newLastName)}
-                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'lastName', 2)}
-                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'lastName', 1)}
+                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'lastName', FORM_STATUS.INVALID)}
+                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'lastName', FORM_STATUS.VALID)}
                     required
                     validator={validators.name}
                     style={{ width: 142 }}
@@ -79,8 +79,8 @@ export default function SignUp({ updateInputStatus }) {
                 label="Email"
                 hitSlop={10}
                 onChange={(newEmail) => setEmail(newEmail)}
-                onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 2)}
-                onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 1)}
+                onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', FORM_STATUS.INVALID)}
+                onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', FORM_STATUS.VALID)}
                 required
                 validator={validators.email} />
 
@@ -89,8 +89,8 @@ export default function SignUp({ updateInputStatus }) {
                     label="Password"
                     hitSlop={10}
                     onChange={(newPassword) => setPassword(newPassword)}
-                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 2)}
-                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 1)}
+                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', FORM_STATUS.INVALID)}
+                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', FORM_STATUS.VALID)}
                     required
                     validator={validators.password}
                     textContentType='password'
@@ -105,8 +105,8 @@ export default function SignUp({ updateInputStatus }) {
                     label="Repeat password"
                     hitSlop={10}
                     onChange={(newRepass) => setRepass(newRepass)}
-                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'repass', 2)}
-                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'repass', 1)}
+                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'repass', FORM_STATUS.INVALID)}
+                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'repass', FORM_STATUS.VALID)}
                     required
                     validator={validators.repass(password)}
                     textContentType='password'
@@ -118,7 +118,7 @@ export default function SignUp({ updateInputStatus }) {
 
             <OpacityButton style={authStyles.button}
                 onPress={signUpHandler}
-                disabled={getFormStatus(inputStatuses) != 1}>
+                disabled={getFormStatus(inputStatuses) != FORM_STATUS.VALID}>
                 Sign up
             </OpacityButton>
 

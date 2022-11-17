@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "@react-navigation/native";
 import { StyleSheet, Text, View } from "react-native";
-import globalStyles from "./styles/globalStyles";
-import styleVar from "./styles/styleVar";
+import globalStyles from "../styles/globalStyles";
+import styleVar from "../styles/styleVar";
 
 export default class ErrorBoundary extends React.Component {
     constructor(props) {

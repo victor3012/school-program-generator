@@ -1,7 +1,4 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { useRoute } from "@react-navigation/native";
-import { useCallback } from "react";
-import { StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import styleVar from "../../styles/styleVar";
 
@@ -11,28 +8,6 @@ import SignUp from "./SignUp";
 const Tab = createBottomTabNavigator();
 
 export default function Auth() {
-    const LoginComponent = useCallback((args) => {
-        return <Login {...args} updateInputStatus={updateInputStatus} />
-    }, [])
-
-    const SignUpComponent = useCallback((args) => {
-        return <SignUp {...args} updateInputStatus={updateInputStatus} />
-    }, [])
-
-    const updateInputStatus = (inputStatuses, setInputStatuses, key, value) => {
-        if (inputStatuses[key] === value) {
-            return;
-        }
-
-        setInputStatuses((oldInputStatuses) => {
-            let newInputStatuses = {};
-            Object.assign(newInputStatuses, oldInputStatuses);
-            newInputStatuses[key] = value;
-
-            return newInputStatuses;
-        })
-    }
-
     return (
         <Tab.Navigator screenOptions={{
             headerShown: false,
@@ -41,11 +16,11 @@ export default function Auth() {
             <Tab.Screen options={{
                 tabBarIcon: () => <Icon name='login' size={styleVar.mediumIconSize} />,
                 tabBarActiveTintColor: styleVar.blue
-            }} name="Login" component={LoginComponent} />
+            }} name="Login" component={Login} />
             <Tab.Screen options={{
                 tabBarLabel: 'Sign Up',
                 tabBarIcon: () => <Icon name='adduser' size={styleVar.mediumIconSize} />
-            }} name="SignUp" component={SignUpComponent} />
+            }} name="SignUp" component={SignUp} />
         </Tab.Navigator>
     )
 }

@@ -1,6 +1,6 @@
 import { Link, useLinkTo } from "@react-navigation/native";
 import { Text, View } from "react-native";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import Form from "../../components/Form";
 import Input from "../../components/Input";
@@ -9,10 +9,10 @@ import EyeIconButton from "../../components/Auth/EyeIconButton";
 import validators from './validators.js';
 import authStyles from "./authStyles.js";
 import globalStyles from "../../styles/globalStyles";
-import { getFormStatus } from "../../services/util";
+import { getFormStatus, updateInputStatus, FORM_STATUS } from "../../services/util";
 import { AuthContext } from "../../contexts/AuthContext";
 
-export default function Login({ updateInputStatus }) {
+export default function Login() {
     const linkTo = useLinkTo();
     const { login } = useContext(AuthContext);
 
@@ -20,9 +20,9 @@ export default function Login({ updateInputStatus }) {
     const [password, setPassword] = useState('');
     const [passwordShown, setPasswordShown] = useState(false);
 
-    const [inputStatuses, setInputStatuses] = useState({// -1 -> not required; 0 -> neutral yet; 1 -> focused; 2 -> error
-        email: 0,
-        password: 0
+    const [inputStatuses, setInputStatuses] = useState({
+        email: FORM_STATUS.DEFAULT,
+        password: FORM_STATUS.DEFAULT
     });
 
     const loginHandler = async () => {
@@ -34,7 +34,7 @@ export default function Login({ updateInputStatus }) {
 
             linkTo('/');
         } catch (err) {
-            alert(err);
+            alert(err.message);
         }
     }
 
@@ -44,8 +44,8 @@ export default function Login({ updateInputStatus }) {
                 label="Email"
                 hitSlop={10}
                 onChange={(newEmail) => setEmail(newEmail)}
-                onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 2)}
-                onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', 1)}
+                onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', FORM_STATUS.INVALID)}
+                onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', FORM_STATUS.VALID)}
                 required
                 validator={validators.email}
                 textContentType='emailAddress' />
@@ -55,8 +55,8 @@ export default function Login({ updateInputStatus }) {
                     label="Password"
                     hitSlop={10}
                     onChange={(newPassword) => setPassword(newPassword)}
-                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 2)}
-                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', 1)}
+                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', FORM_STATUS.INVALID)}
+                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', FORM_STATUS.VALID)}
                     required
                     validator={validators.password}
                     textContentType='password'
@@ -68,7 +68,7 @@ export default function Login({ updateInputStatus }) {
 
             <OpacityButton style={authStyles.button}
                 onPress={loginHandler}
-                disabled={getFormStatus(inputStatuses) != 1}>
+                disabled={getFormStatus(inputStatuses) != FORM_STATUS.VALID}>
                 Log in
             </OpacityButton>
 
