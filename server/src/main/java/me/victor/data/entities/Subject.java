@@ -2,10 +2,10 @@ package me.victor.data.entities;
 
 import javax.persistence.*;
 
-@Table
-@Entity(name = "subjects")
+@Entity
+@Table(name = "subjects", uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "school_id" }) })
 public class Subject extends ObjectWithId {
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
@@ -14,16 +14,21 @@ public class Subject extends ObjectWithId {
     public Subject() {
     }
 
-    public Subject(String name) {
-        this.name = name;
-    }
-
     public String getName() {
         return name;
     }
 
     public Subject setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public School getSchool() {
+        return school;
+    }
+
+    public Subject setSchool(School school) {
+        this.school = school;
         return this;
     }
 }

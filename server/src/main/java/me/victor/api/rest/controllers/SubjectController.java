@@ -1,14 +1,15 @@
 package me.victor.api.rest.controllers;
 
-import me.victor.data.dao.SchoolRepository;
 import me.victor.data.dto.room.CreateRoomDTO;
 import me.victor.data.dto.room.RetrieveRoomDTO;
-import me.victor.data.entities.Room;
+import me.victor.data.dto.subject.CreateSubjectDTO;
+import me.victor.data.dto.subject.RetrieveSubjectDTO;
 import me.victor.data.entities.School;
 import me.victor.data.entities.User;
 import me.victor.exceptions.ResourceNotFoundException;
 import me.victor.services.RoomService;
 import me.victor.services.SchoolService;
+import me.victor.services.SubjectService;
 import me.victor.services.UserService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -18,36 +19,36 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("api/schools/{id}/rooms")
-public class RoomController {
+@RequestMapping("/api/schools/{id}/subjects")
+public class SubjectController {
     private final UserService userService;
     private final SchoolService schoolService;
-    private final RoomService roomService;
+    private final SubjectService subjectService;
 
-    public RoomController(UserService userService, SchoolService schoolService, RoomService roomService) {
+    public SubjectController(UserService userService, SchoolService schoolService, SubjectService subjectService) {
         this.userService = userService;
         this.schoolService = schoolService;
-        this.roomService = roomService;
+        this.subjectService = subjectService;
     }
 
     @PostMapping
-    public List<RetrieveRoomDTO> createRoom(WebRequest request, @PathVariable long id, @Valid @RequestBody CreateRoomDTO dto) {
+    public List<RetrieveSubjectDTO> createRoom(WebRequest request, @PathVariable long id, @Valid @RequestBody CreateSubjectDTO dto) {
         User user = this.userService.getUserByRequest(request);
         schoolService.ensureSystemAdministrator(id, user);
 
         School school = this.schoolService.getSchool(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid school"));
 
-        this.roomService.createRoom(school, dto);
+        this.subjectService.createSubject(school, dto);
 
         return retrieveRooms(request, id);
     }
 
     @GetMapping
-    public List<RetrieveRoomDTO> retrieveRooms(WebRequest request, @PathVariable long id) {
+    public List<RetrieveSubjectDTO> retrieveRooms(WebRequest request, @PathVariable long id) {
         User user = this.userService.getUserByRequest(request);
         schoolService.ensureTeacher(id, user);
 
-        return this.roomService.getRoomsInSchool(id);
+        return this.subjectService.getSubjectsInSchool(id);
     }
 }
