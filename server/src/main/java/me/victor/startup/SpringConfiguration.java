@@ -38,7 +38,7 @@ public class SpringConfiguration {
 //        dataSource.setUsername(DatabaseConfig.get("username"));
 //        dataSource.setPassword(DatabaseConfig.get("password"));
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/school2?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/school3?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true");
         dataSource.setUsername("root");
         dataSource.setPassword("maikati1239");
         return dataSource;

@@ -25,6 +25,4 @@ public class Lesson extends ObjectWithId {
 
     @Column(name = "is_first_shift")
     private boolean isFirstShift;
-
-
 }

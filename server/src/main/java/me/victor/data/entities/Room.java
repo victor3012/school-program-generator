@@ -3,10 +3,9 @@ package me.victor.data.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "rooms")
+@Table(name = "rooms", uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "school_id" }) })
 public class Room extends ObjectWithId {
-    // ToDo composite PK
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)

@@ -2,12 +2,16 @@ package me.victor.services;
 
 import me.victor.data.dao.RoomRepository;
 import me.victor.data.dto.room.CreateRoomDTO;
+import me.victor.data.dto.room.RetrieveRoomDTO;
 import me.victor.data.entities.Room;
 import me.victor.data.entities.School;
+import me.victor.exceptions.DataFormatException;
 import me.victor.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -22,15 +26,34 @@ public class RoomService {
         return this.roomRepository.findBySchoolId(id);
     }
 
+    public List<RetrieveRoomDTO> getRoomsInSchool(long id) {
+        return getRoomsBySchoolId(id)
+                .stream()
+                .map(x -> new RetrieveRoomDTO()
+                        .setId(x.getId())
+                        .setName(x.getName()))
+                .collect(Collectors.toList());
+    }
+
     public int getRoomsCountBySchoolId(long id) {
         return this.roomRepository.countBySchoolId(id);
     }
 
     public void createRoom(School school, CreateRoomDTO dto) {
+        Optional<Room> retrievedRoom = getRoom(dto.getName(), school.getId());
+
+        if (retrievedRoom.isPresent()) {
+            throw new DataFormatException("A room with this name already exists");
+        }
+
         Room room = new Room()
                 .setName(dto.getName())
                 .setSchool(school);
 
         this.roomRepository.save(room);
+    }
+
+    private Optional<Room> getRoom(String name, long schoolId) {
+        return this.roomRepository.getByNameAndSchoolId(name ,schoolId);
     }
 }
