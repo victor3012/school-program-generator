@@ -6,7 +6,6 @@ import me.victor.data.dto.room.RetrieveRoomDTO;
 import me.victor.data.entities.Room;
 import me.victor.data.entities.School;
 import me.victor.exceptions.DataFormatException;
-import me.victor.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
