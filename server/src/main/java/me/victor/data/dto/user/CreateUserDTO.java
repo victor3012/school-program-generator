@@ -14,6 +14,7 @@ public class CreateUserDTO {
     private String lastName;
 
     @NotNull(message = "Email format is invalid")
+    @NotEmpty(message = "Email format is invalid")
     @Email(message = "Email format is invalid")
     private String email;
 
