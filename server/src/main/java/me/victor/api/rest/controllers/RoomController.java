@@ -33,12 +33,26 @@ public class RoomController {
     @PostMapping
     public List<RetrieveRoomDTO> createRoom(WebRequest request, @PathVariable long id, @Valid @RequestBody CreateRoomDTO dto) {
         User user = this.userService.getUserByRequest(request);
-        schoolService.ensureSystemAdministrator(id, user);
+        schoolService.ensureSystemAdmin(id, user);
 
         School school = this.schoolService.getSchool(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid school"));
 
         this.roomService.createRoom(school, dto);
+
+        return retrieveRooms(request, id);
+    }
+
+    @PutMapping("/{roomId}")
+    public List<RetrieveRoomDTO> updateRoom(WebRequest request, @PathVariable long id, @PathVariable long roomId,
+                                            @Valid @RequestBody CreateRoomDTO dto) {
+        User user = this.userService.getUserByRequest(request);
+        schoolService.ensureSystemAdmin(id, user);
+
+        School school = this.schoolService.getSchool(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid school"));
+
+        this.roomService.updateRoom(school, roomId, dto);
 
         return retrieveRooms(request, id);
     }

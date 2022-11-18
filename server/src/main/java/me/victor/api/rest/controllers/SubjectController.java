@@ -34,7 +34,7 @@ public class SubjectController {
     @PostMapping
     public List<RetrieveSubjectDTO> createRoom(WebRequest request, @PathVariable long id, @Valid @RequestBody CreateSubjectDTO dto) {
         User user = this.userService.getUserByRequest(request);
-        schoolService.ensureSystemAdministrator(id, user);
+        schoolService.ensureSystemAdmin(id, user);
 
         School school = this.schoolService.getSchool(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid school"));

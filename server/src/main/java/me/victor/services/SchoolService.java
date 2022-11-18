@@ -56,7 +56,7 @@ public class SchoolService {
                 .setFirstName(user.getFirstName())
                 .setLastName(user.getLastName())
                 .setEmail(user.getEmail())
-                .setTeacherRoles(List.of(TeacherRole.DIRECTOR));
+                .setTeacherRoles(List.of(TeacherRole.PRINCIPAL));
 
         teacher.setSchool(school);
 
@@ -112,20 +112,20 @@ public class SchoolService {
                 .collect(Collectors.toList());
     }
 
-    public void ensureDirector(long schoolId, User user) {
-        ensureDirector(schoolId, user, "Only school directors can access this");
+    public void ensurePrincipal(long schoolId, User user) {
+        ensurePrincipal(schoolId, user, "Only school directors can access this");
     }
 
-    public void ensureDirector(long schoolId, User user, String message) {
-        ensurePower(schoolId, user, message, TeacherRole.DIRECTOR);
+    public void ensurePrincipal(long schoolId, User user, String message) {
+        ensurePower(schoolId, user, message, TeacherRole.PRINCIPAL);
     }
 
-    public void ensureSystemAdministrator(long schoolId, User user) {
-        ensureSystemAdministrator(schoolId, user, "Only system administrators can access this");
+    public void ensureSystemAdmin(long schoolId, User user) {
+        ensureSystemAdmin(schoolId, user, "Only system administrators can access this");
     }
 
-    public void ensureSystemAdministrator(long schoolId, User user, String message) {
-        ensurePower(schoolId, user, message, TeacherRole.SYSTEM_ADMINISTRATOR);
+    public void ensureSystemAdmin(long schoolId, User user, String message) {
+        ensurePower(schoolId, user, message, TeacherRole.SYSTEM_ADMIN);
     }
 
     public void ensureTeacher(long schoolId, User user) {
@@ -153,7 +153,7 @@ public class SchoolService {
     }
 
     public School updateSchool(long id, UpdateSchoolDTO dto, User user) {
-        ensureDirector(id, user, "Only school directors can make such a change");
+        ensurePrincipal(id, user, "Only school directors can make such a change");
 
         School school = this.schoolRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
@@ -173,12 +173,12 @@ public class SchoolService {
                         .setLastName(newOwner.getLastName())
                         .setSchool(school)
                         .setEmail(newOwner.getEmail())
-                        .setTeacherRoles(List.of(TeacherRole.DIRECTOR, TeacherRole.TEACHER)));
+                        .setTeacherRoles(List.of(TeacherRole.PRINCIPAL, TeacherRole.TEACHER)));
             }
         }
 
         for (Teacher teacher : school.getTeachers()) {
-            teacher.getTeacherRoles().remove(TeacherRole.DIRECTOR);
+            teacher.getTeacherRoles().remove(TeacherRole.PRINCIPAL);
 
             if (teacher.getTeacherRoles().isEmpty()) {
                 teacher.getTeacherRoles().add(TeacherRole.TEACHER);

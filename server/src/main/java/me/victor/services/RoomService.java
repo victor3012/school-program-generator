@@ -6,6 +6,7 @@ import me.victor.data.dto.room.RetrieveRoomDTO;
 import me.victor.data.entities.Room;
 import me.victor.data.entities.School;
 import me.victor.exceptions.DataFormatException;
+import me.victor.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,5 +56,23 @@ public class RoomService {
 
     private Optional<Room> getRoom(String name, long schoolId) {
         return this.roomRepository.getByNameAndSchoolId(name ,schoolId);
+    }
+
+    public void updateRoom(School school, long roomId, CreateRoomDTO dto) {
+        Room room = this.roomRepository.findById(roomId)
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid room"));
+
+        if (room.getSchool().getId() != school.getId()) {
+            throw new DataFormatException("There is no such a room in this school");
+        }
+
+        Optional<Room> retrievedRoom = getRoom(dto.getName(), school.getId());
+
+        if (retrievedRoom.isPresent()) {
+            throw new DataFormatException("Such a room already exists");
+        }
+
+        room.setName(dto.getName());
+        this.roomRepository.save(room);
     }
 }
