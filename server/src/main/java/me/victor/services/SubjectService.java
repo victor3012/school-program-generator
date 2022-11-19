@@ -6,6 +6,7 @@ import me.victor.data.dto.subject.RetrieveSubjectDTO;
 import me.victor.data.entities.School;
 import me.victor.data.entities.Subject;
 import me.victor.exceptions.DataFormatException;
+import me.victor.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -35,6 +36,20 @@ public class SubjectService {
         Subject subject = new Subject()
                 .setName(dto.getName())
                 .setSchool(school);
+
+        this.subjectRepository.save(subject);
+    }
+
+    public void updateSubject(School school, CreateSubjectDTO dto, long subjectId) {
+        Optional<Subject> retrievedSubject = getSubjectByNameAndSchoolId(dto.getName(), school.getId());
+
+        if (retrievedSubject.isPresent()) {
+            throw new DataFormatException("Subject with this name already exists");
+        }
+
+        Subject subject = this.subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid subject"))
+                .setName(dto.getName());
 
         this.subjectRepository.save(subject);
     }

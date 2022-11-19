@@ -32,7 +32,7 @@ public class SubjectController {
     }
 
     @PostMapping
-    public List<RetrieveSubjectDTO> createRoom(WebRequest request, @PathVariable long id, @Valid @RequestBody CreateSubjectDTO dto) {
+    public List<RetrieveSubjectDTO> createSubject(WebRequest request, @PathVariable long id, @Valid @RequestBody CreateSubjectDTO dto) {
         User user = this.userService.getUserByRequest(request);
         schoolService.ensureSystemAdmin(id, user);
 
@@ -41,11 +41,25 @@ public class SubjectController {
 
         this.subjectService.createSubject(school, dto);
 
-        return retrieveRooms(request, id);
+        return retrieveSubject(request, id);
+    }
+
+    @PutMapping("/{subjectId}")
+    public List<RetrieveSubjectDTO> updateSubject(WebRequest request, @PathVariable long id, @PathVariable long subjectId,
+                                                  @Valid @RequestBody CreateSubjectDTO dto) {
+        User user = this.userService.getUserByRequest(request);
+        schoolService.ensureSystemAdmin(id, user);
+
+        School school = this.schoolService.getSchool(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid school"));
+
+        this.subjectService.updateSubject(school, dto, subjectId);
+
+        return retrieveSubject(request, id);
     }
 
     @GetMapping
-    public List<RetrieveSubjectDTO> retrieveRooms(WebRequest request, @PathVariable long id) {
+    public List<RetrieveSubjectDTO> retrieveSubject(WebRequest request, @PathVariable long id) {
         User user = this.userService.getUserByRequest(request);
         schoolService.ensureTeacher(id, user);
 
