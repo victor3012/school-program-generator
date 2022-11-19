@@ -34,12 +34,28 @@ public class TeacherController {
         User user = this.userService.getUserByRequest(request);
 
         this.schoolService.ensurePower(id, user,
-                "You need to have higher or equal role to assign this role", dto.getRole());
+                "You need to have higher role to assign this role", dto.getRole());
 
         School school = this.schoolService.getSchool(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid school"));
 
         this.teacherService.createTeacher(school, dto);
+
+        return retrieveTeachers(request, id);
+    }
+
+    @PutMapping("/{teacherId}")
+    public List<RetrieveTeacherDTO> updateTeacher(WebRequest request, @PathVariable long id, @PathVariable long teacherId,
+                                                  @Valid @RequestBody CreateTeacherDTO dto) {
+        User user = this.userService.getUserByRequest(request);
+
+        this.schoolService.ensurePower(id, user,
+                "You need to have higher role to adjust this user", dto.getRole().getPower() + 1);
+
+        School school = this.schoolService.getSchool(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid school"));
+
+        this.teacherService.updateTeacher(school, dto, teacherId);
 
         return retrieveTeachers(request, id);
     }

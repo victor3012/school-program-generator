@@ -8,8 +8,10 @@ import me.victor.data.entities.School;
 import me.victor.data.entities.Teacher;
 import me.victor.data.entities.TeacherRole;
 import me.victor.exceptions.DataFormatException;
+import me.victor.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -66,6 +68,28 @@ public class TeacherService {
                 .setTeacherRoles(List.of(dto.getRole()));
 
         this.teacherRepository.save(teacher);
+    }
+
+    public void updateTeacher(School school, CreateTeacherDTO dto, long teacherId) {
+        Optional<Teacher> retrievedTeacher = getTeacherInSchool(school.getId(), dto.getEmail());
+
+        Teacher currentTeacher = this.teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid teacher"));
+
+        if (retrievedTeacher.isPresent() && retrievedTeacher.get().getId() != teacherId) {
+            throw new DataFormatException("A teacher with this email already exists");
+        }
+
+        List<TeacherRole> roles = new ArrayList<>();
+        roles.add(dto.getRole());
+
+        currentTeacher
+                .setFirstName(dto.getFirstName())
+                .setLastName(dto.getLastName())
+                .setEmail(dto.getEmail())
+                .setTeacherRoles(roles);
+
+        this.teacherRepository.save(currentTeacher);
     }
 
     public List<RetrieveTeacherDTO> getTeachersInSchool(long schoolId) {

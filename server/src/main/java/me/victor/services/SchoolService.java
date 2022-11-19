@@ -137,12 +137,17 @@ public class SchoolService {
     }
 
     public void ensurePower(long schoolId, User user, String message, TeacherRole role) {
+        ensurePower(schoolId, user, message, role.getPower());
+    }
+
+    public void ensurePower(long schoolId, User user, String message, long power) {
         List<TeacherRole> roles = getRoles(schoolId, user);
 
-        if (getHighestRolePower(roles) < role.getPower()) {
+        if (getHighestRolePower(roles) < power) {
             throw new InsufficientPermissionsException(message);
         }
     }
+
 
 
     private List<TeacherRole> getRoles(long schoolId, User user) {
