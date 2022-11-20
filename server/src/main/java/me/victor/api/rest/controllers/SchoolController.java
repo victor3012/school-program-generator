@@ -40,7 +40,7 @@ public class SchoolController {
     public ExtendedAggregatedSchoolDTO updateSchool(WebRequest request, @PathVariable long id, @Valid @RequestBody UpdateSchoolDTO dto) {
         User user = this.userService.getUserByRequest(request);
         School school = this.schoolService.updateSchool(id, dto, user);
-        return this.schoolService.getSchoolAggregatedInformation(school);
+        return this.schoolService.getSchoolAggregatedInformation(school, user);
     }
 
     @GetMapping

@@ -88,12 +88,15 @@ public class SchoolService {
         School school = this.schoolRepository.findById(schoolId)
                 .orElseThrow(() -> new ResourceNotFoundException("Resource not found"));
 
-        return getSchoolAggregatedInformation(school);
+        return getSchoolAggregatedInformation(school, user);
     }
 
-    public ExtendedAggregatedSchoolDTO getSchoolAggregatedInformation(School school) {
+    public ExtendedAggregatedSchoolDTO getSchoolAggregatedInformation(School school, User user) {
         return (ExtendedAggregatedSchoolDTO) new ExtendedAggregatedSchoolDTO()
                 .setSubjectsCount(this.subjectService.getSubjectsCountBySchoolId(school.getId()))
+                .setTeacher(this.teacherService.getDTOFromTeacher(
+                        this.teacherService.getTeacherInSchool(school.getId(), user.getEmail())
+                                .orElseThrow(() -> new ResourceNotFoundException("Invalid teacher"))))
                 .setId(school.getId())
                 .setName(school.getName())
                 .setTeachersCount(this.teacherService.getTeachersCountBySchoolId(school.getId()))
@@ -147,7 +150,6 @@ public class SchoolService {
             throw new InsufficientPermissionsException(message);
         }
     }
-
 
 
     private List<TeacherRole> getRoles(long schoolId, User user) {

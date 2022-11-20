@@ -95,12 +95,7 @@ public class TeacherService {
     public List<RetrieveTeacherDTO> getTeachersInSchool(long schoolId) {
         return getTeachersBySchoolId(schoolId)
                 .stream()
-                .map(x -> (RetrieveTeacherDTO) new RetrieveTeacherDTO()
-                        .setId(x.getId())
-                        .setEmail(x.getEmail())
-                        .setFirstName(x.getFirstName())
-                        .setLastName(x.getLastName())
-                        .setRole(getBiggestRole(x)))
+                .map(this::getDTOFromTeacher)
                 .sorted((x, y) -> {
                     int powerDifference = y.getRole().getPower() - x.getRole().getPower();
 
@@ -123,5 +118,14 @@ public class TeacherService {
                 .stream()
                 .max(Comparator.comparingInt(TeacherRole::getPower))
                 .orElse(TeacherRole.TEACHER);
+    }
+
+    public RetrieveTeacherDTO getDTOFromTeacher(Teacher teacher) {
+        return (RetrieveTeacherDTO) new RetrieveTeacherDTO()
+                .setId(teacher.getId())
+                .setEmail(teacher.getEmail())
+                .setFirstName(teacher.getFirstName())
+                .setLastName(teacher.getLastName())
+                .setRole(getBiggestRole(teacher));
     }
 }
