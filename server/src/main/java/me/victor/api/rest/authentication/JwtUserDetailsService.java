@@ -2,8 +2,8 @@ package me.victor.api.rest.authentication;
 
 import me.victor.data.dto.user.AuthenticationResponseDTO;
 import me.victor.data.dto.user.CreateUserDTO;
-import me.victor.exceptions.BadCredentialsException;
 import me.victor.services.UserService;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
