@@ -1,5 +1,6 @@
 package me.victor.startup;
 
+import me.victor.utils.config.DatabaseConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -12,11 +13,17 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import javax.swing.*;
 import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
 public class SpringConfiguration {
+    private final DatabaseConfig config;
+
+    public SpringConfiguration(DatabaseConfig config) {
+        this.config = config;
+    }
 
     @Bean(name = "entityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -33,14 +40,10 @@ public class SpringConfiguration {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//        dataSource.setDriverClassName(DatabaseConfig.get("driver"));
-//        dataSource.setUrl(DatabaseConfig.get("url"));
-//        dataSource.setUsername(DatabaseConfig.get("username"));
-//        dataSource.setPassword(DatabaseConfig.get("password"));
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/school3?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true");
-        dataSource.setUsername("root");
-        dataSource.setPassword("maikati1239");
+        dataSource.setDriverClassName(config.getDriver());
+        dataSource.setUrl(config.getJDBCUrl());
+        dataSource.setUsername(config.getUsername());
+        dataSource.setPassword(config.getPassword());
         return dataSource;
     }
 

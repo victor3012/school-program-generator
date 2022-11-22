@@ -1,0 +1,6 @@
+{
+  "driverClassName": "com.mysql.cj.jdbc.Driver",
+  "jdbcUrl": "jdbc:mysql://localhost:3306/school3?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true",
+  "username": "root",
+  "password": "maikati1239"
+}
