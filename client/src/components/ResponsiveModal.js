@@ -18,16 +18,17 @@ export default function ResponsiveModal({
     setVisible,
     title,
     submitText = 'Submit',
-    submitBtn = true,
+    showSubmitBtn = true,
     cancelText = 'Cancel',
-    cancelBtn = true,
+    showCancelBtn = true,
     children,
-    inputStatuses,
+    inputStatuses = {},
     onSubmit,
     onFulfill,
     onError,
     onCancel,
-    onReset
+    onReset,
+    containerStyle
 }) {
     const [requestStatus, setRequestStatus] = useState(REQUEST_STATUS.UNFULLFILED);
 
@@ -102,7 +103,7 @@ export default function ResponsiveModal({
             visible={visible}>
             <View style={styles.modal}>
                 <View style={styles.container}>
-                    <ScrollView contentContainerStyle={[globalStyles.basicContainer, { overflow: 'hidden' }]}>
+                    <ScrollView contentContainerStyle={[globalStyles.basicContainer, containerStyle, { overflow: 'hidden' }]}>
                         {title &&
                             <Text style={[globalStyles.text, styles.title]}>
                                 {title}
@@ -112,7 +113,7 @@ export default function ResponsiveModal({
                         {children}
 
                         <View style={styles.buttonsContainer}>
-                            {submitBtn &&
+                            {showSubmitBtn &&
                                 <OpacityButton onPress={submitHandler}
                                     style={{ marginBottom: 0 }}
                                     disabled={getFormStatus(inputStatuses) != FORM_STATUS.VALID}>
@@ -120,7 +121,7 @@ export default function ResponsiveModal({
                                 </OpacityButton>
                             }
 
-                            {cancelBtn &&
+                            {showCancelBtn &&
                                 <OpacityButton onPress={cancelHandler}
                                     style={{
                                         marginBottom: 0,

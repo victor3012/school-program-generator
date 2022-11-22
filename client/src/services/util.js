@@ -32,3 +32,17 @@ export const updateInputStatus = (inputStatuses, setInputStatuses, key, value) =
         return newInputStatuses;
     })
 }
+
+export const TEACHER_ROLES = {
+    TEACHER: 1,
+    SYSTEM_ADMIN: 2,
+    ASST_PRINCIPAL: 3,
+    PRINCIPAL: 4
+}
+
+export const TEACHER_ROLES_NAMES = {
+    TEACHER: 'Teacher',
+    SYSTEM_ADMIN: 'System Admin',
+    ASST_PRINCIPAL: 'Asst. Principal',
+    PRINCIPAL: 'Principal'
+}

@@ -29,5 +29,12 @@ export default StyleSheet.create({
         shadowOpacity: 0.35,
         shadowRadius: 4,
         elevation: 5
+    },
+    formButton: {
+        width: 300,
+        height: 40,
+        borderRadius: 20,
+        paddingVertical: 0,
+        paddingHorizontal: 0
     }
 });

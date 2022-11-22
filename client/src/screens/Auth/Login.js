@@ -66,7 +66,7 @@ export default function Login() {
                 <EyeIconButton passwordShown={passwordShown} setPasswordShown={setPasswordShown} />
             </View>
 
-            <OpacityButton style={authStyles.button}
+            <OpacityButton style={globalStyles.formButton}
                 onPress={loginHandler}
                 disabled={getFormStatus(inputStatuses) != FORM_STATUS.VALID}>
                 Log in
