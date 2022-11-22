@@ -8,7 +8,7 @@ import me.victor.data.dto.school.ExtendedAggregatedSchoolDTO;
 import me.victor.data.dto.school.UpdateSchoolDTO;
 import me.victor.data.entities.School;
 import me.victor.data.entities.Teacher;
-import me.victor.data.entities.TeacherRole;
+import me.victor.data.entities.enums.TeacherRole;
 import me.victor.data.entities.User;
 import me.victor.exceptions.DataFormatException;
 import me.victor.exceptions.InsufficientPermissionsException;

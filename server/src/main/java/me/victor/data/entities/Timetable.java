@@ -11,7 +11,4 @@ public class Timetable extends ObjectWithId {
 
     @OneToMany(mappedBy = "timetable", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<SpecialLesson> specialLessons;
-
-
-
 }

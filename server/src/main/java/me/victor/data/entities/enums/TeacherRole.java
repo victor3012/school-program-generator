@@ -1,9 +1,9 @@
-package me.victor.data.entities;
+package me.victor.data.entities.enums;
 
 public enum TeacherRole {
     TEACHER(1),
     SYSTEM_ADMIN(2),
-    ASSISTANT_PRINCIPAL(3),
+    ASST_PRINCIPAL(3),
     PRINCIPAL(4);
 
     private final int power;

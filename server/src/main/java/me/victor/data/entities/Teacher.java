@@ -1,5 +1,7 @@
 package me.victor.data.entities;
 
+import me.victor.data.entities.enums.TeacherRole;
+
 import javax.persistence.*;
 import java.util.List;
 

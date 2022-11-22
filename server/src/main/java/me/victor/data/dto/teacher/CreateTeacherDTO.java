@@ -1,6 +1,6 @@
 package me.victor.data.dto.teacher;
 
-import me.victor.data.entities.TeacherRole;
+import me.victor.data.entities.enums.TeacherRole;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

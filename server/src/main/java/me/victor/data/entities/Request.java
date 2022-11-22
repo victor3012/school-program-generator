@@ -1,32 +1,38 @@
 package me.victor.data.entities;
 
+import me.victor.data.entities.enums.RequestStage;
+
 import javax.persistence.*;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "requests")
 public class Request extends ObjectWithId {
+
+    @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
+    private RequestStage stage;
+
     @ManyToOne(optional = false)
     private Teacher requestedBy;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<SpecialLesson> lessons;
+    @ManyToOne(optional = false)
+    private Teacher assignedTeacher;
 
-    public Teacher getRequestedBy() {
-        return requestedBy;
-    }
+    @ManyToOne
+    private Teacher reviewer;
 
-    public Request setRequestedBy(Teacher requestedBy) {
-        this.requestedBy = requestedBy;
-        return this;
-    }
+    @Column(nullable = false)
+    private LocalDate date;
 
-    public List<SpecialLesson> getLessons() {
-        return lessons;
-    }
+    @Column(name = "is_first_shift")
+    private boolean isFirstShift;
 
-    public Request setLessons(List<SpecialLesson> lessons) {
-        this.lessons = lessons;
-        return this;
-    }
+    @Column(name = "lesson_index")
+    private int lessonIndex;
+
+    @Column(name = "lessons_count")
+    private int lessonsCount;
 }
