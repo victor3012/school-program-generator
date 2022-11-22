@@ -1,47 +1,34 @@
-import { Text } from "react-native";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
+import { SchoolContext, SchoolProvider } from '../../contexts/SchoolContext'
+import { DataProvider } from '../../contexts/DataContext'
 import styleVar from "../../styles/styleVar";
-import globalStyles from "../../styles/globalStyles";
-import { useCallback, useEffect, useState } from "react";
-import { useFocusEffect, useLinkTo } from "@react-navigation/native";
-import { getSchoolById } from "../../services/schools";
 import OpacityButton from "../../components/OpacityButton";
 import Loader from "../../components/Loader";
+import Teachers from "./Teachers/Teachers";
 
 const Tab = createBottomTabNavigator();
 
 export default function SchoolStack({ route, navigation }) {
-    const linkTo = useLinkTo();
-    const [school, setSchool] = useState(null);
-
     useEffect(() => {
         navigation.getParent().setOptions({ headerRight: AllSchoolsButton })
 
         return () => navigation.getParent().setOptions({ headerRight: () => null })
     }, [navigation])
 
-    useFocusEffect(useCallback(() => {
-        (async () => {
-            try {
-                const res = await getSchoolById(route.params.id);
-                setSchool(res);
-            } catch {
-                setSchool(null);
-                linkTo('/schools');
-            }
-        })()
-    }, [route]))
-
-    const Teachers = (props) => <Component title='Teachers' school={school} {...props} />
-    const Rooms = (props) => <Component title='Rooms' school={school} {...props} />
-
-    const SchoolComponent = (props) => <School school={school} {...props} />
-
-    const Subjects = (props) => <Component title='Subjects' school={school} {...props} />
-    const Requests = (props) => <Component title='Requests' school={school} {...props} />
+    const TeachersComponent = (props) => (
+        <ScreenComponent title='Teachers' {...props}>
+            <Teachers />
+        </ScreenComponent>
+    )
+    const Rooms = (props) => <ScreenComponent title='Rooms' {...props} />
+    const SchoolComponent = (props) => <ScreenComponent  {...props} />
+    const Subjects = (props) => <ScreenComponent title='Subjects' {...props} />
+    const Requests = (props) => <ScreenComponent title='Requests' {...props} />
 
     const AllSchoolsButton = () => {
         return (
@@ -57,115 +44,108 @@ export default function SchoolStack({ route, navigation }) {
     }
 
     return (
-        <Tab.Navigator screenOptions={{ headerShown: false }}>
-            {school !== null
-                ?
-                <>
-                    <Tab.Screen
-                        name="Teachers"
-                        options={{
-                            tabBarIcon: ({ focused }) => <FontAwesomeIcon name="chalkboard-teacher"
-                                size={styleVar.mediumIconSize}
-                                color={focused ? styleVar.blue : styleVar.gray} />,
-                            tabBarItemStyle: {
-                                flex: 1
-                            }
-                        }}
-                        initialParams={{ id: route.params.id }}
-                        component={Teachers} />
-                    <Tab.Screen
-                        name="Rooms"
-                        options={{
-                            tabBarIcon: ({ focused }) => <MaterialCommunityIcon name="google-classroom"
-                                size={styleVar.mediumIconSize}
-                                color={focused ? styleVar.blue : styleVar.gray} />,
-                            tabBarItemStyle: {
-                                flex: 1,
-                            }
-                        }}
-                        initialParams={{ id: route.params.id }}
-                        component={Rooms} />
-                    <Tab.Screen
-                        name="SchoolInfo"
-                        options={{
-                            tabBarLabel: 'School',
-                            tabBarIcon: ({ focused }) => <FontAwesomeIcon name="school"
-                                size={styleVar.mediumIconSize}
-                                color={focused ? styleVar.blue : styleVar.gray} />,
-                            tabBarItemStyle: {
-                                flex: 1.5
-                            },
-                            tabBarLabelStyle: {
-                                fontSize: styleVar.mediumFontSize
-                            }
-                        }}
-                        initialParams={{ id: route.params.id }}
-                        component={SchoolComponent} />
-                    <Tab.Screen
-                        name="Subjects"
-                        options={{
-                            tabBarIcon: ({ focused }) => <FontAwesomeIcon name="book"
-                                size={styleVar.mediumIconSize}
-                                color={focused ? styleVar.blue : styleVar.gray} />,
-                            tabBarItemStyle: {
-                                flex: 1,
-                            }
-                        }}
-                        initialParams={{ id: route.params.id }}
-                        component={Subjects} />
-                    <Tab.Screen
-                        name="Requests"
-                        options={{
-                            tabBarIcon: ({ focused }) => <MaterialCommunityIcon name="order-bool-descending-variant"
-                                size={styleVar.mediumIconSize}
-                                color={focused ? styleVar.blue : styleVar.gray} />,
-                            tabBarItemStyle: {
-                                flex: 1
-                            }
-                        }}
-                        initialParams={{ id: route.params.id }}
-                        component={Requests} />
-                </>
-                :
-                <Tab.Screen name="Loading..." options={{
-                    tabBarIconStyle: { display: 'none' },
-                    tabBarLabelStyle: {
-                        fontSize: styleVar.mediumFontSize
-                    }
-                }} component={Loader} />
-            }
-        </Tab.Navigator>
+        <SchoolProvider>
+            <Tab.Navigator screenOptions={{ headerShown: false }} sceneContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Tab.Screen
+                    name="Teachers"
+                    options={{
+                        tabBarIcon: ({ focused }) => <FontAwesomeIcon name="chalkboard-teacher"
+                            size={styleVar.mediumIconSize}
+                            color={focused ? styleVar.blue : styleVar.gray} />,
+                        tabBarItemStyle: {
+                            flex: 1
+                        }
+                    }}
+                    initialParams={{ id: route.params.id }}
+                    component={TeachersComponent} />
+                <Tab.Screen
+                    name="Rooms"
+                    options={{
+                        tabBarIcon: ({ focused }) => <MaterialCommunityIcon name="google-classroom"
+                            size={styleVar.mediumIconSize}
+                            color={focused ? styleVar.blue : styleVar.gray} />,
+                        tabBarItemStyle: {
+                            flex: 1,
+                        }
+                    }}
+                    initialParams={{ id: route.params.id }}
+                    component={Rooms} />
+                <Tab.Screen
+                    name="SchoolInfo"
+                    options={{
+                        tabBarLabel: 'School',
+                        tabBarIcon: ({ focused }) => <FontAwesomeIcon name="school"
+                            size={styleVar.mediumIconSize}
+                            color={focused ? styleVar.blue : styleVar.gray} />,
+                        tabBarItemStyle: {
+                            flex: 1.5
+                        },
+                        tabBarLabelStyle: {
+                            fontSize: styleVar.mediumFontSize
+                        }
+                    }}
+                    initialParams={{ id: route.params.id }}
+                    component={SchoolComponent} />
+                <Tab.Screen
+                    name="Subjects"
+                    options={{
+                        tabBarIcon: ({ focused }) => <FontAwesomeIcon name="book"
+                            size={styleVar.mediumIconSize}
+                            color={focused ? styleVar.blue : styleVar.gray} />,
+                        tabBarItemStyle: {
+                            flex: 1,
+                        }
+                    }}
+                    initialParams={{ id: route.params.id }}
+                    component={Subjects} />
+                <Tab.Screen
+                    name="Requests"
+                    options={{
+                        tabBarIcon: ({ focused }) => <MaterialCommunityIcon name="order-bool-descending-variant"
+                            size={styleVar.mediumIconSize}
+                            color={focused ? styleVar.blue : styleVar.gray} />,
+                        tabBarItemStyle: {
+                            flex: 1
+                        }
+                    }}
+                    initialParams={{ id: route.params.id }}
+                    component={Requests} />
+            </Tab.Navigator>
+        </SchoolProvider>
     )
 }
 
-function School({ route, navigation, school }) {
+function ScreenComponent({
+    navigation,
+    children,
+    title,
+    navOptions
+}) {
+    const { school, isSchoolLoading } = useContext(SchoolContext);
 
     useFocusEffect(useCallback(() => {
+        let headerTitle = 'Loading...';
+
+        if (school) {
+            headerTitle = `${school.name}${title ? ` | ${title}` : ''}`;
+        }
+
         navigation
             .getParent()
             .getParent()
-            .setOptions({ title: school.name, headerTitle: school.name })
-    }, []))
+            .setOptions({
+                headerTitle,
+                ...navOptions
+            })
+    }, [school]))
 
     return (
-        <>
-            <Text>
-                {school.name} {route.params?.id}
-            </Text>
-        </>
-    )
-}
-
-function Component({ navigation, route, title, school }) {
-    useFocusEffect(useCallback(() => {
-        navigation
-            .getParent()
-            .getParent()
-            .setOptions({ headerTitle: `${school.name} | ${title}` })
-    }, []))
-
-    return (
-        <Text>{title} {route.params?.id}</Text>
+        isSchoolLoading
+            ? <Loader />
+            :
+            <DataProvider>
+                {children}
+            </DataProvider>
     )
 }
 

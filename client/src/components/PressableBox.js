@@ -2,7 +2,6 @@ import { Platform, Pressable, StyleSheet } from "react-native";
 import globalStyles from "../styles/globalStyles";
 import styleVar from "../styles/styleVar";
 
-
 export default function PressableBox({
     children,
     onPress,
@@ -14,10 +13,11 @@ export default function PressableBox({
             onPress={onPress}
             style={({ pressed }) => [globalStyles.basicContainer, styles.box, {
                 backgroundColor: pressed ? styleVar.blueShadow : styleVar.white,
+                top: pressed ? 2 : 0
             }, customStyle]}
             selectable={false}
             adjustsFontSizeToFit={true}>
-                {children}
+            {children}
         </Pressable>
     )
 }

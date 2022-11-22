@@ -7,11 +7,10 @@ import InputIconButton from "./InputIconButton";
 import globalStyles from "../styles/globalStyles";
 import styleVar from "../styles/styleVar";
 
-
 export default function SelectInput(
     {
         options,
-        value,
+        value = '',
         setValue,
         label,
         placeholder,
@@ -40,8 +39,8 @@ export default function SelectInput(
         if (!options) { return; }
 
         const newOptions = options
-            .filter(o => o.toLocaleLowerCase()
-                .startsWith(value.toLocaleLowerCase()));
+            .filter(o => o.value.toLocaleLowerCase()
+                .includes(value.trim().toLocaleLowerCase()));
 
         setDisplayOptions(newOptions);
     }, [value, options]);
@@ -88,13 +87,14 @@ export default function SelectInput(
     const selectOptionHandler = (option) => {
         console.log(option);
 
-        setValue(option);
+        setValue(option.value);
 
         setFocused(false);
     }
 
     return (
-        <View >
+        <View elevation={10}
+            style={{ zIndex: 10 }}>
             <View>
                 <Input
                     label={label}
@@ -121,10 +121,12 @@ export default function SelectInput(
                     height: heightAnimation
                 }]}>
                 {displayOptions.map(o =>
-                    <TouchableHighlight key={o} style={styles.option} underlayColor={styleVar.blueShadow}
+                    <TouchableHighlight key={o.key}
+                        style={styles.option}
+                        underlayColor={styleVar.blueShadow}
                         onPress={() => selectOptionHandler(o)}>
                         <Text style={globalStyles.text}>
-                            {o}
+                            {o.value}
                         </Text>
                     </TouchableHighlight>
                 )}

@@ -116,7 +116,7 @@ export default function SignUp() {
                 <EyeIconButton passwordShown={repassShown} setPasswordShown={setRepassShown} />
             </View>
 
-            <OpacityButton style={authStyles.button}
+            <OpacityButton style={globalStyles.formButton}
                 onPress={signUpHandler}
                 disabled={getFormStatus(inputStatuses) != FORM_STATUS.VALID}>
                 Sign up

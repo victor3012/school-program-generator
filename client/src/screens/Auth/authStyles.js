@@ -11,13 +11,6 @@ export default StyleSheet.create({
     passwordContainer: {
         position: "relative"
     },
-    button: {
-        width: 300,
-        height: 40,
-        borderRadius: 20,
-        paddingVertical: 0,
-        paddingHorizontal: 0
-    },
     linkContainer: {
         flexDirection: 'row',
         justifyContent: 'center'

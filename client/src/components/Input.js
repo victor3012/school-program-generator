@@ -152,9 +152,11 @@ export default function Input(
                             { translateY: labelXY.y }]
                     }]}
                 >
-                    <Text selectable={false} style={styles.text}>
-                        {label}
-                    </Text>
+                    {typeof label === 'string'
+                        ? <Text selectable={false} style={styles.text}>
+                            {label}
+                        </Text>
+                        : label}
                     {required &&
                         <Text selectable={false} style={{ color: getInputBorderColor() }}>*</Text>}
                 </Animated.View>
@@ -195,7 +197,7 @@ const styles = StyleSheet.create({
     textContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
-        maxWidth: 300,
+        maxWidth: '100%',
         flexWrap: 'wrap'
     },
     label: {

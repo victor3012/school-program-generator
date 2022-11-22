@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { useLinkTo } from "@react-navigation/native";
 
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
@@ -67,7 +67,6 @@ export default function CreateSchool() {
         setSchoolName('');
     }
 
-
     return (
         <View>
             <ResponsiveModal title='Create new school'
@@ -98,19 +97,3 @@ export default function CreateSchool() {
         </View >
     );
 }
-
-const styles = StyleSheet.create({
-    modal: {
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'rgba(0,0,0,0.6)',
-    },
-    buttonsContainer: {
-        flexDirection: 'row',
-        justifyContent: "space-around",
-        width: '100%'
-    },
-    title: {
-        fontSize: styleVar.largeFontSize,
-    }
-});
