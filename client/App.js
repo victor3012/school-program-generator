@@ -1,8 +1,8 @@
 import 'react-native-gesture-handler';
 
-import { NavigationContainer, getFocusedRouteNameFromRoute, Link } from '@react-navigation/native';
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
-import { ActivityIndicator, Dimensions, StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { StyleSheet, View } from 'react-native';
 import { useContext } from 'react';
 
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
