@@ -1,3 +1,2 @@
 
-*.json
-server/src/main/resources/database.json
+server/src/main/resources
