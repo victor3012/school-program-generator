@@ -2,12 +2,12 @@ import { useFocusEffect, useLinkTo } from "@react-navigation/native";
 import { Text, View, StyleSheet, Platform } from "react-native";
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import Separator from "../../components/Separator";
+import Separator from "../../components/Common/Separator";
 
 import globalStyles from "../../styles/globalStyles";
 import styleVar from "../../styles/styleVar";
 
-import PressableBox from "../../components/PressableBox";
+import PressableBox from "../../components/Common/PressableBox";
 import CreateSchool from "./CreateSchool";
 import { useCallback, useState } from "react";
 import { getSchools } from "../../services/schools";

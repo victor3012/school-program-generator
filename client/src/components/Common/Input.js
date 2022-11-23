@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Platform, StyleSheet, Text, TextInput, View, Animated } from "react-native";
-import styleVar from "../styles/styleVar";
+import styleVar from "../../styles/styleVar";
 
 const startingLabelX = 0;
 const startingLabelY = 35;
@@ -31,9 +31,14 @@ export default function Input(
 
     useEffect(() => {
         if (value) {
-            setBeenFocused(true);
+            if (!focused) {
+                setBeenFocused(true);
+            }
+
             Animated.spring(labelXY, { toValue: { x: startingLabelX, y: 0 }, useNativeDriver: true }).start();
         }
+
+        validate(value);
     }, [value])
 
     const validate = (value, showError = beenFocused) => {
@@ -64,8 +69,6 @@ export default function Input(
         if (onChangeText) {
             onChangeText(value);
         }
-
-        validate(value);
     }
 
     const focusHandler = (e) => {
@@ -93,7 +96,7 @@ export default function Input(
 
         validate(e.nativeEvent.text, true);
 
-        if (!e.nativeEvent.text) {
+        if (!e.nativeEvent.text && !value) {
             Animated.spring(labelXY, { toValue: { x: startingLabelX, y: startingLabelY }, useNativeDriver: true }).start();
         }
 
@@ -178,7 +181,7 @@ export default function Input(
             {
                 showError && error &&
                 <View style={styles.textContainer}>
-                    <Text style={{ ...styles.text, color: styleVar.red }}>
+                    <Text lineBreakMode="middle" style={{ ...styles.text, color: styleVar.red }}>
                         {error}
                     </Text>
                 </View>
@@ -197,11 +200,12 @@ const styles = StyleSheet.create({
     textContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
-        maxWidth: '100%',
+        maxWidth: 300,
         flexWrap: 'wrap'
     },
     label: {
-        zIndex: 1
+        zIndex: 1,
+        maxWidth: '100%'
     },
     formTextInput: {
         outlineStyle: 'none',

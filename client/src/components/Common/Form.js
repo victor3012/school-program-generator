@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { getFormStatus, FORM_STATUS } from "../services/util";
-import globalStyles from "../styles/globalStyles";
-import styleVar from "../styles/styleVar";
+import { getFormStatus, FORM_STATUS } from "../../services/util";
+import globalStyles from "../../styles/globalStyles";
+import styleVar from "../../styles/styleVar";
 
 const getContainerBorderTopColor = (formStatus) => {
     if (formStatus == FORM_STATUS.INVALID) {

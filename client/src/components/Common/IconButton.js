@@ -1,17 +1,19 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 
-import styleVar from "../styles/styleVar";
+import styleVar from "../../styles/styleVar";
 
-export default function InputIconButton({ Icon,
+export default function IconButton({ Icon,
     onPress,
     size = styleVar.mediumIconSize,
-    color = styleVar.gray
+    color = styleVar.gray,
+    style: buttonStyle,
 }) {
     return (
-        <TouchableOpacity style={styles.button}
+        <TouchableOpacity style={[styles.button, buttonStyle]}
             hitSlop={15}
             onPress={onPress}>
-            <Icon size={size}
+            <Icon 
+                size={size}
                 color={color} />
         </TouchableOpacity>
     )
@@ -19,12 +21,9 @@ export default function InputIconButton({ Icon,
 
 const styles = StyleSheet.create({
     button: {
-        position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
         height: 40,
-        top: 38,
-        right: 0,
         width: 2 * styleVar.mediumIconSize,
         paddingRight: 3,
         borderTopRightRadius: 20,

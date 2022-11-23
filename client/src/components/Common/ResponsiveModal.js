@@ -1,9 +1,9 @@
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback, useState } from "react";
 import { Modal, ScrollView, StyleSheet, Text, View } from "react-native"
-import { FORM_STATUS, getFormStatus } from "../services/util";
-import globalStyles from "../styles/globalStyles";
-import styleVar from "../styles/styleVar";
+import { FORM_STATUS, getFormStatus } from "../../services/util";
+import globalStyles from "../../styles/globalStyles";
+import styleVar from "../../styles/styleVar";
 import OpacityButton from "./OpacityButton";
 import SuccessResponse from "./SuccessResponse"
 
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     },
     buttonsContainer: {
         flexDirection: 'row',
-        justifyContent: "space-around",
+        justifyContent: "space-evenly",
         width: '100%'
     },
     title: {

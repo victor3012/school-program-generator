@@ -7,8 +7,8 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import { SchoolContext, SchoolProvider } from '../../contexts/SchoolContext'
 import { DataProvider } from '../../contexts/DataContext'
 import styleVar from "../../styles/styleVar";
-import OpacityButton from "../../components/OpacityButton";
-import Loader from "../../components/Loader";
+import OpacityButton from "../../components/Common/OpacityButton";
+import Loader from "../../components/Common/Loader";
 import Teachers from "./Teachers/Teachers";
 
 const Tab = createBottomTabNavigator();

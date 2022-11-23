@@ -1,7 +1,7 @@
-import { StyleSheet, View, Text, Platform } from "react-native"
-import styleVar from "../styles/styleVar"
+import { StyleSheet, View, Text } from "react-native"
+import styleVar from "../../styles/styleVar"
 
-export default function Avatar({ size, firstName, lastName }) {
+export default function Avatar({ size, firstName, lastName, style: customStyle }) {
     return (
         <View
             style={[
@@ -9,8 +9,8 @@ export default function Avatar({ size, firstName, lastName }) {
                     width: size,
                     height: size,
                     borderRadius: size / 2,
-                }]}>
-            <Text selectable={false} style={styles.avatarText}>
+                }, customStyle]}>
+            <Text selectable={false} style={[styles.avatarText, { fontSize: size / 2.5 }]}>
                 {firstName[0].toLocaleUpperCase()}{lastName[0].toLocaleUpperCase()}
             </Text>
         </View>
@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
     },
     avatarText: {
         color: styleVar.darkBlue,
-        fontSize: 50,
         fontWeight: 'bold',
         textAlign: "center",
         textAlignVertical: 'center',

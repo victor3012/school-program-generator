@@ -1,6 +1,6 @@
 import { View } from 'react-native'
 import Icon from 'react-native-vector-icons/Entypo'
-import styleVar from '../styles/styleVar'
+import styleVar from '../../styles/styleVar'
 
 export default function SuccessResponse({
     isSuccess = true,

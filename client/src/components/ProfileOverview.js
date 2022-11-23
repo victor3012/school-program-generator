@@ -1,7 +1,7 @@
 import { View, Animated, StyleSheet, Text, Platform } from "react-native";
 import globalStyles from "../styles/globalStyles";
 import styleVar from "../styles/styleVar";
-import Avatar from "./Avatar";
+import Avatar from "./Common/Avatar";
 
 export default function ProfileOverview({ user }) {
     return (

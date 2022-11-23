@@ -5,9 +5,9 @@ import { useLinkTo } from "@react-navigation/native";
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
 import { AuthContext } from "../../contexts/AuthContext";
-import Input from "../../components/Input";
-import PressableBox from "../../components/PressableBox";
-import ResponsiveModal from "../../components/ResponsiveModal";
+import Input from "../../components/Common/Input";
+import PressableBox from "../../components/Common/PressableBox";
+import ResponsiveModal from "../../components/Common/ResponsiveModal";
 
 import { required, maxLength } from "../../services/validators";
 import { FORM_STATUS } from "../../services/util";

@@ -3,9 +3,9 @@ import { StyleSheet, Text, View, Animated, TouchableHighlight } from "react-nati
 import Icon from 'react-native-vector-icons/SimpleLineIcons'
 
 import Input from "./Input";
-import InputIconButton from "./InputIconButton";
-import globalStyles from "../styles/globalStyles";
-import styleVar from "../styles/styleVar";
+import IconButton from "./IconButton";
+import globalStyles from "../../styles/globalStyles";
+import styleVar from "../../styles/styleVar";
 
 export default function SelectInput(
     {
@@ -85,8 +85,6 @@ export default function SelectInput(
     }
 
     const selectOptionHandler = (option) => {
-        console.log(option);
-
         setValue(option.value);
 
         setFocused(false);
@@ -111,7 +109,9 @@ export default function SelectInput(
                     required={false}
                     {...args} />
 
-                <InputIconButton Icon={(args) => <Icon {...args} name={focused ? 'arrow-up' : 'arrow-down'} color={styleVar.darkBlue} />}
+                <IconButton
+                    style={globalStyles.InputIconButton}
+                    Icon={(args) => <Icon {...args} name={focused ? 'arrow-up' : 'arrow-down'} color={styleVar.darkBlue} />}
                     onPress={() => setFocused(f => !f)} />
             </View>
 

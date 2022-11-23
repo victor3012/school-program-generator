@@ -5,12 +5,12 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { getFormStatus, updateInputStatus, FORM_STATUS } from "../../services/util";
 
-import Form from "../../components/Form";
-import Input from "../../components/Input";
-import OpacityButton from "../../components/OpacityButton";
+import Form from "../../components/Common/Form";
+import Input from "../../components/Common/Input";
+import OpacityButton from "../../components/Common/OpacityButton";
 import EyeIconButton from "../../components/Auth/EyeIconButton";
 import validators from "./validators.js";
-import authStyles from "./authStyles.js";
+import authStyles from "../../styles/authStyles";
 import globalStyles from "../../styles/globalStyles";
 
 export default function SignUp() {

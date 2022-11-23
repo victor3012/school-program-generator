@@ -1,7 +1,7 @@
 import { useLinkTo } from "@react-navigation/native";
 import { useEffect, useRef, useState } from "react";
 import { SafeAreaView, StyleSheet, Text, useWindowDimensions, View, Animated, Platform } from "react-native";
-import OpacityButton from "../../components/OpacityButton";
+import OpacityButton from "../../components/Common/OpacityButton";
 import globalStyles from "../../styles/globalStyles";
 import styleVar from "../../styles/styleVar";
 

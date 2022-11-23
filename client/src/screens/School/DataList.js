@@ -7,8 +7,8 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { SchoolContext } from "../../contexts/SchoolContext";
 import { TEACHER_ROLES } from "../../services/util";
 
-import Input from "../../components/Input";
-import OpacityButton from "../../components/OpacityButton";
+import Input from "../../components/Common/Input";
+import OpacityButton from "../../components/Common/OpacityButton";
 import DataItemContainer from './DataItemContainer'
 import globalStyles from "../../styles/globalStyles";
 import styleVar from "../../styles/styleVar";

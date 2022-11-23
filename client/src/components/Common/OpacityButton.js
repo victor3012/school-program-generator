@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import globalStyles from "../styles/globalStyles";
-import styleVar from "../styles/styleVar";
+import globalStyles from "../../styles/globalStyles";
+import styleVar from "../../styles/styleVar";
 
 export default function OpacityButton({
     children,
