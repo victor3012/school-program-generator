@@ -10,6 +10,7 @@ import me.victor.services.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -74,7 +75,7 @@ public class AuthenticationController {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
             throw new BadCredentialsException("User disabled");
-        } catch (org.springframework.security.authentication.BadCredentialsException e) {
+        } catch (AuthenticationException e) {
             throw new BadCredentialsException("Bad credentials");
         }
     }
