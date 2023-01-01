@@ -12,10 +12,10 @@ import { AuthContext, AuthProvider } from './src/contexts/AuthContext';
 import Auth from './src/screens/Auth/Auth';
 import HomeStack from './src/screens/Home/Home';
 import styleVar from './src/styles/styleVar';
-import OpacityButton from './src/components/OpacityButton';
+import OpacityButton from './src/components/Common/OpacityButton';
 import ProfileOverview from './src/components/ProfileOverview';
 import ErrorBoundary from './src/components/ErrorBoundary';
-import Loader from './src/components/Loader';
+import Loader from './src/components/Common/Loader';
 
 const Drawer = createDrawerNavigator();
 

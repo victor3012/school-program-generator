@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native"
-import PressableBox from "../../components/PressableBox"
+import PressableBox from "../../components/Common/PressableBox"
 
 export default function DataItemContainer({
     children,

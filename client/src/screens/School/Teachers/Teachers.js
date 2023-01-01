@@ -8,7 +8,7 @@ import { getTeachers } from "../../../services/schools";
 import { TEACHER_ROLES_NAMES } from "../../../services/util";
 import globalStyles from "../../../styles/globalStyles";
 import styleVar from "../../../styles/styleVar";
-import Loader from "../../../components/Loader";
+import Loader from "../../../components/Common/Loader";
 import DataItemContainer from "../DataItemContainer";
 import DataList from "../DataList";
 import TeachersForm from "./TeachersForm";

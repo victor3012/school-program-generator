@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
-import styleVar from "../../styles/styleVar";
-import globalStyles from "../../styles/globalStyles";
+import styleVar from "./styleVar";
+import globalStyles from "./globalStyles";
 
 export default StyleSheet.create({
     formContainer: { // basic container required

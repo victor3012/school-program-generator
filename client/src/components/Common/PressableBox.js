@@ -1,6 +1,6 @@
 import { Platform, Pressable, StyleSheet } from "react-native";
-import globalStyles from "../styles/globalStyles";
-import styleVar from "../styles/styleVar";
+import globalStyles from "../../styles/globalStyles";
+import styleVar from "../../styles/styleVar";
 
 export default function PressableBox({
     children,

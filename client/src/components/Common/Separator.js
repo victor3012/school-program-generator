@@ -1,5 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import styleVar from '../styles/styleVar';
+import styleVar from '../../styles/styleVar';
 
 export default function Separator({
     width = "100%",

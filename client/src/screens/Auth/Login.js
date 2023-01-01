@@ -2,12 +2,13 @@ import { Link, useLinkTo } from "@react-navigation/native";
 import { Text, View } from "react-native";
 import { useContext, useState } from "react";
 
-import Form from "../../components/Form";
-import Input from "../../components/Input";
-import OpacityButton from "../../components/OpacityButton";
+import Form from "../../components/Common/Form";
+import Input from "../../components/Common/Input";
+import OpacityButton from "../../components/Common/OpacityButton";
 import EyeIconButton from "../../components/Auth/EyeIconButton";
 import validators from './validators.js';
 import authStyles from "./authStyles.js";
+import authStyles from "../../styles/authStyles.js";
 import globalStyles from "../../styles/globalStyles";
 import { getFormStatus, updateInputStatus, FORM_STATUS } from "../../services/util";
 import { AuthContext } from "../../contexts/AuthContext";
