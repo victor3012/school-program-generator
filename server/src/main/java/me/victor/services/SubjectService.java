@@ -33,9 +33,9 @@ public class SubjectService {
             throw new DataFormatException("Subject with this name already exists");
         }
 
-        Subject subject = new Subject()
-                .setName(dto.getName())
-                .setSchool(school);
+        Subject subject = (Subject) new Subject()
+                .setSchool(school)
+                .setName(dto.getName());
 
         this.subjectRepository.save(subject);
     }
@@ -47,7 +47,7 @@ public class SubjectService {
             throw new DataFormatException("Subject with this name already exists");
         }
 
-        Subject subject = this.subjectRepository.findById(subjectId)
+        Subject subject = (Subject) this.subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid subject"))
                 .setName(dto.getName());
 

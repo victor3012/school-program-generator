@@ -48,9 +48,9 @@ public class SchoolService {
             throw new DataFormatException("A school with this name already exists");
         }
 
-        School school = new School()
-                .setName(name)
-                .setBoss(user);
+        School school = (School) new School()
+                .setOwner(user)
+                .setName(name);
 
         Teacher teacher = new Teacher()
                 .setFirstName(user.getFirstName())
@@ -173,7 +173,7 @@ public class SchoolService {
             User newOwner = this.userRepository.findById(dto.getOwnerId())
                     .orElseThrow(() -> new ResourceNotFoundException("Invalid user id"));
 
-            school.setBoss(newOwner);
+            school.setOwner(newOwner);
 
             if (school.getTeachers().stream().noneMatch(x -> x.getEmail().equals(newOwner.getEmail()))) {
                 school.getTeachers().add(new Teacher()

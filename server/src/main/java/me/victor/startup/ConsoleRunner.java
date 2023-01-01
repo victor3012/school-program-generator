@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Component;
 
 @Component
-@EntityScan("me.victor.data.entities")
+@EntityScan("me.victor.models.entities")
 @EnableJpaRepositories(basePackages = "me.victor.repositories")
 @ComponentScan("me.victor")
 public class ConsoleRunner implements CommandLineRunner {

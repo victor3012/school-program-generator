@@ -4,13 +4,10 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "schools")
-public class School extends ObjectWithId {
-    @Column(nullable = false, unique = true)
-    private String name;
-
+@Table(name = "schools", uniqueConstraints = { @UniqueConstraint(columnNames = {"name"})})
+public class School extends ObjectWithName {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private User boss;
+    private User owner;
 
     @OneToMany(mappedBy = "school", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Teacher> teachers;
@@ -18,27 +15,18 @@ public class School extends ObjectWithId {
     private List<Room> rooms;
     @OneToMany(mappedBy = "school", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Subject> subjects;
-    @OneToOne
-    private Schedule schedule;
+    @OneToMany(mappedBy = "school", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Schedule> schedule;
 
     public School() {
     }
 
-    public String getName() {
-        return name;
+    public User getOwner() {
+        return owner;
     }
 
-    public School setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public User getBoss() {
-        return boss;
-    }
-
-    public School setBoss(User user) {
-        this.boss = user;
+    public School setOwner(User owner) {
+        this.owner = owner;
         return this;
     }
 
@@ -69,11 +57,11 @@ public class School extends ObjectWithId {
         return this;
     }
 
-    public Schedule getSchedule() {
+    public List<Schedule> getSchedule() {
         return schedule;
     }
 
-    public School setSchedule(Schedule schedule) {
+    public School setSchedule(List<Schedule> schedule) {
         this.schedule = schedule;
         return this;
     }

@@ -47,9 +47,9 @@ public class RoomService {
             throw new DataFormatException("A room with this name already exists");
         }
 
-        Room room = new Room()
-                .setName(dto.getName())
-                .setSchool(school);
+        Room room = (Room) new Room()
+                .setSchool(school)
+                .setName(dto.getName());
 
         this.roomRepository.save(room);
     }
