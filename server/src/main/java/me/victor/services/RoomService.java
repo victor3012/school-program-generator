@@ -52,12 +52,12 @@ public class RoomService {
 
         RoomType type = null;
 
-        if (dto.getName() != null && !dto.getName().isBlank()) {
-            Optional<RoomType> roomType = this.roomTypeService.getByName(dto.getName(), school.getId());
+        if (dto.getType() != null && !dto.getType().isBlank()) {
+            Optional<RoomType> roomType = this.roomTypeService.getByName(dto.getType(), school.getId());
 
             if (roomType.isEmpty()) {
-                this.roomTypeService.createRoomType(dto.getName(), school);
-                roomType = this.roomTypeService.getByName(dto.getName(), school.getId());
+                this.roomTypeService.createRoomType(dto.getType(), school);
+                roomType = this.roomTypeService.getByName(dto.getType(), school.getId());
             }
 
             type = roomType.orElse(null);
