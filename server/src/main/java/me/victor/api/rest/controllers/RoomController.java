@@ -1,9 +1,7 @@
 package me.victor.api.rest.controllers;
 
-import me.victor.data.dao.SchoolRepository;
 import me.victor.data.dto.room.CreateRoomDTO;
 import me.victor.data.dto.room.RetrieveRoomDTO;
-import me.victor.data.entities.Room;
 import me.victor.data.entities.School;
 import me.victor.data.entities.User;
 import me.victor.exceptions.ResourceNotFoundException;
@@ -33,7 +31,7 @@ public class RoomController {
     @PostMapping
     public List<RetrieveRoomDTO> createRoom(WebRequest request, @PathVariable long id, @Valid @RequestBody CreateRoomDTO dto) {
         User user = this.userService.getUserByRequest(request);
-        schoolService.ensureSystemAdmin(id, user);
+        this.schoolService.ensureSystemAdmin(id, user);
 
         School school = this.schoolService.getSchool(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid school"));

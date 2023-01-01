@@ -48,6 +48,10 @@ public class TeacherService {
         return this.teacherRepository.findByEmailAndSchoolId(email, schoolId);
     }
 
+    public Optional<Teacher> getTeacherInSchool(long schoolId, long teacherId) {
+        return this.teacherRepository.findByIdAndSchoolId(teacherId, schoolId);
+    }
+
     public void saveAll(List<Teacher> teachers) {
         this.teacherRepository.saveAll(teachers);
     }

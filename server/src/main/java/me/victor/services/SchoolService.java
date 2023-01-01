@@ -115,48 +115,49 @@ public class SchoolService {
                 .collect(Collectors.toList());
     }
 
-    public void ensurePrincipal(long schoolId, User user) {
-        ensurePrincipal(schoolId, user, "Only school directors can access this");
+    public Teacher ensurePrincipal(long schoolId, User user) {
+        return ensurePrincipal(schoolId, user, "Only school directors can access this");
     }
 
-    public void ensurePrincipal(long schoolId, User user, String message) {
-        ensurePower(schoolId, user, message, TeacherRole.PRINCIPAL);
+    public Teacher ensurePrincipal(long schoolId, User user, String message) {
+        return ensurePower(schoolId, user, message, TeacherRole.PRINCIPAL);
     }
 
-    public void ensureSystemAdmin(long schoolId, User user) {
-        ensureSystemAdmin(schoolId, user, "Only system administrators can access this");
+    public Teacher ensureSystemAdmin(long schoolId, User user) {
+        return ensureSystemAdmin(schoolId, user, "Only system administrators can access this");
     }
 
-    public void ensureSystemAdmin(long schoolId, User user, String message) {
-        ensurePower(schoolId, user, message, TeacherRole.SYSTEM_ADMIN);
+    public Teacher ensureSystemAdmin(long schoolId, User user, String message) {
+        return ensurePower(schoolId, user, message, TeacherRole.SYSTEM_ADMIN);
     }
 
-    public void ensureTeacher(long schoolId, User user) {
-        ensureTeacher(schoolId, user, "Only school teachers can access this");
+    public Teacher ensureTeacher(long schoolId, User user) {
+        return ensureTeacher(schoolId, user, "Only school teachers can access this");
     }
 
-    public void ensureTeacher(long schoolId, User user, String message) {
-        ensurePower(schoolId, user, message, TeacherRole.TEACHER);
+    public Teacher ensureTeacher(long schoolId, User user, String message) {
+        return ensurePower(schoolId, user, message, TeacherRole.TEACHER);
     }
 
-    public void ensurePower(long schoolId, User user, String message, TeacherRole role) {
-        ensurePower(schoolId, user, message, role.getPower());
+    public Teacher ensurePower(long schoolId, User user, String message, TeacherRole role) {
+        return ensurePower(schoolId, user, message, role.getPower());
     }
 
-    public void ensurePower(long schoolId, User user, String message, long power) {
-        List<TeacherRole> roles = getRoles(schoolId, user);
+    public Teacher ensurePower(long schoolId, User user, String message, long power) {
+        Teacher teacher = getTeacher(schoolId, user);
+        List<TeacherRole> roles = teacher.getTeacherRoles();
 
         if (getHighestRolePower(roles) < power) {
             throw new InsufficientPermissionsException(message);
         }
+
+        return teacher;
     }
 
 
-    private List<TeacherRole> getRoles(long schoolId, User user) {
-        Teacher teacher = this.teacherService.getTeacherInSchool(schoolId, user.getEmail())
+    private Teacher getTeacher(long schoolId, User user) {
+        return this.teacherService.getTeacherInSchool(schoolId, user.getEmail())
                 .orElseThrow(() -> new InsufficientPermissionsException("You cannot access this resource"));
-
-        return teacher.getTeacherRoles();
     }
 
     public School updateSchool(long id, UpdateSchoolDTO dto, User user) {
@@ -198,7 +199,7 @@ public class SchoolService {
         return school;
     }
 
-    private int getHighestRolePower(List<TeacherRole> roles) {
+    public int getHighestRolePower(List<TeacherRole> roles) {
         int power = 0;
 
         for (TeacherRole role : roles) {

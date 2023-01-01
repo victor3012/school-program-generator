@@ -14,4 +14,5 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
     int countBySchoolId(long id);
     boolean existsBySchoolIdAndEmail(long schoolId, String email);
     Optional<Teacher> findByEmailAndSchoolId(String email, long schoolId);
+    Optional<Teacher> findByIdAndSchoolId(long teacherId, long schoolId);
 }
