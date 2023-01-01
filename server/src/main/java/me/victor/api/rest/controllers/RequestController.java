@@ -1,8 +1,8 @@
 package me.victor.api.rest.controllers;
 
-import me.victor.data.dto.request.CreateRequestDTO;
-import me.victor.data.entities.Teacher;
-import me.victor.data.entities.User;
+import me.victor.models.dto.request.CreateRequestDTO;
+import me.victor.models.entities.Teacher;
+import me.victor.models.entities.User;
 import me.victor.services.RequestService;
 import me.victor.services.SchoolService;
 import me.victor.services.UserService;

@@ -1,11 +1,11 @@
 package me.victor.api.rest.controllers;
 
-import me.victor.data.dto.school.AggregatedSchoolDTO;
-import me.victor.data.dto.school.CreateSchoolDTO;
-import me.victor.data.dto.school.ExtendedAggregatedSchoolDTO;
-import me.victor.data.dto.school.UpdateSchoolDTO;
-import me.victor.data.entities.School;
-import me.victor.data.entities.User;
+import me.victor.models.dto.school.AggregatedSchoolDTO;
+import me.victor.models.dto.school.CreateSchoolDTO;
+import me.victor.models.dto.school.ExtendedAggregatedSchoolDTO;
+import me.victor.models.dto.school.UpdateSchoolDTO;
+import me.victor.models.entities.School;
+import me.victor.models.entities.User;
 import me.victor.services.SchoolService;
 import me.victor.services.UserService;
 import org.springframework.web.bind.annotation.*;

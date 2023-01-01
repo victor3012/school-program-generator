@@ -1,10 +1,10 @@
 package me.victor.services;
 
-import me.victor.data.dao.SubjectRepository;
-import me.victor.data.dto.subject.CreateSubjectDTO;
-import me.victor.data.dto.subject.RetrieveSubjectDTO;
-import me.victor.data.entities.School;
-import me.victor.data.entities.Subject;
+import me.victor.repositories.SubjectRepository;
+import me.victor.models.dto.subject.CreateSubjectDTO;
+import me.victor.models.dto.subject.RetrieveSubjectDTO;
+import me.victor.models.entities.School;
+import me.victor.models.entities.Subject;
 import me.victor.exceptions.DataFormatException;
 import me.victor.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;

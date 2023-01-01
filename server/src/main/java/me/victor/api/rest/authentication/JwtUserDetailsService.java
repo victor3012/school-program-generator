@@ -1,7 +1,7 @@
 package me.victor.api.rest.authentication;
 
-import me.victor.data.dto.user.AuthenticationResponseDTO;
-import me.victor.data.dto.user.CreateUserDTO;
+import me.victor.models.dto.user.AuthenticationResponseDTO;
+import me.victor.models.dto.user.CreateUserDTO;
 import me.victor.services.UserService;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.User;
@@ -25,7 +25,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        me.victor.data.entities.User user = userService.getByEmail(username)
+        me.victor.models.entities.User user = userService.getByEmail(username)
                 .orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
 
         return new User(user.getEmail(), encoder.encode(user.getPassword()), new ArrayList<>());
@@ -36,7 +36,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     }
 
     public AuthenticationResponseDTO getUserDetailsByEmail(String email) {
-        me.victor.data.entities.User account = userService.getByEmail(email)
+        me.victor.models.entities.User account = userService.getByEmail(email)
                 .orElseThrow(() -> new BadCredentialsException("Invalid account"));
 
         return new AuthenticationResponseDTO(account);

@@ -1,13 +1,12 @@
 package me.victor.services;
 
-import me.victor.data.dao.RequestRepository;
-import me.victor.data.dto.request.CreateRequestDTO;
-import me.victor.data.entities.Request;
-import me.victor.data.entities.School;
-import me.victor.data.entities.Teacher;
-import me.victor.data.entities.User;
-import me.victor.data.entities.enums.RequestStage;
-import me.victor.data.entities.enums.TeacherRole;
+import me.victor.repositories.RequestRepository;
+import me.victor.models.dto.request.CreateRequestDTO;
+import me.victor.models.entities.Request;
+import me.victor.models.entities.School;
+import me.victor.models.entities.Teacher;
+import me.victor.models.entities.enums.RequestStage;
+import me.victor.models.entities.enums.TeacherRole;
 import me.victor.exceptions.DataFormatException;
 import me.victor.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;

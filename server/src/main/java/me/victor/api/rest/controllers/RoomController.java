@@ -1,9 +1,9 @@
 package me.victor.api.rest.controllers;
 
-import me.victor.data.dto.room.CreateRoomDTO;
-import me.victor.data.dto.room.RetrieveRoomDTO;
-import me.victor.data.entities.School;
-import me.victor.data.entities.User;
+import me.victor.models.dto.room.CreateRoomDTO;
+import me.victor.models.dto.room.RetrieveRoomDTO;
+import me.victor.models.entities.School;
+import me.victor.models.entities.User;
 import me.victor.exceptions.ResourceNotFoundException;
 import me.victor.services.RoomService;
 import me.victor.services.SchoolService;

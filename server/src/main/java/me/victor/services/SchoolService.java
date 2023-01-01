@@ -1,15 +1,15 @@
 package me.victor.services;
 
-import me.victor.data.dao.SchoolRepository;
-import me.victor.data.dao.UserRepository;
-import me.victor.data.dto.school.AggregatedSchoolDTO;
-import me.victor.data.dto.school.CreateSchoolDTO;
-import me.victor.data.dto.school.ExtendedAggregatedSchoolDTO;
-import me.victor.data.dto.school.UpdateSchoolDTO;
-import me.victor.data.entities.School;
-import me.victor.data.entities.Teacher;
-import me.victor.data.entities.enums.TeacherRole;
-import me.victor.data.entities.User;
+import me.victor.repositories.SchoolRepository;
+import me.victor.repositories.UserRepository;
+import me.victor.models.dto.school.AggregatedSchoolDTO;
+import me.victor.models.dto.school.CreateSchoolDTO;
+import me.victor.models.dto.school.ExtendedAggregatedSchoolDTO;
+import me.victor.models.dto.school.UpdateSchoolDTO;
+import me.victor.models.entities.School;
+import me.victor.models.entities.Teacher;
+import me.victor.models.entities.enums.TeacherRole;
+import me.victor.models.entities.User;
 import me.victor.exceptions.DataFormatException;
 import me.victor.exceptions.InsufficientPermissionsException;
 import me.victor.exceptions.ResourceNotFoundException;

@@ -1,11 +1,11 @@
 package me.victor.services;
 
-import me.victor.data.dao.TeacherRepository;
-import me.victor.data.dto.teacher.CreateTeacherDTO;
-import me.victor.data.dto.teacher.RetrieveTeacherDTO;
-import me.victor.data.entities.School;
-import me.victor.data.entities.Teacher;
-import me.victor.data.entities.enums.TeacherRole;
+import me.victor.repositories.TeacherRepository;
+import me.victor.models.dto.teacher.CreateTeacherDTO;
+import me.victor.models.dto.teacher.RetrieveTeacherDTO;
+import me.victor.models.entities.School;
+import me.victor.models.entities.Teacher;
+import me.victor.models.entities.enums.TeacherRole;
 import me.victor.exceptions.DataFormatException;
 import me.victor.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
