@@ -10,12 +10,23 @@ public class CreateRoomDTO {
     @Size(max = 25, message = "Room name cannot exceed 25 symbols")
     private String name;
 
+    private String type;
+
     public String getName() {
         return name;
     }
 
     public CreateRoomDTO setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public CreateRoomDTO setType(String type) {
+        this.type = type;
         return this;
     }
 }

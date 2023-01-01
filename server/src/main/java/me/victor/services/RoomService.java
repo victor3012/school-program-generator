@@ -1,5 +1,6 @@
 package me.victor.services;
 
+import me.victor.models.entities.RoomType;
 import me.victor.repositories.RoomRepository;
 import me.victor.models.dto.room.CreateRoomDTO;
 import me.victor.models.dto.room.RetrieveRoomDTO;
@@ -17,9 +18,11 @@ import java.util.stream.Collectors;
 @Service
 public class RoomService {
     private final RoomRepository roomRepository;
+    private final RoomTypeService roomTypeService;
 
-    public RoomService(RoomRepository roomRepository) {
+    public RoomService(RoomRepository roomRepository, RoomTypeService roomTypeService) {
         this.roomRepository = roomRepository;
+        this.roomTypeService = roomTypeService;
     }
 
     public List<Room> getRoomsBySchoolId(long id) {
@@ -47,8 +50,22 @@ public class RoomService {
             throw new DataFormatException("A room with this name already exists");
         }
 
+        RoomType type = null;
+
+        if (dto.getName() != null && !dto.getName().isBlank()) {
+            Optional<RoomType> roomType = this.roomTypeService.getByName(dto.getName(), school.getId());
+
+            if (roomType.isEmpty()) {
+                this.roomTypeService.createRoomType(dto.getName(), school);
+                roomType = this.roomTypeService.getByName(dto.getName(), school.getId());
+            }
+
+            type = roomType.orElse(null);
+        }
+
         Room room = (Room) new Room()
                 .setSchool(school)
+                .setType(type)
                 .setName(dto.getName());
 
         this.roomRepository.save(room);
