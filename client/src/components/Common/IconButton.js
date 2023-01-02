@@ -9,10 +9,10 @@ export default function IconButton({ Icon,
     style: buttonStyle,
 }) {
     return (
-        <TouchableOpacity style={[styles.button, buttonStyle]}
+        <TouchableOpacity style={[styles.button, { width: 2 * size, height: 2 * size }, buttonStyle]}
             hitSlop={15}
             onPress={onPress}>
-            <Icon 
+            <Icon
                 size={size}
                 color={color} />
         </TouchableOpacity>
@@ -23,10 +23,8 @@ const styles = StyleSheet.create({
     button: {
         alignItems: 'center',
         justifyContent: 'center',
-        height: 40,
-        width: 2 * styleVar.mediumIconSize,
         paddingRight: 3,
         borderTopRightRadius: 20,
-        borderBottomRightRadius: 20,
+        borderBottomRightRadius: 20
     },
 })

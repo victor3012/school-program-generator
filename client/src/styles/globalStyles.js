@@ -36,5 +36,10 @@ export default StyleSheet.create({
         borderRadius: 20,
         paddingVertical: 0,
         paddingHorizontal: 0
+    },
+    InputIconButton: {
+        position: 'absolute',
+        top: 38,
+        right: 0,
     }
 });

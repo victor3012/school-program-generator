@@ -8,10 +8,12 @@ import SelectInput from "../../../components/Common/SelectInput"
 import { DataContext } from "../../../contexts/DataContext"
 import { SchoolContext } from "../../../contexts/SchoolContext"
 import { createTeacher } from "../../../services/schools"
-import { TEACHER_ROLES, TEACHER_ROLES_NAMES } from "../../../services/util"
+import { FORM_STATUS, TEACHER_ROLES, TEACHER_ROLES_NAMES, updateInputStatus } from "../../../services/util"
+import modalFormStyles from "../../../styles/modalFormStyles"
+import validators from "../validators"
 
 export default function TeachersForm({ visible, setVisible }) {
-    const { school } = useContext(SchoolContext);
+    const { school, teacher } = useContext(SchoolContext);
     const { setData: setTeachers } = useContext(DataContext);
 
     const [role, setRole] = useState(TEACHER_ROLES_NAMES.TEACHER);
@@ -19,18 +21,17 @@ export default function TeachersForm({ visible, setVisible }) {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
 
+    const [inputStatuses, setInputStatuses] = useState(getDefaultInputStatuses());
+
     const options = Object.keys(TEACHER_ROLES).map(role => ({ key: role, value: TEACHER_ROLES_NAMES[role] }));
 
-    const onFirstNameChange = (value) => setFirstName(value);
-    const onLastNameChange = (value) => setLastName(value);
-    const onEmailChange = (value) => setEmail(value);
-    const onRoleChange = (value) => setRole(value);
-
     const submitHandler = async () => {
-        //validate
-
-
         try {
+            validators.role(teacher.role)(role);
+            validators.name(firstName);
+            validators.name(lastName);
+            validators.email(email);
+
             const teacherRole = options.find(o => o.value === role).key;
             const res = await createTeacher(school.id, { firstName, lastName, email, role: teacherRole });
             setTeachers(res);
@@ -40,51 +41,89 @@ export default function TeachersForm({ visible, setVisible }) {
         }
     }
 
-    const cancelHandler = () => {
+    const resetHandler = () => {
+        setInputStatuses(getDefaultInputStatuses());
         setRole(TEACHER_ROLES_NAMES.TEACHER);
         setFirstName('');
         setLastName('');
         setEmail('');
     }
 
+    const setInputValid = (inputName) => updateInputStatus(inputStatuses, setInputStatuses, inputName, FORM_STATUS.VALID);
+    const setInputInvalid = (inputName) => updateInputStatus(inputStatuses, setInputStatuses, inputName, FORM_STATUS.INVALID);
+
+    const onRoleChange = (value) => setRole(value);
+    const onFirstNameChange = (value) => setFirstName(value);
+    const onLastNameChange = (value) => setLastName(value);
+    const onEmailChange = (value) => setEmail(value);
+
+    const onRoleError = () => setInputInvalid('role');
+    const onFirstNameError = () => setInputInvalid('firstName');
+    const onLastNameError = () => setInputInvalid('lastName');
+    const onEmailError = () => setInputInvalid('email');
+
+    const onRoleErrorResolve = () => setInputValid('role');
+    const onFirstNameErrorResolve = () => setInputValid('firstName');
+    const onLastNameErrorResolve = () => setInputValid('lastName');
+    const onEmailErrorResolve = () => setInputValid('email');
+
     return (
         <ResponsiveModal
-            containerStyle={{ paddingTop: 0, paddingHorizontal: 0 }}
+            containerStyle={modalFormStyles.responsiveModal}
+            inputStatuses={inputStatuses}
             onSubmit={submitHandler}
-            onCancel={cancelHandler}
+            onReset={resetHandler}
             visible={visible}
             setVisible={setVisible}>
-            <Form style={{ margin: 0, zIndex: 1, shadowOpacity: 0 }}>
+            <Form style={modalFormStyles.form} inputStatuses={inputStatuses}>
                 <SelectInput label='Role'
                     required
+                    validator={validators.role(teacher.role)}
                     options={options}
                     value={role}
                     setValue={setRole}
                     onChange={onRoleChange}
-                    style={styles.input}
+                    onError={onRoleError}
+                    onErrorResolve={onRoleErrorResolve}
+                    style={modalFormStyles.input}
                 />
                 <Input label='First name'
                     required
+                    value={firstName}
+                    validator={validators.name}
                     onChange={onFirstNameChange}
-                    style={styles.input}
+                    onError={onFirstNameError}
+                    onErrorResolve={onFirstNameErrorResolve}
+                    style={modalFormStyles.input}
                 />
                 <Input label='Last name'
                     required
+                    value={lastName}
+                    validator={validators.name}
                     onChange={onLastNameChange}
-                    style={styles.input}
+                    onError={onLastNameError}
+                    onErrorResolve={onLastNameErrorResolve}
+                    style={modalFormStyles.input}
                 />
                 <Input label='Email'
                     required
+                    value={email}
+                    validator={validators.email}
                     onChange={onEmailChange}
-                    style={styles.input}
+                    onError={onEmailError}
+                    onErrorResolve={onEmailErrorResolve}
+                    style={modalFormStyles.input}
                 />
             </Form>
         </ResponsiveModal>
     )
 }
 
-const styles = StyleSheet.create({
-    input: {
-        textAlign: 'center'
+function getDefaultInputStatuses() {
+    return {
+        role: FORM_STATUS.DEFAULT,
+        firstName: FORM_STATUS.DEFAULT,
+        lastName: FORM_STATUS.DEFAULT,
+        email: FORM_STATUS.DEFAULT
     }
-})
+}

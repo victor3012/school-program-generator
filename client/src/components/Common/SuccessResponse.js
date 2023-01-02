@@ -11,12 +11,14 @@ export default function SuccessResponse({
         <View
             {...props}
             style={[{
+                flex: 1,
                 width: '100%',
                 height: '100%',
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: styleVar.white,
-                position: 'absolute'
+                position: 'absolute',
+                borderRadius: 20
             }, style]}>
             <Icon name={isSuccess ? 'check' : 'circle-with-cross'} size={2 * styleVar.largeIconSize} color={isSuccess ? 'green' : 'red'} style={checkStyle} />
         </View>

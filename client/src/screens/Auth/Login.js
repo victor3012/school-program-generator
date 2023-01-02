@@ -7,7 +7,6 @@ import Input from "../../components/Common/Input";
 import OpacityButton from "../../components/Common/OpacityButton";
 import EyeIconButton from "../../components/Auth/EyeIconButton";
 import validators from './validators.js';
-import authStyles from "./authStyles.js";
 import authStyles from "../../styles/authStyles.js";
 import globalStyles from "../../styles/globalStyles";
 import { getFormStatus, updateInputStatus, FORM_STATUS } from "../../services/util";
@@ -44,6 +43,7 @@ export default function Login() {
             <Input
                 label="Email"
                 hitSlop={10}
+                value={email}
                 onChange={(newEmail) => setEmail(newEmail)}
                 onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', FORM_STATUS.INVALID)}
                 onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', FORM_STATUS.VALID)}
@@ -55,6 +55,7 @@ export default function Login() {
                 <Input
                     label="Password"
                     hitSlop={10}
+                    value={password}
                     onChange={(newPassword) => setPassword(newPassword)}
                     onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', FORM_STATUS.INVALID)}
                     onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', FORM_STATUS.VALID)}
