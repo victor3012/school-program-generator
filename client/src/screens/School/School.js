@@ -10,6 +10,8 @@ import styleVar from "../../styles/styleVar";
 import OpacityButton from "../../components/Common/OpacityButton";
 import Loader from "../../components/Common/Loader";
 import Teachers from "./Teachers/Teachers";
+import Rooms from "./Rooms";
+import Subjects from "./Subjects";
 
 const Tab = createBottomTabNavigator();
 
@@ -25,9 +27,17 @@ export default function SchoolStack({ route, navigation }) {
             <Teachers />
         </ScreenComponent>
     )
-    const Rooms = (props) => <ScreenComponent title='Rooms' {...props} />
+    const RoomsComponent = (props) => (
+        <ScreenComponent title='Rooms' {...props}>
+            <Rooms />
+        </ScreenComponent>
+    )
     const SchoolComponent = (props) => <ScreenComponent  {...props} />
-    const Subjects = (props) => <ScreenComponent title='Subjects' {...props} />
+    const SubjectsComponent = (props) => (
+        <ScreenComponent title='Subjects' {...props}>
+            <Subjects />
+        </ScreenComponent>
+    )
     const Requests = (props) => <ScreenComponent title='Requests' {...props} />
 
     const AllSchoolsButton = () => {
@@ -69,7 +79,7 @@ export default function SchoolStack({ route, navigation }) {
                         }
                     }}
                     initialParams={{ id: route.params.id }}
-                    component={Rooms} />
+                    component={RoomsComponent} />
                 <Tab.Screen
                     name="SchoolInfo"
                     options={{
@@ -97,7 +107,7 @@ export default function SchoolStack({ route, navigation }) {
                         }
                     }}
                     initialParams={{ id: route.params.id }}
-                    component={Subjects} />
+                    component={SubjectsComponent} />
                 <Tab.Screen
                     name="Requests"
                     options={{
