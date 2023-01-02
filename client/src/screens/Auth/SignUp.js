@@ -56,6 +56,7 @@ export default function SignUp() {
                 <Input
                     label="First name"
                     hitSlop={10}
+                    value={firstName}
                     onChange={(newFirstName) => setFirstName(newFirstName)}
                     onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'firstName', FORM_STATUS.INVALID)}
                     onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'firstName', FORM_STATUS.VALID)}
@@ -66,6 +67,7 @@ export default function SignUp() {
                 <Input
                     label="Last name"
                     hitSlop={10}
+                    value={lastName}
                     onChange={(newLastName) => setLastName(newLastName)}
                     onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'lastName', FORM_STATUS.INVALID)}
                     onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'lastName', FORM_STATUS.VALID)}
@@ -78,6 +80,7 @@ export default function SignUp() {
             <Input
                 label="Email"
                 hitSlop={10}
+                value={email}
                 onChange={(newEmail) => setEmail(newEmail)}
                 onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', FORM_STATUS.INVALID)}
                 onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', FORM_STATUS.VALID)}
@@ -88,6 +91,7 @@ export default function SignUp() {
                 <Input
                     label="Password"
                     hitSlop={10}
+                    value={password}
                     onChange={(newPassword) => setPassword(newPassword)}
                     onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', FORM_STATUS.INVALID)}
                     onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', FORM_STATUS.VALID)}
@@ -104,6 +108,7 @@ export default function SignUp() {
                 <Input
                     label="Repeat password"
                     hitSlop={10}
+                    value={repass}
                     onChange={(newRepass) => setRepass(newRepass)}
                     onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'repass', FORM_STATUS.INVALID)}
                     onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'repass', FORM_STATUS.VALID)}

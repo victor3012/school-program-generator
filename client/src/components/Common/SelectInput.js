@@ -57,7 +57,7 @@ export default function SelectInput(
             {
                 toValue: animationValue,
                 duration: 150,
-                useNativeDriver: true
+                useNativeDriver: false
             }
         ).start();
     }, [focused, heightAnimation, displayOptions])
@@ -117,6 +117,7 @@ export default function SelectInput(
 
             <Animated.ScrollView scrollEnabled={styles.dropdown.maxHeight / displayOptions.length < styles.option.height}
                 ref={dropdown}
+                
                 style={[styles.dropdown, {
                     height: heightAnimation
                 }]}>
@@ -139,11 +140,9 @@ const styles = StyleSheet.create({
     dropdown: {
         position: 'absolute',
         top: '100%',
-        left: '50%',
-        transform: [{ translateX: '-50%' }],
         width: 300,
         maxHeight: 200,
-        margin: 2,
+        marginVertical: 2,
         backgroundColor: styleVar.white,
         borderRadius: 20,
         shadowColor: "#000",

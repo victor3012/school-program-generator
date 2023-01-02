@@ -18,6 +18,7 @@ export default function DataList({
     filterCallback,
     DataItem,
     itemHeight = 90,
+    addButtonShown = true,
     onAddButtonPress
 }) {
     const { teacher } = useContext(SchoolContext);
@@ -30,11 +31,15 @@ export default function DataList({
     const [pagesCount, setPagesCount] = useState(1);
 
     useEffect(() => { //pagination
+        setPaginationIdx(0);
+
         const maxItems = getMaxItems(height, itemHeight);
         const itemsCount = data.length;
 
         setItemsPerPage(maxItems);
-        setPagesCount(Math.ceil(itemsCount / maxItems));
+
+        const newPages = Math.ceil(itemsCount / maxItems);
+        setPagesCount(newPages === 0 ? 1 : newPages);
     }, [height])
 
     useEffect(() => {
@@ -44,7 +49,9 @@ export default function DataList({
         const itemsCount = filtered.length;
         const maxItems = getMaxItems(height, itemHeight);
 
-        setPagesCount(Math.ceil(itemsCount / maxItems));
+
+        const newPages = Math.ceil(itemsCount / maxItems);
+        setPagesCount(newPages === 0 ? 1 : newPages);
     }, [query])
 
     const updateHeightHandler = (e) => {
@@ -87,9 +94,7 @@ export default function DataList({
 
     return (
         <View style={[styles.container, {
-            width: Platform.OS === 'web'
-                ? 600
-                : 0.9 * width
+            width: Math.min(600, 0.9 * width)
         }]} onLayout={updateHeightHandler} >
             <View style={[globalStyles.basicContainer, styles.searchContainer]}>
                 <Input
@@ -103,7 +108,8 @@ export default function DataList({
             </View>
 
             <View style={[globalStyles.basicContainer, styles.dataContainer]}>
-                {TEACHER_ROLES[teacher.role] > TEACHER_ROLES.TEACHER
+                {(addButtonShown
+                    && TEACHER_ROLES[teacher.role] > TEACHER_ROLES.TEACHER)
                     && <DataItemContainer
                         style={styles.addItem}
                         onPress={onAddButtonPress}>
@@ -150,29 +156,31 @@ const styles = StyleSheet.create({
     },
     addItem: {
         justifyContent: 'center',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
         padding: 0
     },
     dataContainer: {
+        margin: 20,
+        padding: 0,
         width: '100%',
-        overflow: 'hidden',
+        flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: styleVar.white,
         borderRadius: 10,
-        margin: 0,
-        padding: 0
     },
     searchContainer: {
+        zIndex: 10,
         margin: 0,
         padding: 15,
+        width: '100%',
         marginBottom: 30,
+        flex: 'none',
         alignContent: 'center',
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-        flex: 'none',
-        zIndex: 10,
-        width: '100%'
     },
     inputContainer: {
         marginTop: 0,

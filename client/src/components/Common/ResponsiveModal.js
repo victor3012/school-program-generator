@@ -103,38 +103,40 @@ export default function ResponsiveModal({
             visible={visible}>
             <View style={styles.modal}>
                 <View style={styles.container}>
-                    <ScrollView contentContainerStyle={[globalStyles.basicContainer, containerStyle, { overflow: 'hidden' }]}>
-                        {title &&
-                            <Text style={[globalStyles.text, styles.title]}>
-                                {title}
-                            </Text>
-                        }
-
-                        {children}
-
-                        <View style={styles.buttonsContainer}>
-                            {showSubmitBtn &&
-                                <OpacityButton onPress={submitHandler}
-                                    style={{ marginBottom: 0 }}
-                                    disabled={getFormStatus(inputStatuses) != FORM_STATUS.VALID}>
-                                    {submitText}
-                                </OpacityButton>
+                    <ScrollView contentContainerStyle={[styles.content]}>
+                        <View style={[globalStyles.basicContainer, containerStyle]}>
+                            {title &&
+                                <Text style={[globalStyles.text, styles.title]}>
+                                    {title}
+                                </Text>
                             }
 
-                            {showCancelBtn &&
-                                <OpacityButton onPress={cancelHandler}
-                                    style={{
-                                        marginBottom: 0,
-                                        backgroundColor: styleVar.white
-                                    }}
-                                    textStyle={{ color: styleVar.blue }}>
-                                    {cancelText}
-                                </OpacityButton>
+                            {children}
+
+                            <View style={styles.buttonsContainer}>
+                                {showSubmitBtn &&
+                                    <OpacityButton onPress={submitHandler}
+                                        style={{ marginBottom: 0 }}
+                                        disabled={getFormStatus(inputStatuses) != FORM_STATUS.VALID}>
+                                        {submitText}
+                                    </OpacityButton>
+                                }
+
+                                {showCancelBtn &&
+                                    <OpacityButton onPress={cancelHandler}
+                                        style={{
+                                            marginBottom: 0,
+                                            backgroundColor: styleVar.white
+                                        }}
+                                        textStyle={{ color: styleVar.blue }}>
+                                        {cancelText}
+                                    </OpacityButton>
+                                }
+                            </View>
+                            {requestStatus === REQUEST_STATUS.UNFULLFILED ||
+                                <SuccessResponse isSuccess={requestStatus === REQUEST_STATUS.FULFILLED} />
                             }
                         </View>
-                        {requestStatus === REQUEST_STATUS.UNFULLFILED ||
-                            <SuccessResponse isSuccess={requestStatus === REQUEST_STATUS.FULFILLED} />
-                        }
                     </ScrollView>
                 </View>
             </View>
@@ -144,6 +146,7 @@ export default function ResponsiveModal({
 
 const styles = StyleSheet.create({
     container: {
+        display: 'flex',
         alignContent: 'center',
         justifyContent: 'center',
         alignItems: 'center',
@@ -154,6 +157,10 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         backgroundColor: 'rgba(0,0,0,0.6)',
+    },
+    content: {
+        flexGrow: 1,
+        justifyContent: 'center'
     },
     buttonsContainer: {
         flexDirection: 'row',

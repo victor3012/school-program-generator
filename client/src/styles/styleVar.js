@@ -12,6 +12,7 @@ export default {
     redShadow: '#ffcccc',
     black: 'rgb(28, 30, 33)',
     gray: 'gray',
+    lightgray: 'rgb(201, 201, 201)',
     smallIconSize: 16,
     mediumIconSize: 20,
     largeIconSize: 26,
