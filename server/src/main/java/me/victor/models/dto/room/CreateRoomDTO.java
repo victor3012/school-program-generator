@@ -10,6 +10,7 @@ public class CreateRoomDTO {
     @Size(max = 25, message = "Room name cannot exceed 25 symbols")
     private String name;
 
+    @Size(max = 25, message = "Room type cannot exceed 25 symbols")
     private String type;
 
     public String getName() {

@@ -1,5 +1,7 @@
 package me.victor.services;
 
+import me.victor.models.entities.RoomType;
+import me.victor.models.entities.SubjectType;
 import me.victor.repositories.SubjectRepository;
 import me.victor.models.dto.subject.CreateSubjectDTO;
 import me.victor.models.dto.subject.RetrieveSubjectDTO;
@@ -17,9 +19,14 @@ import java.util.stream.Collectors;
 @Service
 public class SubjectService {
     private final SubjectRepository subjectRepository;
+    private final RoomTypeService roomTypeService;
+    private final SubjectTypeService subjectTypeService;
 
-    public SubjectService(SubjectRepository subjectRepository) {
+    public SubjectService(SubjectRepository subjectRepository, RoomTypeService roomTypeService,
+                          SubjectTypeService subjectTypeService) {
         this.subjectRepository = subjectRepository;
+        this.roomTypeService = roomTypeService;
+        this.subjectTypeService = subjectTypeService;
     }
 
     public int getSubjectsCountBySchoolId(long id) {
@@ -35,6 +42,8 @@ public class SubjectService {
 
         Subject subject = (Subject) new Subject()
                 .setSchool(school)
+                .setRoomType(this.roomTypeService.getByName(dto.getRoomType(), school.getId()).orElse(null))
+                .setType(getSubjectTypeByName(dto.getType(), school))
                 .setName(dto.getName());
 
         this.subjectRepository.save(subject);
@@ -49,6 +58,8 @@ public class SubjectService {
 
         Subject subject = (Subject) this.subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid subject"))
+                .setRoomType(this.roomTypeService.getByName(dto.getRoomType(), school.getId()).orElse(null))
+                .setType(getSubjectTypeByName(dto.getType(), school))
                 .setName(dto.getName());
 
         this.subjectRepository.save(subject);
@@ -67,8 +78,30 @@ public class SubjectService {
                 .stream()
                 .map(x -> (RetrieveSubjectDTO) new RetrieveSubjectDTO()
                         .setId(x.getId())
+                        .setType(x.getType() == null
+                                ? null
+                                : x.getType().getName())
+                        .setRoomType(x.getRoomType() == null
+                                ? null
+                                : x.getRoomType().getName())
                         .setName(x.getName()))
                 .sorted(Comparator.comparing(CreateSubjectDTO::getName))
                 .collect(Collectors.toList());
+    }
+
+    private SubjectType getSubjectTypeByName(String name, School school) {
+        SubjectType type = null;
+
+        if (name != null && !name.isBlank()) {
+            Optional<SubjectType> subjectType = this.subjectTypeService.getByName(name, school.getId());
+
+            if (subjectType.isEmpty()) {
+                this.subjectTypeService.createSubjectType(name, school);
+                subjectType = this.subjectTypeService.getByName(name, school.getId());
+            }
+
+            type = subjectType.orElse(null);
+        }
+        return type;
     }
 }

@@ -35,7 +35,10 @@ public class RoomService {
                 .sorted()
                 .map(x -> new RetrieveRoomDTO()
                         .setId(x.getId())
-                        .setName(x.getName()))
+                        .setName(x.getName())
+                        .setRoomType(x.getType() == null
+                                ? null
+                                : x.getType().getName()))
                 .collect(Collectors.toList());
     }
 
@@ -50,18 +53,7 @@ public class RoomService {
             throw new DataFormatException("A room with this name already exists");
         }
 
-        RoomType type = null;
-
-        if (dto.getType() != null && !dto.getType().isBlank()) {
-            Optional<RoomType> roomType = this.roomTypeService.getByName(dto.getType(), school.getId());
-
-            if (roomType.isEmpty()) {
-                this.roomTypeService.createRoomType(dto.getType(), school);
-                roomType = this.roomTypeService.getByName(dto.getType(), school.getId());
-            }
-
-            type = roomType.orElse(null);
-        }
+        RoomType type = getRoomType(dto, school);
 
         Room room = (Room) new Room()
                 .setSchool(school)
@@ -72,7 +64,7 @@ public class RoomService {
     }
 
     private Optional<Room> getRoom(String name, long schoolId) {
-        return this.roomRepository.getByNameAndSchoolId(name ,schoolId);
+        return this.roomRepository.getByNameAndSchoolId(name, schoolId);
     }
 
     public void updateRoom(School school, long roomId, CreateRoomDTO dto) {
@@ -90,6 +82,23 @@ public class RoomService {
         }
 
         room.setName(dto.getName());
+        room.setType(getRoomType(dto, school));
         this.roomRepository.save(room);
+    }
+
+    private RoomType getRoomType(CreateRoomDTO dto, School school) {
+        RoomType type = null;
+
+        if (dto.getType() != null && !dto.getType().isBlank()) {
+            Optional<RoomType> roomType = this.roomTypeService.getByName(dto.getType(), school.getId());
+
+            if (roomType.isEmpty()) {
+                this.roomTypeService.createRoomType(dto.getType(), school);
+                roomType = this.roomTypeService.getByName(dto.getType(), school.getId());
+            }
+
+            type = roomType.orElse(null);
+        }
+        return type;
     }
 }
