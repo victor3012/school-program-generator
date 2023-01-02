@@ -9,7 +9,7 @@ public class Room extends ObjectWithName implements Comparable<Room> {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private School school;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private RoomType type;
 
     public Room() {

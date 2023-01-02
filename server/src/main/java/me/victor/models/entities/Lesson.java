@@ -2,6 +2,7 @@ package me.victor.models.entities;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
+import java.util.Set;
 
 @Entity
 @Table(name = "lessons")
@@ -15,8 +16,8 @@ public class Lesson extends ObjectWithId {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Room room;
 
-    @Column(name = "class_group")
-    private String classGroup;
+    @ManyToMany
+    private Set<Group> classGroups;
 
     @Column(name = "day_of_week")
     private DayOfWeek dayOfWeek;
@@ -54,12 +55,12 @@ public class Lesson extends ObjectWithId {
         return this;
     }
 
-    public String getClassGroup() {
-        return classGroup;
+    public Set<Group> getClassGroups() {
+        return classGroups;
     }
 
-    public Lesson setClassGroup(String classGroup) {
-        this.classGroup = classGroup;
+    public Lesson setClassGroups(Set<Group> classGroups) {
+        this.classGroups = classGroups;
         return this;
     }
 

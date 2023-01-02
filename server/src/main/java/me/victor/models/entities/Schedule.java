@@ -1,5 +1,7 @@
 package me.victor.models.entities;
 
+import me.victor.models.entities.timetable.Timetable;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -12,7 +14,7 @@ public class Schedule extends ObjectWithName {
     private boolean isMain;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private School school;
+    private Timetable timetable;
 
     public Schedule() {
     }

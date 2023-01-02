@@ -1,9 +1,11 @@
-package me.victor.models.entities;
+package me.victor.models.entities.timetable;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import me.victor.models.entities.ObjectWithId;
+import me.victor.models.entities.Subject;
+import me.victor.models.entities.Teacher;
+
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "timetable_subjects")
@@ -13,11 +15,16 @@ public class TimetableSubject extends ObjectWithId {
 
     private int lessonsPerWeek;
 
+    @ManyToMany
+    private Set<TimetableGroup> groups;
+
     @ManyToOne
     private Teacher teacher;
 
-    //TODO: restrictions
+    @ManyToOne
+    private Timetable timetable;
 
+    //TODO: restrictions
 
     public Subject getSubject() {
         return subject;
