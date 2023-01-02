@@ -15,8 +15,6 @@ public class School extends ObjectWithName {
     private List<Room> rooms;
     @OneToMany(mappedBy = "school", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Subject> subjects;
-    @OneToMany(mappedBy = "school", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Schedule> schedule;
 
     public School() {
     }
@@ -54,15 +52,6 @@ public class School extends ObjectWithName {
 
     public School setSubjects(List<Subject> subjects) {
         this.subjects = subjects;
-        return this;
-    }
-
-    public List<Schedule> getSchedule() {
-        return schedule;
-    }
-
-    public School setSchedule(List<Schedule> schedule) {
-        this.schedule = schedule;
         return this;
     }
 }

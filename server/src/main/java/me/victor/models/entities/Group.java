@@ -5,7 +5,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "groups")
+@Table(name = "school_groups")
 public class Group extends ObjectWithName {
     @ManyToOne(optional = false)
     private School school;
