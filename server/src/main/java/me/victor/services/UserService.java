@@ -1,11 +1,15 @@
 package me.victor.services;
 
+import me.victor.api.rest.authentication.JwtAuthenticationEntryPoint;
+import me.victor.api.rest.authentication.JwtRequest;
 import me.victor.api.rest.authentication.JwtTokenUtil;
+import me.victor.api.rest.authentication.JwtUserDetailsService;
 import me.victor.repositories.UserRepository;
 import me.victor.models.dto.user.ChangePasswordUserDTO;
 import me.victor.models.dto.user.CreateUserDTO;
 import me.victor.models.entities.User;
 import me.victor.exceptions.ResourceNotFoundException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.WebRequest;
 
@@ -21,7 +25,7 @@ public class UserService {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
-    public void createUser(CreateUserDTO dto) {
+    public void createUser(CreateUserDTO dto, UserDetails details) {
         Optional<User> requested = this.userRepository.findByEmail(dto.getEmail());
 
         if (requested.isPresent()) {
@@ -32,7 +36,7 @@ public class UserService {
                 .setFirstName(dto.getFirstName())
                 .setLastName(dto.getLastName())
                 .setEmail(dto.getEmail())
-                .setPassword(dto.getPassword())
+                .setPassword(details.getPassword())
                 .setEmailConfirmed(false);
 
         this.userRepository.save(user);

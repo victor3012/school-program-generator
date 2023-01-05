@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
-    private static final PasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
     private final UserService userService;
 
     public JwtUserDetailsService(UserService userService) {
@@ -28,7 +28,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         me.victor.models.entities.User user = userService.getByEmail(username)
                 .orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
 
-        return new User(user.getEmail(), encoder.encode(user.getPassword()), new ArrayList<>());
+        return new User(user.getEmail(), user.getPassword(), new ArrayList<>());
     }
 
     public UserDetails newUser(CreateUserDTO dto) {

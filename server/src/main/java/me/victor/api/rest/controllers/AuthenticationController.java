@@ -35,8 +35,8 @@ public class AuthenticationController {
 
     @PostMapping(value = "/api/register")
     public AuthenticationResponseDTO register(@Valid @RequestBody CreateUserDTO dto) {
-        this.userService.createUser(dto);
         UserDetails details = this.userDetailsService.newUser(dto);
+        this.userService.createUser(dto, details);
 
         String token = jwtTokenUtil.generateToken(details);
 

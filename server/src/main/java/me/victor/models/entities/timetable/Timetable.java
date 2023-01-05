@@ -11,5 +11,9 @@ public class Timetable extends ObjectWithName {
     @OneToMany(mappedBy = "timetable", cascade = CascadeType.ALL)
     private List<TimetableGroup> groups;
 
+    /*
+    //
+     */
+
     //TODO: RESTRICTIONS
 }
