@@ -1,5 +1,6 @@
 package me.victor.services;
 
+import me.victor.mappers.RoomMapper;
 import me.victor.models.entities.RoomType;
 import me.victor.repositories.RoomRepository;
 import me.victor.models.dto.room.CreateRoomDTO;
@@ -19,10 +20,12 @@ import java.util.stream.Collectors;
 public class RoomService {
     private final RoomRepository roomRepository;
     private final RoomTypeService roomTypeService;
+    private final RoomMapper mapper;
 
-    public RoomService(RoomRepository roomRepository, RoomTypeService roomTypeService) {
+    public RoomService(RoomRepository roomRepository, RoomTypeService roomTypeService, RoomMapper mapper) {
         this.roomRepository = roomRepository;
         this.roomTypeService = roomTypeService;
+        this.mapper = mapper;
     }
 
     public List<Room> getRoomsBySchoolId(long id) {
@@ -30,16 +33,10 @@ public class RoomService {
     }
 
     public List<RetrieveRoomDTO> getRoomsInSchool(long id) {
-        return getRoomsBySchoolId(id)
+        return mapper.roomsToDTOs(getRoomsBySchoolId(id)
                 .stream()
                 .sorted()
-                .map(x -> new RetrieveRoomDTO()
-                        .setId(x.getId())
-                        .setName(x.getName())
-                        .setRoomType(x.getType() == null
-                                ? null
-                                : x.getType().getName()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     public int getRoomsCountBySchoolId(long id) {
