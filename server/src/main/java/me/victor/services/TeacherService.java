@@ -66,7 +66,8 @@ public class TeacherService {
             throw new DataFormatException("A teacher with this email already exists");
         }
 
-        Teacher teacher = mapper.dtoToTeacher(dto);
+        Teacher teacher = mapper.dtoToTeacher(dto)
+                .setSchool(school);
 
         this.teacherRepository.save(teacher);
     }
@@ -84,6 +85,7 @@ public class TeacherService {
         long id = currentTeacher.getId();
         currentTeacher = mapper.dtoToTeacher(dto);
         currentTeacher.setId(id);
+        currentTeacher.setSchool(school);
 
         this.teacherRepository.save(currentTeacher);
     }
