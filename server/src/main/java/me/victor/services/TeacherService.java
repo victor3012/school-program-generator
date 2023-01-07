@@ -1,5 +1,6 @@
 package me.victor.services;
 
+import me.victor.mappers.TeacherMapper;
 import me.victor.repositories.TeacherRepository;
 import me.victor.models.dto.teacher.CreateTeacherDTO;
 import me.victor.models.dto.teacher.RetrieveTeacherDTO;
@@ -19,9 +20,11 @@ import java.util.stream.Collectors;
 @Service
 public class TeacherService {
     private final TeacherRepository teacherRepository;
+    private final TeacherMapper mapper;
 
-    public TeacherService(TeacherRepository teacherRepository) {
+    public TeacherService(TeacherRepository teacherRepository, TeacherMapper mapper) {
         this.teacherRepository = teacherRepository;
+        this.mapper = mapper;
     }
 
     public List<Teacher> getTeachers(String email) {
@@ -63,12 +66,7 @@ public class TeacherService {
             throw new DataFormatException("A teacher with this email already exists");
         }
 
-        Teacher teacher = new Teacher()
-                .setSchool(school)
-                .setFirstName(dto.getFirstName())
-                .setLastName(dto.getLastName())
-                .setEmail(dto.getEmail())
-                .setTeacherRoles(List.of(dto.getRole()));
+        Teacher teacher = mapper.dtoToTeacher(dto);
 
         this.teacherRepository.save(teacher);
     }
@@ -83,14 +81,9 @@ public class TeacherService {
             throw new DataFormatException("A teacher with this email already exists");
         }
 
-        List<TeacherRole> roles = new ArrayList<>();
-        roles.add(dto.getRole());
-
-        currentTeacher
-                .setFirstName(dto.getFirstName())
-                .setLastName(dto.getLastName())
-                .setEmail(dto.getEmail())
-                .setTeacherRoles(roles);
+        long id = currentTeacher.getId();
+        currentTeacher = mapper.dtoToTeacher(dto);
+        currentTeacher.setId(id);
 
         this.teacherRepository.save(currentTeacher);
     }

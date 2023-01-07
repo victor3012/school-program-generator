@@ -1,5 +1,6 @@
 package me.victor.services;
 
+import me.victor.mappers.SubjectMapper;
 import me.victor.models.entities.RoomType;
 import me.victor.models.entities.SubjectType;
 import me.victor.repositories.SubjectRepository;
@@ -21,12 +22,14 @@ public class SubjectService {
     private final SubjectRepository subjectRepository;
     private final RoomTypeService roomTypeService;
     private final SubjectTypeService subjectTypeService;
+    private final SubjectMapper mapper;
 
     public SubjectService(SubjectRepository subjectRepository, RoomTypeService roomTypeService,
-                          SubjectTypeService subjectTypeService) {
+                          SubjectTypeService subjectTypeService, SubjectMapper mapper) {
         this.subjectRepository = subjectRepository;
         this.roomTypeService = roomTypeService;
         this.subjectTypeService = subjectTypeService;
+        this.mapper = mapper;
     }
 
     public int getSubjectsCountBySchoolId(long id) {
@@ -74,19 +77,10 @@ public class SubjectService {
     }
 
     public List<RetrieveSubjectDTO> getSubjectsInSchool(long schoolId) {
-        return getSubjectsBySchoolId(schoolId)
+        return mapper.subjectsToDTOs(getSubjectsBySchoolId(schoolId)
                 .stream()
-                .map(x -> (RetrieveSubjectDTO) new RetrieveSubjectDTO()
-                        .setId(x.getId())
-                        .setType(x.getType() == null
-                                ? null
-                                : x.getType().getName())
-                        .setRoomType(x.getRoomType() == null
-                                ? null
-                                : x.getRoomType().getName())
-                        .setName(x.getName()))
-                .sorted(Comparator.comparing(CreateSubjectDTO::getName))
-                .collect(Collectors.toList());
+                .sorted(Comparator.comparing(Subject::getName))
+                .collect(Collectors.toList()));
     }
 
     private SubjectType getSubjectTypeByName(String name, School school) {
