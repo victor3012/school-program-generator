@@ -10,12 +10,14 @@ import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { AuthContext, AuthProvider } from './src/contexts/AuthContext';
 import Auth from './src/screens/Auth/Auth';
-import HomeStack from './src/screens/Home/Home';
+import Home from './src/screens/Home/Home';
 import styleVar from './src/styles/styleVar';
 import OpacityButton from './src/components/Common/OpacityButton';
 import ProfileOverview from './src/components/ProfileOverview';
 import ErrorBoundary from './src/components/ErrorBoundary';
 import Loader from './src/components/Common/Loader';
+import School from './src/screens/School/School';
+import SchoolIcon from './src/components/Icons/SchoolIcon';
 
 const Drawer = createDrawerNavigator();
 
@@ -35,7 +37,6 @@ const linking = {
           SignUp: 'signup',
         },
       },
-      Schools: '/schools',
       School: {
         path: '/schools/:id',
         screens: {
@@ -77,14 +78,23 @@ function DrawerNavigation() {
         {authContext.authLoaded
           ?
           <>
-            <Drawer.Screen name="Home" component={HomeStack}
+            <Drawer.Screen name="Home" component={Home}
               options={() => ({
                 drawerIcon: ({ focused }) => <FontAwesome5Icon
-                  name="school"
+                  name="home"
                   size={styleVar.mediumIconSize}
-                  color={focused ? styleVar.blue : styleVar.gray} />,
-                headerTitle: 'Schools',
+                  color={focused ? styleVar.blue : styleVar.gray} />
               })} />
+            {authContext.isAuth &&
+              <Drawer.Screen name="School" component={School}
+                options={() => ({
+                  drawerIcon: ({ focused }) => <SchoolIcon
+                    size={styleVar.mediumIconSize}
+                    color={focused ? styleVar.blue : styleVar.gray} />,
+                  sceneContainerStyle: { overflow: 'hidden', width: '100%' },
+                  drawerItemStyle: { display: 'none' }
+                })} />
+            }
 
             {authContext.isAuth ||
               <Drawer.Screen options={({ route }) => ({
@@ -93,6 +103,7 @@ function DrawerNavigation() {
                   size={styleVar.mediumIconSize}
                   color={focused ? styleVar.blue : styleVar.gray} />,
                 drawerLabel: 'Profile',
+                sceneContainerStyle: { overflow: 'hidden' },
                 headerStyle: { backgroundColor: styleVar.blue },
                 headerTitleStyle: { color: styleVar.white },
                 headerTintColor: styleVar.white,
