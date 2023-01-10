@@ -13,7 +13,7 @@ export function SchoolProvider({ children }) {
     const fetchData = useCallback(() => {
         (async () => {
             try {
-                const { teacher, ...school } = await service.getSchoolById(route.params.id);
+                const { teacher, ...school } = await service.getSchoolById(route.params?.id);
                 setSchool(school);
                 setTeacher(teacher)
             } catch (error) {
@@ -24,7 +24,7 @@ export function SchoolProvider({ children }) {
                 linkTo('/');
             }
         })()
-    }, [route.params.id]);
+    }, [route.params]);
 
     useFocusEffect(fetchData);
 

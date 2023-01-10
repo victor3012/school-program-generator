@@ -1,5 +1,4 @@
 import { useContext, useState } from "react"
-import { StyleSheet } from "react-native"
 
 import Form from "../../../components/Common/Form"
 import Input from "../../../components/Common/Input"
@@ -23,7 +22,12 @@ export default function TeachersForm({ visible, setVisible }) {
 
     const [inputStatuses, setInputStatuses] = useState(getDefaultInputStatuses());
 
-    const options = Object.keys(TEACHER_ROLES).map(role => ({ key: role, value: TEACHER_ROLES_NAMES[role] }));
+    const teacher_keys = Object.keys(TEACHER_ROLES);
+    const options = teacher_keys.slice(0, teacher_keys.indexOf(teacher.role))
+        .map(role => ({
+            key: role,
+            value: TEACHER_ROLES_NAMES[role]
+        }));
 
     const submitHandler = async () => {
         try {
