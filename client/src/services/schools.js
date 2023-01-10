@@ -49,12 +49,12 @@ export async function getRooms(schoolId) {
     return await get(`${URI}/${schoolId}/rooms`);
 }
 
-export async function createRoom(schoolId, name) {
-    return await post(`${URI}/${schoolId}/rooms`, { name });
+export async function createRoom(schoolId, name, type) {
+    return await post(`${URI}/${schoolId}/rooms`, { name, type });
 }
 
 export async function editRoom(schoolId, roomId, name) {
-    return await put(`${URI}/${schoolId}/rooms/${roomId}`, { name });
+    return await put(`${URI}/${schoolId}/rooms/${roomId}`, { name, type });
 }
 
 

@@ -4,24 +4,35 @@ import { useFocusEffect } from "@react-navigation/native";
 
 import { SchoolContext } from "../../contexts/SchoolContext";
 import { DataContext } from "../../contexts/DataContext";
-import { FORM_STATUS } from "../../services/util";
+import { FORM_STATUS, updateInputStatus } from "../../services/util";
 import { createRoom, getRooms } from "../../services/schools";
 import validators from "./validators";
 import globalStyles from "../../styles/globalStyles";
 import styleVar from "../../styles/styleVar";
+import modalFormStyles from "../../styles/modalFormStyles";
 import Loader from "../../components/Common/Loader";
 import DataItemContainer from "./DataItemContainer";
 import DataList from "./DataList";
 import ResponsiveModal from "../../components/Common/ResponsiveModal";
 import Input from "../../components/Common/Input";
+import Form from "../../components/Common/Form";
+import SelectNewOptionInput from "../../components/Common/SelectNewOptionInput";
+import OptionsMenu from "../../components/Common/OptionsMenu/OptionsMenu";
+import Option from "../../components/Common/OptionsMenu/Option";
+import EditIcon from "../../components/Icons/EditIcon";
+import DeleteIcon from "../../components/Icons/DeleteIcon";
 
 export default function Rooms() {
     const { data: rooms, setData: setRooms } = useContext(DataContext);
     const { school } = useContext(SchoolContext);
 
     const [createModalVisible, setCreateModalVisible] = useState(false);
+
+    const [roomTypeOptions, setRoomTypeOptions] = useState([{ key: 1, value: 'test 1' }, { key: 2, value: 'test 2' }, { key: 3, value: 'test 3' }]);
+
     const [roomName, setRoomName] = useState('');
-    const [status, setStatus] = useState(FORM_STATUS.DEFAULT);
+    const [roomType, setRoomType] = useState('');
+    const [inputStatuses, setInputStatuses] = useState(getDefaultInputStatuses());
 
     useFocusEffect(useCallback(() => {
         (async () => {
@@ -31,36 +42,62 @@ export default function Rooms() {
     }, []));
 
     const addButtonHandler = () => setCreateModalVisible(true);
+
     const submitHandler = async () => {
-        const res = await createRoom(school.id, roomName);
+        const res = await createRoom(school.id, roomName, roomType);
         setRooms(res);
     }
     const errorHandler = (error) => alert(error.message);
-    const resetHandler = () => setRoomName('');
-    const changeHandler = (value) => setRoomName(value);
-    const onInputError = () => setStatus(FORM_STATUS.INVALID);
-    const onInputErrorResolve = () => setStatus(FORM_STATUS.VALID);
+    const resetHandler = () => {
+        setInputStatuses(getDefaultInputStatuses());
+        setRoomName('');
+        setRoomType('');
+    }
+
+    const onNameChange = (value) => setRoomName(value);
+    const onTypeChange = (value) => setRoomType(value);
+
+    const onNameError = () => setInputInvalid('roomName');
+    const onTypeError = () => setInputInvalid('roomType');
+
+    const onNameErrorResolve = () => setInputValid('roomName');
+    const onTypeErrorResolve = () => setInputValid('roomType');
+
+    const setInputValid = (inputName) => updateInputStatus(inputStatuses, setInputStatuses, inputName, FORM_STATUS.VALID);
+    const setInputInvalid = (inputName) => updateInputStatus(inputStatuses, setInputStatuses, inputName, FORM_STATUS.INVALID);
 
     return (
         rooms
             ?
             <>
-                <ResponsiveModal title='New Room'
+                <ResponsiveModal
                     visible={createModalVisible} setVisible={setCreateModalVisible}
                     onSubmit={submitHandler}
                     onError={errorHandler}
                     onReset={resetHandler}
-                    inputStatuses={{ status }}
+                    inputStatuses={inputStatuses}
+                    containerStyle={modalFormStyles.responsiveModal}
                 >
-                    <Input label='Room name'
-                        showError={false}
-                        required
-                        value={roomName}
-                        validator={validators.room}
-                        onChange={changeHandler}
-                        onError={onInputError}
-                        onErrorResolve={onInputErrorResolve}
-                    />
+                    <Form inputStatuses={inputStatuses} style={modalFormStyles.form}>
+                        <Input label='Room name'
+                            required
+                            value={roomName}
+                            validator={validators.room}
+                            onChange={onNameChange}
+                            onError={onNameError}
+                            onErrorResolve={onNameErrorResolve}
+                        />
+
+                        <SelectNewOptionInput label='Room type'
+                            relativeDropdown={true}
+                            value={roomType}
+                            setValue={setRoomType}
+                            onChange={onTypeChange}
+                            onError={onTypeError}
+                            onErrorResolve={onTypeErrorResolve}
+                            options={roomTypeOptions}
+                        />
+                    </Form>
                 </ResponsiveModal>
 
                 <DataList
@@ -77,9 +114,23 @@ export default function Rooms() {
 
 function DataItem({ data }) {
     return (
-        <DataItemContainer>
+        <DataItemContainer key={data.id}>
+            <Text style={[globalStyles.text, styles.nonselectable, styles.type]}>{data.roomType || '-'}</Text>
             <Text style={[globalStyles.text, styles.nonselectable, styles.name]}>{data.name}</Text>
-            <Text style={[globalStyles.text, styles.nonselectable, styles.stars]}>* * *</Text>
+            <OptionsMenu containerStyle={styles.optionsButton}>
+                <Option>
+                    <Text style={globalStyles.text}>
+                        Edit
+                    </Text>
+                    <EditIcon />
+                </Option>
+                <Option last>
+                    <Text style={globalStyles.text}>
+                        Delete
+                    </Text>
+                    <DeleteIcon />
+                </Option>
+            </OptionsMenu>
         </DataItemContainer>
     )
 }
@@ -88,10 +139,14 @@ const styles = StyleSheet.create({
     nonselectable: {
         userSelect: 'none'
     },
+    type: {
+        flex: 1,
+        color: styleVar.gray
+    },
     name: {
         flex: 2
     },
-    stars: {
+    optionsButton: {
         flex: 1
     }
 })
@@ -104,4 +159,11 @@ function filterCallback(query, room) {
             query
                 .trim()
                 .toLocaleLowerCase());
+}
+
+function getDefaultInputStatuses() {
+    return {
+        roomName: FORM_STATUS.DEFAULT,
+        roomType: FORM_STATUS.NOT_REQUIRED,
+    }
 }

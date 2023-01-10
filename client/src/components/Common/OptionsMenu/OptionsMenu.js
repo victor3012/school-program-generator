@@ -1,9 +1,9 @@
-import { Dimensions, StyleSheet, Text, useWindowDimensions, View, TouchableWithoutFeedback, TouchableOpacity, Modal } from "react-native";
+import { StyleSheet, View, TouchableWithoutFeedback, TouchableOpacity, Modal } from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
 
 import IconButton from "../IconButton";
 import styleVar from "../../../styles/styleVar";
-import { useRef, useState, forwardRef, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import globalStyles from "../../../styles/globalStyles";
 
 
@@ -14,20 +14,16 @@ export default function OptionsMenu({
     buttonStyle
 }) {
     const buttonRef = useRef(null);
-    const iconRef = useRef(null);
-    const { width, height } = useWindowDimensions();
     const [visible, setVisible] = useState(false);
 
     const [pos, setPos] = useState({ x: '50%', y: '50%' });
 
     useEffect(() => {
-        if (!buttonRef.current) {
+        if (!buttonRef?.current) {
             return;
         }
 
         buttonRef.current.measureInWindow((x, y, width) => {
-            console.log('offtop', buttonRef.current.offsetTop);
-            console.log('y', y);
             setPos({
                 x: x + width,
                 y: y - buttonRef.current.offsetTop
