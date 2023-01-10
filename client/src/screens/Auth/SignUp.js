@@ -23,6 +23,8 @@ export default function SignUp() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repass, setRepass] = useState('');
+    const [securityCode, setSecurityCode] = useState('');
+
     const [passwordShown, setPasswordShown] = useState(false);
     const [repassShown, setRepassShown] = useState(false);
 
@@ -41,6 +43,7 @@ export default function SignUp() {
             validators.email(email);
             validators.password(password);
             validators.repass(password)(repass);
+            validators.securityCode(securityCode);
 
             await register({ firstName, lastName, email, password });
 
@@ -120,6 +123,17 @@ export default function SignUp() {
 
                 <EyeIconButton passwordShown={repassShown} setPasswordShown={setRepassShown} />
             </View>
+
+            <Input
+                label="Security code"
+                hitSlop={10}
+                value={securityCode}
+                onChange={(newSecurityCode) => setSecurityCode(newSecurityCode)}
+                onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'securityCode', FORM_STATUS.INVALID)}
+                onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'securityCode', FORM_STATUS.VALID)}
+                required
+                validator={validators.securityCode}
+            />
 
             <OpacityButton style={globalStyles.formButton}
                 onPress={signUpHandler}

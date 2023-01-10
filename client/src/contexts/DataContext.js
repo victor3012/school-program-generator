@@ -1,5 +1,4 @@
 import { createContext, useState } from "react";
-import Loader from "../components/Common/Loader";
 
 export const DataContext = createContext();
 
