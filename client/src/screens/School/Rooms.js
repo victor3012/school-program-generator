@@ -44,7 +44,11 @@ export default function Rooms() {
     const addButtonHandler = () => setCreateModalVisible(true);
 
     const submitHandler = async () => {
-        const res = await createRoom(school.id, roomName, roomType);
+        const res = await createRoom(school.id, {
+            name: roomName,
+            type: roomType
+        });
+
         setRooms(res);
     }
     const errorHandler = (error) => alert(error.message);
@@ -89,8 +93,10 @@ export default function Rooms() {
                         />
 
                         <SelectNewOptionInput label='Room type'
+                            required
                             relativeDropdown={true}
                             value={roomType}
+                            validator={validators.room}
                             setValue={setRoomType}
                             onChange={onTypeChange}
                             onError={onTypeError}

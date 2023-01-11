@@ -21,5 +21,8 @@ export default {
     room: (value) => {
         validate.required(value, 'Name is required');
         validate.maxLength(value);
+    },
+    subjectType: (value) => {
+        validate.required(value, 'Subject type is required');
     }
 }
