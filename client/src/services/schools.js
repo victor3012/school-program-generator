@@ -45,6 +45,10 @@ export async function editTeacher(schoolId, teacherId, {
 
 
 // rooms
+export async function getRoomTypes(schoolId) {
+    return await get(`${URI}/${schoolId}/roomTypes`);
+}
+
 export async function getRooms(schoolId) {
     return await get(`${URI}/${schoolId}/rooms`);
 }
@@ -59,6 +63,10 @@ export async function editRoom(schoolId, roomId, name) {
 
 
 // subjects
+export async function getSubjectTypes(schoolId) {
+    return await get(`${URI}/${schoolId}/subjectTypes`);
+}
+
 export async function getSubjects(schoolId) {
     return await get(`${URI}/${schoolId}/subjects`);
 }

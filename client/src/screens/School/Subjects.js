@@ -5,7 +5,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { SchoolContext } from "../../contexts/SchoolContext";
 import { DataContext } from "../../contexts/DataContext";
 import { FORM_STATUS, updateInputStatus } from "../../services/util";
-import { createSubject, getSubjects } from "../../services/schools";
+import { createSubject, getRoomTypes, getSubjects, getSubjectTypes } from "../../services/schools";
 
 import validators from "./validators";
 
@@ -32,8 +32,8 @@ export default function Subjects() {
 
     const [createModalVisible, setCreateModalVisible] = useState(false);
 
-    const [subjectTypeOptions, setSubjectTypeOptions] = useState([{ key: 1, value: 'subj 1' }, { key: 2, value: 'subj 2' }, { key: 3, value: 'subj 3' }]);
-    const [roomTypeOptions, setRoomTypeOptions] = useState([{ key: 1, value: 'room 1' }, { key: 2, value: 'room 2' }, { key: 3, value: 'room 3' }]);
+    const [subjectTypeOptions, setSubjectTypeOptions] = useState();
+    const [roomTypeOptions, setRoomTypeOptions] = useState();
 
     const [subjectName, setSubjectName] = useState('');
     const [subjectType, setSubjectType] = useState('');
@@ -41,10 +41,14 @@ export default function Subjects() {
     const [inputStatuses, setInputStatuses] = useState(getDefaultInputStatuses());
 
     useFocusEffect(useCallback(() => {
-        (async () => {
-            const res = await getSubjects(school.id);
-            setSubjects(res);
-        })()
+        Promise.all([getSubjects(school.id), getSubjectTypes(school.id), getRoomTypes(school.id)])
+        .then(res => {
+            setSubjects(res[0]);
+
+            setSubjectTypeOptions(res[1].map(t => ({ key: t.id, value: t.name })));
+
+            setRoomTypeOptions(res[2].map(t => ({ key: t.id, value: t.name })));
+        })
     }, []));
 
     const addButtonHandler = () => setCreateModalVisible(true);
