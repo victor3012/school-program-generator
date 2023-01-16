@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("api/schools/{id}/roomTypes")
+@RequestMapping("api/schools/{id}/subjectTypes")
 public class SubjectTypeController {
     private final SubjectTypeService service;
     private final SchoolService schoolService;
