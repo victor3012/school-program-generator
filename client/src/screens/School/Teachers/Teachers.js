@@ -1,5 +1,5 @@
 import { useCallback, useContext, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 
 import { SchoolContext } from "../../../contexts/SchoolContext";
@@ -58,10 +58,10 @@ function DataItem({ data }) {
             <Text style={[globalStyles.text, styles.nonselectable, styles.name]}>{getTeacherName(data)}</Text>
             <OptionsMenu containerStyle={styles.optionsButton}>
                 <Option>
-                    <Text style={[globalStyles.text, { fontSize: styleVar.smallFontSize }]}>
+                    <Text style={[globalStyles.text, styles.emailTitle]}>
                         Email
                     </Text>
-                    <Text style={[globalStyles.text, { color: styleVar.gray, fontSize: styleVar.smallFontSize }]}>
+                    <Text style={[globalStyles.text, styles.emailText]}>
                         {data.email}
                     </Text>
                 </Option>
@@ -95,6 +95,14 @@ const styles = StyleSheet.create({
     },
     optionsButton: {
         flex: 1
+    },
+    emailTitle: {
+        fontSize: styleVar.smallFontSize,
+        marginRight: 5
+    },
+    emailText: {
+        color: styleVar.gray,
+        fontSize: styleVar.smallFontSize
     }
 })
 

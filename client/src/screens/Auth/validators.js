@@ -15,5 +15,6 @@ export default {
         }
     },
     email: validate.globalValidators.email,
-    name: validate.globalValidators.name
+    name: validate.globalValidators.name,
+    securityCode: (value) => validate.required(value, 'Security code is required')
 }

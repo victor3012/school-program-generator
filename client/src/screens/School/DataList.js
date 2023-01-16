@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Platform, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
@@ -39,10 +39,10 @@ export default function DataList({
         setItemsPerPage(maxItems);
 
         const newPages = Math.ceil(itemsCount / maxItems);
-        setPagesCount(newPages === 0 ? 1 : newPages);
-    }, [height])
+        setPagesCount(Math.max(newPages, 1));
+    }, [height, data])
 
-    useEffect(() => {
+    useEffect(() => { // search
         setPaginationIdx(0);
 
         const filtered = data.filter(d => filterCallback(query, d));
@@ -51,8 +51,9 @@ export default function DataList({
 
 
         const newPages = Math.ceil(itemsCount / maxItems);
-        setPagesCount(newPages === 0 ? 1 : newPages);
+        setPagesCount(Math.max(newPages, 1));
     }, [query])
+
 
     const updateHeightHandler = (e) => {
         setHeight(e.nativeEvent.layout.height);
@@ -94,7 +95,7 @@ export default function DataList({
 
     return (
         <View style={[styles.container, {
-            width: Math.min(600, 0.9 * width)
+            width: Math.min(600, 0.95 * width)
         }]} onLayout={updateHeightHandler} >
             <View style={[globalStyles.basicContainer, styles.searchContainer]}>
                 <Input
@@ -150,9 +151,9 @@ export default function DataList({
 }
 const styles = StyleSheet.create({
     container: {
-        height: '100%',
+        flex: 1,
         alignItems: 'center',
-        paddingTop: 20
+        paddingTop: 20,
     },
     addItem: {
         justifyContent: 'center',
@@ -209,7 +210,8 @@ const styles = StyleSheet.create({
 })
 
 function getMaxItems(height, itemHeight) {
-    return Math.floor((height - 330) / itemHeight);
+    const safeHeight = Math.max(height - 330, 0);
+    return Math.floor(safeHeight / itemHeight) || 1;
 }
 
 /*

@@ -10,8 +10,7 @@ const Tab = createBottomTabNavigator();
 export default function Auth() {
     return (
         <Tab.Navigator screenOptions={{
-            headerShown: false,
-            tabBarLabelStyle: { fontSize: styleVar.mediumFontSize }
+            headerShown: false
         }}>
             <Tab.Screen options={{
                 tabBarIcon: () => <Icon name='login' size={styleVar.mediumIconSize} />,

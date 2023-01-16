@@ -1,18 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { Text, View, Animated, TouchableHighlight } from "react-native";
 import Icon from 'react-native-vector-icons/SimpleLineIcons'
+
 import Input from "./Input";
 import IconButton from "./IconButton";
 import globalStyles from "../../styles/globalStyles";
 import styles from '../../styles/specialInputStyles';
 import styleVar from "../../styles/styleVar";
-import XIcon from "../Icons/XIcon";
 
-export default function SelectInput(
+export default function AutocompleteInput(
     {
-        options = [],
+        options,
         value = '',
-        defaultValue = '',
         setValue,
         label,
         placeholder,
@@ -30,14 +29,29 @@ export default function SelectInput(
     }
 ) {
     const [focused, setFocused] = useState(false);
+    const [displayOptions, setDisplayOptions] = useState([]);
     const heightAnimation = useRef(new Animated.Value(0)).current;
     const dropdown = useRef(null);
+
+    useEffect(() => {
+        setDisplayOptions(options || []);
+    }, [options])
+
+    useEffect(() => {
+        if (!options) { return; }
+
+        const newOptions = options
+            .filter(o => o.value.toLocaleLowerCase()
+                .includes(value.trim().toLocaleLowerCase()));
+
+        setDisplayOptions(newOptions);
+    }, [value, options]);
 
     useEffect(() => {
         let animationValue = 0;
 
         if (focused) {
-            animationValue = Math.min(getOptionsCount() * styles.option.height, styles.dropdown.maxHeight);
+            animationValue = Math.min(displayOptions.length * styles.option.height, styles.dropdown.maxHeight);
         }
 
         Animated.timing(
@@ -48,17 +62,7 @@ export default function SelectInput(
                 useNativeDriver: false
             }
         ).start();
-    }, [focused, heightAnimation, options, value])
-
-    const getOptionsCount = () => {
-        let optionsCount = options.length;
-
-        if (!required && Boolean(value)) {
-            ++optionsCount;
-        }
-
-        return optionsCount;
-    }
+    }, [focused, heightAnimation, displayOptions])
 
     const focusHandler = (e) => {
         if (onFocus) {
@@ -88,11 +92,6 @@ export default function SelectInput(
         setFocused(false);
     }
 
-    const clearOptionHandler = () => {
-        setValue(defaultValue);
-    }
-
-
     return (
         <View elevation={10}
             style={{ zIndex: 10 }}>
@@ -110,8 +109,6 @@ export default function SelectInput(
                     onError={onError}
                     onErrorResolve={onErrorResolve}
                     required={false}
-                    editable={false}
-                    selectTextOnFocus={false}
                     {...args} />
 
                 <IconButton
@@ -120,25 +117,12 @@ export default function SelectInput(
                     onPress={() => setFocused(f => !f)} />
             </View>
 
-            <Animated.ScrollView scrollEnabled={styles.dropdown.maxHeight / getOptionsCount() < styles.option.height}
+            <Animated.ScrollView scrollEnabled={styles.dropdown.maxHeight / displayOptions.length < styles.option.height}
                 ref={dropdown}
-
                 style={[styles.dropdown, {
                     height: heightAnimation
                 }, (relativeDropdown && styles.relativeDropdown)]}>
-                {
-                    (!required && Boolean(value)) &&
-                    <TouchableHighlight key='clear-option'
-                        style={styles.option}
-                        underlayColor={styleVar.blueShadow}
-                        onPress={clearOptionHandler}>
-                        <View style={styles.row}>
-                            <XIcon style={{ marginRight: 5 }} />
-                            <Text>Clear option</Text>
-                        </View>
-                    </TouchableHighlight>
-                }
-                {options.map(o =>
+                {displayOptions.map(o =>
                     <TouchableHighlight key={o.key}
                         style={styles.option}
                         underlayColor={styleVar.blueShadow}

@@ -1,28 +1,26 @@
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { Platform, StyleSheet, Text, TextInput, View, Animated } from "react-native";
 import styleVar from "../../styles/styleVar";
 
 const startingLabelX = 0;
 const startingLabelY = 35;
 
-export default function Input(
-    {
-        value,
-        label,
-        placeholder,
-        validator,
-        style: customStyles = {},
-        containerStyle = {},
-        onChange: onChangeText,
-        onFocus,
-        onBlur,
-        onError,
-        onErrorResolve,
-        required = false,
-        showError = true,
-        ...args
-    }
-) {
+const Input = forwardRef(function Input({
+    value,
+    label,
+    placeholder,
+    validator,
+    style: customStyles = {},
+    containerStyle = {},
+    onChange: onChangeText,
+    onFocus,
+    onBlur,
+    onError,
+    onErrorResolve,
+    required = false,
+    showError = true,
+    ...args
+}, ref) {
     const [focused, setFocused] = useState(false);
     const [error, setError] = useState(null);
     const [beenFocused, setBeenFocused] = useState(false);
@@ -171,6 +169,7 @@ export default function Input(
                 borderColor: getInputBorderColor(),
                 backgroundColor: getInputBackgroundColor()
             }}
+                ref={ref}
                 onChangeText={changeTextHandler}
                 onFocus={focusHandler}
                 onBlur={blurHandler}
@@ -188,7 +187,7 @@ export default function Input(
             }
         </View >
     )
-}
+})
 
 const styles = StyleSheet.create({
     container: {
@@ -220,3 +219,5 @@ const styles = StyleSheet.create({
         backgroundColor: styleVar.blueShadow,
     }
 })
+
+export default Input;

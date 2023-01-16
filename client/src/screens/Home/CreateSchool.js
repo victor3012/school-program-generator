@@ -14,6 +14,7 @@ import { FORM_STATUS } from "../../services/util";
 import { createSchool } from "../../services/schools";
 
 import styleVar from '../../styles/styleVar';
+import PlusIcon from "../../components/Icons/PlusIcon";
 
 const ACCESS_ERROR_MSG = "Your account has not been granted permission to create schools";
 
@@ -68,7 +69,7 @@ export default function CreateSchool() {
     }
 
     return (
-        <View>
+        <>
             <ResponsiveModal title='Create new school'
                 visible={visible} setVisible={setVisible}
                 onSubmit={submitHandler}
@@ -90,10 +91,10 @@ export default function CreateSchool() {
 
             <PressableBox onPress={openCreateButtonHandler}
                 style={{ padding: 0 }}>
-                <AntDesignIcon name="plus"
+                <PlusIcon
                     size={65}
                     color={user.admin ? styleVar.blue : styleVar.gray} />
             </PressableBox>
-        </View >
+        </ >
     );
 }
