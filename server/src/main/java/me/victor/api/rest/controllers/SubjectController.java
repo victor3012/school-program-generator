@@ -1,10 +1,10 @@
 package me.victor.api.rest.controllers;
 
+import me.victor.exceptions.ResourceNotFoundException;
 import me.victor.models.dto.subject.CreateSubjectDTO;
 import me.victor.models.dto.subject.RetrieveSubjectDTO;
 import me.victor.models.entities.School;
 import me.victor.models.entities.User;
-import me.victor.exceptions.ResourceNotFoundException;
 import me.victor.services.SchoolService;
 import me.victor.services.SubjectService;
 import me.victor.services.UserService;

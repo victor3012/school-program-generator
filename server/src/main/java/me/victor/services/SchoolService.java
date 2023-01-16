@@ -1,18 +1,18 @@
 package me.victor.services;
 
-import me.victor.repositories.SchoolRepository;
-import me.victor.repositories.UserRepository;
+import me.victor.exceptions.DataFormatException;
+import me.victor.exceptions.InsufficientPermissionsException;
+import me.victor.exceptions.ResourceNotFoundException;
 import me.victor.models.dto.school.AggregatedSchoolDTO;
 import me.victor.models.dto.school.CreateSchoolDTO;
 import me.victor.models.dto.school.ExtendedAggregatedSchoolDTO;
 import me.victor.models.dto.school.UpdateSchoolDTO;
 import me.victor.models.entities.School;
 import me.victor.models.entities.Teacher;
-import me.victor.models.entities.enums.TeacherRole;
 import me.victor.models.entities.User;
-import me.victor.exceptions.DataFormatException;
-import me.victor.exceptions.InsufficientPermissionsException;
-import me.victor.exceptions.ResourceNotFoundException;
+import me.victor.models.entities.enums.TeacherRole;
+import me.victor.repositories.SchoolRepository;
+import me.victor.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

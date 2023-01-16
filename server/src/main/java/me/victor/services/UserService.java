@@ -1,14 +1,11 @@
 package me.victor.services;
 
-import me.victor.api.rest.authentication.JwtAuthenticationEntryPoint;
-import me.victor.api.rest.authentication.JwtRequest;
 import me.victor.api.rest.authentication.JwtTokenUtil;
-import me.victor.api.rest.authentication.JwtUserDetailsService;
-import me.victor.repositories.UserRepository;
+import me.victor.exceptions.ResourceNotFoundException;
 import me.victor.models.dto.user.ChangePasswordUserDTO;
 import me.victor.models.dto.user.CreateUserDTO;
 import me.victor.models.entities.User;
-import me.victor.exceptions.ResourceNotFoundException;
+import me.victor.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.WebRequest;

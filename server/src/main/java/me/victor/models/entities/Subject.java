@@ -3,7 +3,7 @@ package me.victor.models.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "subjects", uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "school_id" }) })
+@Table(name = "subjects", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "school_id"})})
 public class Subject extends ObjectWithName {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private School school;

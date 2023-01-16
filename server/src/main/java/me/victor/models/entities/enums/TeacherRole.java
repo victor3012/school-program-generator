@@ -8,7 +8,7 @@ public enum TeacherRole {
 
     private final int power;
 
-    private TeacherRole(int power) {
+    TeacherRole(int power) {
         this.power = power;
     }
 

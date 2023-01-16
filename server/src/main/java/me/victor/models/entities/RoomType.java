@@ -6,7 +6,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "room_types", uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "school_id" }) })
+@Table(name = "room_types", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "school_id"})})
 public class RoomType extends ObjectWithName {
     @ManyToOne(optional = false)
     private School school;

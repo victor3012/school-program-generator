@@ -1,17 +1,16 @@
 package me.victor.services;
 
+import me.victor.exceptions.DataFormatException;
+import me.victor.exceptions.ResourceNotFoundException;
 import me.victor.mappers.TeacherMapper;
-import me.victor.repositories.TeacherRepository;
 import me.victor.models.dto.teacher.CreateTeacherDTO;
 import me.victor.models.dto.teacher.RetrieveTeacherDTO;
 import me.victor.models.entities.School;
 import me.victor.models.entities.Teacher;
 import me.victor.models.entities.enums.TeacherRole;
-import me.victor.exceptions.DataFormatException;
-import me.victor.exceptions.ResourceNotFoundException;
+import me.victor.repositories.TeacherRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;

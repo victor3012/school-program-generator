@@ -3,7 +3,7 @@ package me.victor.models.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "rooms", uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "school_id" }) })
+@Table(name = "rooms", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "school_id"})})
 public class Room extends ObjectWithName implements Comparable<Room> {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)

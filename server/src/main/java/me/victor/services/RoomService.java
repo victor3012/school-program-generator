@@ -1,14 +1,14 @@
 package me.victor.services;
 
+import me.victor.exceptions.DataFormatException;
+import me.victor.exceptions.ResourceNotFoundException;
 import me.victor.mappers.RoomMapper;
-import me.victor.models.entities.RoomType;
-import me.victor.repositories.RoomRepository;
 import me.victor.models.dto.room.CreateRoomDTO;
 import me.victor.models.dto.room.RetrieveRoomDTO;
 import me.victor.models.entities.Room;
+import me.victor.models.entities.RoomType;
 import me.victor.models.entities.School;
-import me.victor.exceptions.DataFormatException;
-import me.victor.exceptions.ResourceNotFoundException;
+import me.victor.repositories.RoomRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

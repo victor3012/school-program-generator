@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "schools", uniqueConstraints = { @UniqueConstraint(columnNames = {"name"})})
+@Table(name = "schools", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 public class School extends ObjectWithName {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private User owner;

@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "teachers", uniqueConstraints = { @UniqueConstraint(columnNames = { "email", "school_id" }) })
+@Table(name = "teachers", uniqueConstraints = {@UniqueConstraint(columnNames = {"email", "school_id"})})
 public class Teacher extends ObjectWithId {
     @Column(name = "first_name", nullable = false)
     private String firstName;

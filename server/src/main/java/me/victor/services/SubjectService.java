@@ -1,15 +1,14 @@
 package me.victor.services;
 
+import me.victor.exceptions.DataFormatException;
+import me.victor.exceptions.ResourceNotFoundException;
 import me.victor.mappers.SubjectMapper;
-import me.victor.models.entities.RoomType;
-import me.victor.models.entities.SubjectType;
-import me.victor.repositories.SubjectRepository;
 import me.victor.models.dto.subject.CreateSubjectDTO;
 import me.victor.models.dto.subject.RetrieveSubjectDTO;
 import me.victor.models.entities.School;
 import me.victor.models.entities.Subject;
-import me.victor.exceptions.DataFormatException;
-import me.victor.exceptions.ResourceNotFoundException;
+import me.victor.models.entities.SubjectType;
+import me.victor.repositories.SubjectRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
