@@ -5,7 +5,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { SchoolContext } from "../../contexts/SchoolContext";
 import { DataContext } from "../../contexts/DataContext";
 import { FORM_STATUS, updateInputStatus } from "../../services/util";
-import { createRoom, getRooms } from "../../services/schools";
+import { createRoom, getRooms, getRoomTypes } from "../../services/schools";
 import validators from "./validators";
 import globalStyles from "../../styles/globalStyles";
 import styleVar from "../../styles/styleVar";
@@ -28,17 +28,18 @@ export default function Rooms() {
 
     const [createModalVisible, setCreateModalVisible] = useState(false);
 
-    const [roomTypeOptions, setRoomTypeOptions] = useState([{ key: 1, value: 'test 1' }, { key: 2, value: 'test 2' }, { key: 3, value: 'test 3' }]);
+    const [roomTypeOptions, setRoomTypeOptions] = useState();
 
     const [roomName, setRoomName] = useState('');
     const [roomType, setRoomType] = useState('');
     const [inputStatuses, setInputStatuses] = useState(getDefaultInputStatuses());
 
     useFocusEffect(useCallback(() => {
-        (async () => {
-            const res = await getRooms(school.id);
-            setRooms(res);
-        })()
+        Promise.all([getRooms(school.id), getRoomTypes(school.id)])
+            .then(res => {
+                setRooms(res[0]);
+                setRoomTypeOptions(res[1].map(t => ({ key: t.id, value: t.name })));
+            })
     }, []));
 
     const addButtonHandler = () => setCreateModalVisible(true);
