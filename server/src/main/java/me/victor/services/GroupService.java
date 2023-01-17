@@ -10,6 +10,7 @@ import me.victor.models.entities.School;
 import me.victor.repositories.GroupRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -49,7 +50,11 @@ public class GroupService {
     }
 
     public List<GroupDTO> getGroups(School school) {
-        return this.mapper.groupsToDTOs(this.repository
+        List<GroupDTO> groupDTOS = this.mapper.groupsToDTOs(this.repository
                 .findBySchoolId(school.getId()));
+
+        groupDTOS.sort(Comparator.comparing(CreateGroupDTO::getName));
+
+        return groupDTOS;
     }
 }
