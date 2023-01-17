@@ -34,8 +34,8 @@ public class GroupService {
         repository.save(group);
     }
 
-    public void updateGroup(School school, GroupDTO dto) {
-        Group group = this.repository.findByIdAndSchoolId(dto.getId(), school.getId())
+    public void updateGroup(School school, long groupId, CreateGroupDTO dto) {
+        Group group = this.repository.findByIdAndSchoolId(groupId, school.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Group not found"));
 
         group.setName(dto.getName());

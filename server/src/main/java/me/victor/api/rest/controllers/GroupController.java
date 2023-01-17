@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("api/schools/{id}/groups")
+@RequestMapping("api/schools/{id}/classes")
 public class GroupController {
     private final GroupService service;
     private final SchoolService schoolService;
@@ -41,15 +41,16 @@ public class GroupController {
         return getGroups(request, id);
     }
 
-    @PutMapping
-    public List<GroupDTO> createGroup(WebRequest request, @PathVariable long id, @Valid @RequestBody GroupDTO dto) {
+    @PutMapping("{groupId}")
+    public List<GroupDTO> createGroup(WebRequest request, @PathVariable long id, @PathVariable long groupId,
+                                      @Valid @RequestBody CreateGroupDTO dto) {
         User user = this.userService.getUserByRequest(request);
         this.schoolService.ensureSystemAdmin(id, user);
 
         School school = this.schoolService.getSchool(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid school"));
 
-        this.service.updateGroup(school, dto);
+        this.service.updateGroup(school, groupId, dto);
 
         return getGroups(request, id);
     }
