@@ -44,7 +44,7 @@ const linking = {
           Teachers: 'teachers',
           Rooms: 'rooms',
           Subjects: 'subjects',
-          Requests: 'requests',
+          Classes: 'classes',
         }
       }
     }

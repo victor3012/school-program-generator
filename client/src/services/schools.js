@@ -80,23 +80,15 @@ export async function editSubject(schoolId, subjectId, { name, type, roomType })
 }
 
 
-// requests
-export async function getRequests(schoolId) {
-    return await get(`${URI}/${schoolId}/requests`);
+// classes
+export async function getClasses(schoolId) {
+    return await get(`${URI}/${schoolId}/classes`);
 }
 
-export async function createRequest(schoolId, {
-    roomId,
-    from,
-    to
-}) {
-    return await post(`${URI}/${schoolId}/requests`, { roomId, from, to });
+export async function createClass(schoolId, name) {
+    return await post(`${URI}/${schoolId}/classes`, { name });
 }
 
-export async function editRequest(schoolId, requestId, {
-    roomId,
-    from,
-    to
-}) {
-    return await put(`${URI}/${schoolId}/requests/${requestId}`, { roomId, from, to });
+export async function editClass(schoolId, { id, name }) {
+    return await put(`${URI}/${schoolId}/classes/${id}`, { name });
 }

@@ -13,6 +13,7 @@ import Rooms from "./Rooms";
 import Subjects from "./Subjects";
 import { ScrollView, Dimensions } from "react-native";
 import SchoolIcon from "../../components/Icons/SchoolIcon";
+import Classes from "./Classes";
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 const isWideViewport = WINDOW_WIDTH > 600;
@@ -36,7 +37,7 @@ function SchoolStack({ route, navigation }) {
         if (!isSchoolLoading) {
             navigation.setOptions({ drawerItemStyle: { display: 'flex' }, drawerLabel: school.name });
         }
-        
+
     }, [navigation, school, isSchoolLoading])
 
     const TeachersComponent = (props) => (
@@ -56,7 +57,9 @@ function SchoolStack({ route, navigation }) {
             <Subjects />
         </ScreenComponent>
     )
-    const Requests = (props) => <ScreenComponent title='Requests' {...props} />
+    const ClassesComponent = (props) => <ScreenComponent title='Classes' {...props}>
+        <Classes />
+    </ScreenComponent>
 
     return (
         <Tab.Navigator
@@ -115,17 +118,17 @@ function SchoolStack({ route, navigation }) {
                 initialParams={{ id: route.params.id }}
                 component={SubjectsComponent} />
             <Tab.Screen
-                name="Requests"
+                name="Classes"
                 options={{
-                    tabBarIcon: ({ focused }) => <MaterialCommunityIcon name="order-bool-descending-variant"
+                    tabBarIcon: ({ focused }) => <MaterialCommunityIcon name="account-group"
                         size={styleVar.mediumIconSize}
                         color={focused ? styleVar.blue : styleVar.gray} />,
                     tabBarItemStyle: {
-                        flex: 1
+                        flex: 1,
                     }
                 }}
                 initialParams={{ id: route.params.id }}
-                component={Requests} />
+                component={ClassesComponent} />
         </Tab.Navigator>
     )
 }
