@@ -11,12 +11,14 @@ import me.victor.models.entities.School;
 import me.victor.repositories.RoomRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 public class RoomService {
     private final RoomRepository roomRepository;
     private final RoomTypeService roomTypeService;
@@ -37,6 +39,16 @@ public class RoomService {
                 .stream()
                 .sorted()
                 .collect(Collectors.toList()));
+    }
+
+    public RetrieveRoomDTO getRoomInSchool(long roomId, long schoolId) {
+        return mapper.roomToDTO(this.roomRepository
+                .findByIdAndSchoolId(roomId, schoolId)
+                .orElseThrow(() -> new IllegalArgumentException("This room doesn't exist")));
+    }
+
+    public void deleteRoom(long roomId, long schoolId) {
+        this.roomRepository.deleteByIdAndSchoolId(roomId, schoolId);
     }
 
     public int getRoomsCountBySchoolId(long id) {
@@ -60,10 +72,6 @@ public class RoomService {
         this.roomRepository.save(room);
     }
 
-    private Optional<Room> getRoom(String name, long schoolId) {
-        return this.roomRepository.getByNameAndSchoolId(name, schoolId);
-    }
-
     public void updateRoom(School school, long roomId, CreateRoomDTO dto) {
         Room room = this.roomRepository.findById(roomId)
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid room"));
@@ -81,6 +89,10 @@ public class RoomService {
         room.setName(dto.getName());
         room.setType(getRoomType(dto, school));
         this.roomRepository.save(room);
+    }
+
+    private Optional<Room> getRoom(String name, long schoolId) {
+        return this.roomRepository.getByNameAndSchoolId(name, schoolId);
     }
 
     private RoomType getRoomType(CreateRoomDTO dto, School school) {

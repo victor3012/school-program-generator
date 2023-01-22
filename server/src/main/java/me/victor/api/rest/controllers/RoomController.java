@@ -62,4 +62,20 @@ public class RoomController {
 
         return this.roomService.getRoomsInSchool(id);
     }
+
+    @GetMapping("/{roomId}")
+    public RetrieveRoomDTO retrieveRoom(WebRequest request, @PathVariable long id, @PathVariable long roomId) {
+        User user = this.userService.getUserByRequest(request);
+        schoolService.ensureTeacher(id, user);
+
+        return this.roomService.getRoomInSchool(roomId, id);
+    }
+
+    @DeleteMapping("/{roomId}")
+    public void deleteRoom(WebRequest request, @PathVariable long id, @PathVariable long roomId) {
+        User user = this.userService.getUserByRequest(request);
+        schoolService.ensureSystemAdmin(id, user);
+
+        this.roomService.deleteRoom(roomId, id);
+    }
 }

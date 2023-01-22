@@ -14,4 +14,8 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     int countBySchoolId(long id);
 
     Optional<Room> getByNameAndSchoolId(String name, long schoolId);
+
+    Optional<Room> findByIdAndSchoolId(long roomId, long schoolId);
+
+    void deleteByIdAndSchoolId(long roomId, long schoolId);
 }
