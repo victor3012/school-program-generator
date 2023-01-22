@@ -14,4 +14,6 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
     Optional<Group> findByIdAndSchoolId(long id, long schoolId);
 
     List<Group> findBySchoolId(long schoolId);
+
+    void deleteByIdAndSchoolId(long groupId, long id);
 }

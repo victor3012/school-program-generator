@@ -3,6 +3,7 @@ package me.victor.api.rest.controllers;
 import me.victor.exceptions.ResourceNotFoundException;
 import me.victor.models.dto.group.CreateGroupDTO;
 import me.victor.models.dto.group.GroupDTO;
+import me.victor.models.dto.subject.RetrieveSubjectDTO;
 import me.victor.models.entities.School;
 import me.victor.models.entities.User;
 import me.victor.services.GroupService;
@@ -64,5 +65,21 @@ public class GroupController {
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid school"));
 
         return this.service.getGroups(school);
+    }
+
+    @GetMapping("/{groupId}")
+    public GroupDTO retrieveGroup(WebRequest request, @PathVariable long id, @PathVariable long groupId) {
+        User user = this.userService.getUserByRequest(request);
+        schoolService.ensureTeacher(id, user);
+
+        return this.service.getGroupInSchool(groupId, id);
+    }
+
+    @DeleteMapping("/{groupId}")
+    public void deleteGroup(WebRequest request, @PathVariable long id, @PathVariable long groupId) {
+        User user = this.userService.getUserByRequest(request);
+        schoolService.ensureSystemAdmin(id, user);
+
+        this.service.deleteGroup(groupId, id);
     }
 }

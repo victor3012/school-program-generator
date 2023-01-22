@@ -65,7 +65,7 @@ public class SubjectController {
     }
 
     @GetMapping("/{subjectId}")
-    public RetrieveSubjectDTO retrieveRoom(WebRequest request, @PathVariable long id, @PathVariable long subjectId) {
+    public RetrieveSubjectDTO retrieveSubject(WebRequest request, @PathVariable long id, @PathVariable long subjectId) {
         User user = this.userService.getUserByRequest(request);
         schoolService.ensureTeacher(id, user);
 
@@ -73,7 +73,7 @@ public class SubjectController {
     }
 
     @DeleteMapping("/{subjectId}")
-    public void deleteRoom(WebRequest request, @PathVariable long id, @PathVariable long subjectId) {
+    public void deleteSubject(WebRequest request, @PathVariable long id, @PathVariable long subjectId) {
         User user = this.userService.getUserByRequest(request);
         schoolService.ensureSystemAdmin(id, user);
 
