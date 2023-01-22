@@ -11,12 +11,14 @@ import me.victor.models.entities.SubjectType;
 import me.victor.repositories.SubjectRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class SubjectService {
     private final SubjectRepository subjectRepository;
     private final RoomTypeService roomTypeService;
@@ -80,6 +82,16 @@ public class SubjectService {
                 .stream()
                 .sorted(Comparator.comparing(Subject::getName))
                 .collect(Collectors.toList()));
+    }
+
+    public RetrieveSubjectDTO getSubjectInSchool(long subjectId, long schoolId) {
+        return mapper.subjectToDTO(this.subjectRepository
+                .findByIdAndSchoolId(subjectId, schoolId)
+                .orElseThrow(() -> new IllegalArgumentException("This subject doesn't exist")));
+    }
+
+    public void deleteSubject(long subjectId, long schoolId) {
+        this.subjectRepository.deleteByIdAndSchoolId(subjectId, schoolId);
     }
 
     private SubjectType getSubjectTypeByName(String name, School school) {

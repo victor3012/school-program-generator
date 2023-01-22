@@ -1,6 +1,7 @@
 package me.victor.api.rest.controllers;
 
 import me.victor.exceptions.ResourceNotFoundException;
+import me.victor.models.dto.room.RetrieveRoomDTO;
 import me.victor.models.dto.subject.CreateSubjectDTO;
 import me.victor.models.dto.subject.RetrieveSubjectDTO;
 import me.victor.models.entities.School;
@@ -61,5 +62,21 @@ public class SubjectController {
         schoolService.ensureTeacher(id, user);
 
         return this.subjectService.getSubjectsInSchool(id);
+    }
+
+    @GetMapping("/{subjectId}")
+    public RetrieveSubjectDTO retrieveRoom(WebRequest request, @PathVariable long id, @PathVariable long subjectId) {
+        User user = this.userService.getUserByRequest(request);
+        schoolService.ensureTeacher(id, user);
+
+        return this.subjectService.getSubjectInSchool(subjectId, id);
+    }
+
+    @DeleteMapping("/{subjectId}")
+    public void deleteRoom(WebRequest request, @PathVariable long id, @PathVariable long subjectId) {
+        User user = this.userService.getUserByRequest(request);
+        schoolService.ensureSystemAdmin(id, user);
+
+        this.subjectService.deleteSubject(subjectId, id);
     }
 }
