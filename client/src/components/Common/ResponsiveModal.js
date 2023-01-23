@@ -1,21 +1,18 @@
 import { useFocusEffect } from "@react-navigation/native";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Modal, ScrollView, StyleSheet, Text, View } from "react-native"
-import { FORM_STATUS, getFormStatus } from "../../services/util";
+import { FORM_STATUS, getFormStatus, REQUEST_STATUS } from "../../services/util";
 import globalStyles from "../../styles/globalStyles";
 import styleVar from "../../styles/styleVar";
 import OpacityButton from "./OpacityButton";
 import SuccessResponse from "./SuccessResponse"
 
-const REQUEST_STATUS = {
-    UNFULLFILED: 0,
-    FULFILLED: 1,
-    FAILED: 2,
-}
+
 
 export default function ResponsiveModal({
     visible,
     setVisible,
+    isLoading = false,
     title,
     submitText = 'Submit',
     showSubmitBtn = true,
@@ -45,6 +42,14 @@ export default function ResponsiveModal({
         }, [visible])
     )
 
+    useEffect(() => {
+        if (isLoading) {
+            setRequestStatus(REQUEST_STATUS.LOADING);
+        } else {
+            setRequestStatus(REQUEST_STATUS.UNFULLFILED);
+        }
+    }, [isLoading])
+
     const resetStates = useCallback(() => {
         setRequestStatus(REQUEST_STATUS.UNFULLFILED);
 
@@ -59,9 +64,8 @@ export default function ResponsiveModal({
         let error;
 
         try {
-            if (onSubmit) {
-                result = await onSubmit();
-            }
+            setRequestStatus(REQUEST_STATUS.LOADING);
+            result = await onSubmit();
         } catch (e) {
             error = e;
             newStatus = REQUEST_STATUS.FAILED;
@@ -133,8 +137,8 @@ export default function ResponsiveModal({
                                     </OpacityButton>
                                 }
                             </View>
-                            {requestStatus === REQUEST_STATUS.UNFULLFILED ||
-                                <SuccessResponse isSuccess={requestStatus === REQUEST_STATUS.FULFILLED} />
+                            {(requestStatus === REQUEST_STATUS.UNFULLFILED) ||
+                                <SuccessResponse requestStatus={requestStatus} />
                             }
                         </View>
                     </ScrollView>

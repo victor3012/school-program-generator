@@ -1,10 +1,11 @@
-import { StyleSheet, View, TouchableWithoutFeedback, TouchableOpacity, Modal } from "react-native";
+import { StyleSheet, View, TouchableWithoutFeedback, TouchableOpacity, Modal, TouchableHighlight, Pressable, useWindowDimensions } from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
 
 import IconButton from "../IconButton";
 import styleVar from "../../../styles/styleVar";
-import { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import globalStyles from "../../../styles/globalStyles";
+import { Dimensions } from "react-native";
 
 
 export default function OptionsMenu({
@@ -18,19 +19,22 @@ export default function OptionsMenu({
 
     const [pos, setPos] = useState({ x: '50%', y: '50%' });
 
+    const { width, height } = useWindowDimensions();
+
+
     useEffect(() => {
-        if (!buttonRef?.current) {
+        if (!(buttonRef?.current)) {
             return;
         }
 
-        buttonRef.current.measureInWindow((x, y, width) => {
+        buttonRef.current.measureInWindow((x, y, buttonWidth) => {
             setPos({
-                x: x + width,
-                y: y - buttonRef.current.offsetTop
+                x: x + buttonWidth,
+                y: y - (buttonRef.current?.offsetTop || 0)
             });
         });
 
-    }, [buttonRef])
+    }, [buttonRef, width, height])
 
     const clickOutsideHandler = () => {
         setVisible(false)
@@ -40,6 +44,7 @@ export default function OptionsMenu({
         setVisible(v => !v);
     }
 
+    const xPos = (width > 1000) ? { left: pos.x } : { right: '2.5%' };
     return (
         <View style={[styles.container, containerStyle]} ref={buttonRef}>
             <IconButton
@@ -57,16 +62,16 @@ export default function OptionsMenu({
                     onPress={clickOutsideHandler}
                     style={styles.transparentContainer}>
                     <TouchableWithoutFeedback>
-                        <View style={[globalStyles.basicContainer, styles.menu, {
-                            top: pos.y,
-                            left: pos.x
-                        }, customStyle]}>
-                            {children}
+                        <View style={[globalStyles.basicContainer, styles.menu,
+                        { top: pos.y }, xPos, customStyle]}>
+                            {children.map((child, i) => {
+                                return React.cloneElement(child, { key: i, menuOnPress: clickOutsideHandler })
+                            })}
                         </View>
                     </TouchableWithoutFeedback>
                 </TouchableOpacity>
             </Modal>
-        </View>
+        </View >
     )
 }
 

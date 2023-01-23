@@ -1,11 +1,12 @@
 import { View } from 'react-native'
 import Icon from 'react-native-vector-icons/Entypo'
+import { REQUEST_STATUS } from '../../services/util'
 import styleVar from '../../styles/styleVar'
+import Loader from './Loader'
 
 export default function SuccessResponse({
-    isSuccess = true,
+    requestStatus = REQUEST_STATUS.FULFILLED,
     style,
-    checkStyle,
     ...props }) {
     return (
         <View
@@ -20,7 +21,20 @@ export default function SuccessResponse({
                 position: 'absolute',
                 borderRadius: 20
             }, style]}>
-            <Icon name={isSuccess ? 'check' : 'circle-with-cross'} size={2 * styleVar.largeIconSize} color={isSuccess ? 'green' : 'red'} style={checkStyle} />
+            <ResponseIcon requestStatus={requestStatus} />
         </View>
     )
+}
+
+function ResponseIcon({ requestStatus }) {
+    switch (requestStatus) {
+        case REQUEST_STATUS.FAILED:
+            return <Icon name='circle-with-cross' size={2 * styleVar.largeIconSize} color='red' />
+        case REQUEST_STATUS.FULFILLED:
+            return <Icon name='check' size={2 * styleVar.largeIconSize} color='green' />
+        case REQUEST_STATUS.LOADING:
+            return <Loader />
+        default:
+            return <Loader />
+    }
 }

@@ -1,19 +1,33 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableHighlight, View } from "react-native";
 import styleVar from "../../../styles/styleVar";
 
 export default function Option({
     children,
     last = false,
-    style: customStyle
+    style: customStyle,
+    onPress,
+    menuOnPress
 }) {
+    const pressHanlder = () => {
+        if (menuOnPress) {
+            menuOnPress();
+        }
+
+        if (onPress) {
+            onPress();
+        }
+    }
+
     return (
-        <View style={[
+        <TouchableHighlight underlayColor={styleVar.blueShadow} style={[
             styles.option,
             last && { borderBottomWidth: 0 },
             customStyle
-        ]}>
-            {children}
-        </View>
+        ]} onPress={pressHanlder}>
+            <View style={styles.container}>
+                {children}
+            </View>
+        </TouchableHighlight>
     )
 }
 
@@ -23,6 +37,9 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: styleVar.lightgray,
         paddingHorizontal: 10,
+        width: '100%'
+    },
+    container: {
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',

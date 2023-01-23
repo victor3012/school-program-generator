@@ -13,7 +13,7 @@ import Rooms from "./Rooms";
 import Subjects from "./Subjects";
 import { ScrollView, Dimensions } from "react-native";
 import SchoolIcon from "../../components/Icons/SchoolIcon";
-import Classes from "./Classes";
+import Classes from "./Classes/Classes";
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 const isWideViewport = WINDOW_WIDTH > 600;

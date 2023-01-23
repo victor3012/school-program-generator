@@ -1,4 +1,4 @@
-import { HOST, get, post, put } from './api';
+import { HOST, get, post, put, del } from './api';
 
 const URI = `${HOST}/schools`;
 
@@ -85,10 +85,18 @@ export async function getClasses(schoolId) {
     return await get(`${URI}/${schoolId}/classes`);
 }
 
+export async function getClassById(schoolId, id) {
+    return await get(`${URI}/${schoolId}/classes/${id}`);
+}
+
 export async function createClass(schoolId, name) {
     return await post(`${URI}/${schoolId}/classes`, { name });
 }
 
 export async function editClass(schoolId, { id, name }) {
     return await put(`${URI}/${schoolId}/classes/${id}`, { name });
+}
+
+export async function deleteClass(schoolId, id) {
+    return await del(`${URI}/${schoolId}/classes/${id}`);
 }

@@ -15,6 +15,7 @@ import styleVar from "../../styles/styleVar";
 
 export default function DataList({
     data,
+    actions,
     filterCallback,
     DataItem,
     itemHeight = 90,
@@ -124,7 +125,7 @@ export default function DataList({
                 {data
                     .filter(d => filterCallback(query, d))
                     .slice(paginationIdx * itemsPerPage, (paginationIdx + 1) * itemsPerPage)
-                    .map((d) => <DataItem key={d.id} data={d} />)}
+                    .map((d) => <DataItem key={d.id} data={d} actions={actions} />)}
 
                 <View style={styles.paginationContainer}>
                     <OpacityButton onPress={firstPageHandler} style={styles.paginationButton}>

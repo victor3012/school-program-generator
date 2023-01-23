@@ -33,6 +33,13 @@ export const updateInputStatus = (inputStatuses, setInputStatuses, key, value) =
     })
 }
 
+export const REQUEST_STATUS = {
+    UNFULLFILED: 0,
+    FULFILLED: 1,
+    FAILED: 2,
+    LOADING: 3
+}
+
 export const TEACHER_ROLES = {
     TEACHER: 1,
     SYSTEM_ADMIN: 2,

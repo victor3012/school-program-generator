@@ -22,8 +22,8 @@ export default function TeachersForm({ visible, setVisible }) {
 
     const [inputStatuses, setInputStatuses] = useState(getDefaultInputStatuses());
 
-    const teacher_keys = Object.keys(TEACHER_ROLES);
-    const options = teacher_keys.slice(0, teacher_keys.indexOf(teacher.role))
+    const teacherKeys = Object.keys(TEACHER_ROLES);
+    const options = teacherKeys.slice(0, teacherKeys.indexOf(teacher.role))
         .map(role => ({
             key: role,
             value: TEACHER_ROLES_NAMES[role]
