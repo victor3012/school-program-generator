@@ -3,7 +3,8 @@ import { Text, View } from "react-native";
 import { useContext, useState } from "react";
 
 import { AuthContext } from "../../contexts/AuthContext";
-import { getFormStatus, updateInputStatus, FORM_STATUS } from "../../services/util";
+import useInputProps from "../../hooks/useInputProps";
+import { getFormStatus, FORM_STATUS } from "../../services/util";
 
 import Form from "../../components/Common/Form";
 import Input from "../../components/Common/Input";
@@ -18,34 +19,34 @@ export default function SignUp() {
 
     const { register } = useContext(AuthContext);
 
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [repass, setRepass] = useState('');
-    const [securityCode, setSecurityCode] = useState('');
+    const [inputStatuses, setInputStatuses] = useState(getDefaultInputStatuses());
+
+    const firstName = useInputProps('firstName', { inputStatuses, setInputStatuses });
+    const lastName = useInputProps('lastName', { inputStatuses, setInputStatuses });
+    const email = useInputProps('email', { inputStatuses, setInputStatuses });
+    const password = useInputProps('password', { inputStatuses, setInputStatuses });
+    const repass = useInputProps('repass', { inputStatuses, setInputStatuses });
+    const securityCode = useInputProps('securityCode', { inputStatuses, setInputStatuses });
 
     const [passwordShown, setPasswordShown] = useState(false);
     const [repassShown, setRepassShown] = useState(false);
 
-    const [inputStatuses, setInputStatuses] = useState({// -1 -> not required; 0 -> neutral yet; 1 -> focused; 2 -> error
-        email: FORM_STATUS.DEFAULT,
-        password: FORM_STATUS.DEFAULT,
-        repass: FORM_STATUS.DEFAULT,
-        firstName: FORM_STATUS.DEFAULT,
-        lastName: FORM_STATUS.DEFAULT,
-    });
 
     const signUpHandler = async () => {
         try {
-            validators.name(firstName);
-            validators.name(lastName);
-            validators.email(email);
-            validators.password(password);
-            validators.repass(password)(repass);
-            validators.securityCode(securityCode);
+            validators.name(firstName.value);
+            validators.name(lastName.value);
+            validators.email(email.value);
+            validators.password(password.value);
+            validators.repass(password.value)(repass.value);
+            validators.securityCode(securityCode.value);
 
-            await register({ firstName, lastName, email, password });
+            await register({
+                firstName: firstName.value.trim(),
+                lastName: lastName.value.trim(),
+                email: email.value.trim(),
+                password: password.value.trim()
+            });
 
             linkTo('/');
         } catch (err) {
@@ -59,10 +60,10 @@ export default function SignUp() {
                 <Input
                     label="First name"
                     hitSlop={10}
-                    value={firstName}
-                    onChange={(newFirstName) => setFirstName(newFirstName)}
-                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'firstName', FORM_STATUS.INVALID)}
-                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'firstName', FORM_STATUS.VALID)}
+                    value={firstName.value}
+                    onChange={firstName.onChange}
+                    onError={firstName.onError}
+                    onErrorResolve={firstName.onErrorResolve}
                     required
                     validator={validators.name}
                     style={{ width: 142 }}
@@ -70,10 +71,10 @@ export default function SignUp() {
                 <Input
                     label="Last name"
                     hitSlop={10}
-                    value={lastName}
-                    onChange={(newLastName) => setLastName(newLastName)}
-                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'lastName', FORM_STATUS.INVALID)}
-                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'lastName', FORM_STATUS.VALID)}
+                    value={lastName.value}
+                    onChange={lastName.onChange}
+                    onError={lastName.onError}
+                    onErrorResolve={lastName.onErrorResolve}
                     required
                     validator={validators.name}
                     style={{ width: 142 }}
@@ -83,10 +84,10 @@ export default function SignUp() {
             <Input
                 label="Email"
                 hitSlop={10}
-                value={email}
-                onChange={(newEmail) => setEmail(newEmail)}
-                onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', FORM_STATUS.INVALID)}
-                onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'email', FORM_STATUS.VALID)}
+                value={email.value}
+                onChange={email.onChange}
+                onError={email.onError}
+                onErrorResolve={email.onErrorResolve}
                 required
                 validator={validators.email} />
 
@@ -94,10 +95,10 @@ export default function SignUp() {
                 <Input
                     label="Password"
                     hitSlop={10}
-                    value={password}
-                    onChange={(newPassword) => setPassword(newPassword)}
-                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', FORM_STATUS.INVALID)}
-                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'password', FORM_STATUS.VALID)}
+                    value={password.value}
+                    onChange={password.onChange}
+                    onError={password.onError}
+                    onErrorResolve={password.onErrorResolve}
                     required
                     validator={validators.password}
                     textContentType='password'
@@ -111,10 +112,10 @@ export default function SignUp() {
                 <Input
                     label="Repeat password"
                     hitSlop={10}
-                    value={repass}
-                    onChange={(newRepass) => setRepass(newRepass)}
-                    onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'repass', FORM_STATUS.INVALID)}
-                    onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'repass', FORM_STATUS.VALID)}
+                    value={repass.value}
+                    onChange={repass.onChange}
+                    onError={repass.onError}
+                    onErrorResolve={repass.onErrorResolve}
                     required
                     validator={validators.repass(password)}
                     textContentType='password'
@@ -127,10 +128,10 @@ export default function SignUp() {
             <Input
                 label="Security code"
                 hitSlop={10}
-                value={securityCode}
-                onChange={(newSecurityCode) => setSecurityCode(newSecurityCode)}
-                onError={() => updateInputStatus(inputStatuses, setInputStatuses, 'securityCode', FORM_STATUS.INVALID)}
-                onErrorResolve={() => updateInputStatus(inputStatuses, setInputStatuses, 'securityCode', FORM_STATUS.VALID)}
+                value={securityCode.value}
+                onChange={securityCode.onChange}
+                onError={securityCode.onError}
+                onErrorResolve={securityCode.onErrorResolve}
                 required
                 validator={validators.securityCode}
             />
@@ -151,4 +152,15 @@ export default function SignUp() {
             </View>
         </Form>
     )
+}
+
+function getDefaultInputStatuses() {
+    return {
+        email: FORM_STATUS.DEFAULT,
+        password: FORM_STATUS.DEFAULT,
+        repass: FORM_STATUS.DEFAULT,
+        firstName: FORM_STATUS.DEFAULT,
+        lastName: FORM_STATUS.DEFAULT,
+        securityCode: FORM_STATUS.DEFAULT
+    };
 }

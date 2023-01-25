@@ -4,20 +4,29 @@ import { useFocusEffect } from "@react-navigation/native";
 import { SchoolContext } from "../../../contexts/SchoolContext";
 import { DataContext } from "../../../contexts/DataContext";
 import { FORM_STATUS, TEACHER_ROLES } from "../../../services/util";
-import { createClass, deleteClass, editClass, getClassById, getClasses } from "../../../services/schools";
-import Loader from "../../../components/Common/Loader";
-import DataList from "../DataList";
-import ClassesForm from "./ClassesForm";
-import ClassesDataItem from "./ClassesDataItem";
-import Dialog from "../../../components/Common/Dialog";
+import {
+    createRoom,
+    deleteRoom,
+    editRoom,
+    getRoomById,
+    getRooms,
+    getRoomTypes
+} from "../../../services/schools";
 import useInputProps from "../../../hooks/useInputProps";
+
 import validators from "../validators";
 
-export default function Classes() {
-    const { data: classes,
-        setData: setClasses,
-        removeById: removeClassById,
-        updateById: updateClassById } = useContext(DataContext);
+import Loader from "../../../components/Common/Loader";
+import DataList from "../DataList";
+import RoomsForm from "./RoomsForm";
+import Dialog from "../../../components/Common/Dialog";
+import RoomsDataItem from "./RoomsDataItem";
+
+export default function Rooms() {
+    const { data: rooms,
+        setData: setRooms,
+        removeById: removeRoomById,
+        updateById: updateRoomById } = useContext(DataContext);
 
     const { school, teacher } = useContext(SchoolContext);
 
@@ -25,131 +34,146 @@ export default function Classes() {
     const [deleteDiaglogVisible, setDeleteDiaglogVisible] = useState(false);
 
     const [toggleEditForm, setToggleEditForm] = useState(false);
-    const [selectedClass, setSelectedClass] = useState(null);
+    const [selectedRoom, setSelectedRoom] = useState(null);
 
     const [inputStatuses, setInputStatuses] = useState(getDefaultInputStatuses());
 
-    const className = useInputProps('className', { inputStatuses, setInputStatuses });
+    const [roomTypeOptions, setRoomTypeOptions] = useState();
 
+    const roomName = useInputProps('roomName', { inputStatuses, setInputStatuses });
+    const roomType = useInputProps('roomType', { inputStatuses, setInputStatuses });
 
     useFocusEffect(useCallback(() => {
-        (async () => (
-            setClasses(await getClasses(school.id))
-        ))()
+        Promise.all([getRooms(school.id), getRoomTypes(school.id)])
+            .then(res => {
+                setRooms(res[0]);
+                setRoomTypeOptions(res[1].map(t => ({ key: t.id, value: t.name })));
+            })
     }, []));
 
     useEffect(() => {
         if (toggleEditForm) {
-            className.onErrorResolve();
+            roomName.onErrorResolve();
+            roomType.onErrorResolve();
             setModalFormVisible(true);
         }
     }, [toggleEditForm])
 
-
     const addButtonHandler = () => setModalFormVisible(true);
 
-    const editButtonHandler = async (classObj) => {
+    const editButtonHandler = async (room) => {
         // open modal form (loading state)
-        className.setValue(null); // cause of loading animation
+        roomName.setValue(null); // cause of loading animation
+        roomType.setValue(null);
         setToggleEditForm(true);
 
         // update information about selected object 
-        let newClassObj;
+        let newRoom;
 
         try {
-            newClassObj = await getClassById(school.id, classObj.id);
+            newRoom = await getRoomById(school.id, room.id);
         } catch (err) {
             resetHandler();
             setModalFormVisible(false);
-            removeClassById(classObj.id);
+            removeRoomById(room.id);
             return; // TODO: Show notification for already deleted object
         }
 
-        updateClassById(classObj.id, newClassObj);
+        updateRoomById(room.id, newRoom);
 
-        setSelectedClass(newClassObj);
+        setSelectedRoom(newRoom);
 
-        className.setValue(newClassObj.name);
+        roomName.setValue(newRoom.name);
+        roomType.setValue(newRoom.roomType);
     }
 
-    const deleteButtonHandler = async (classObj) => {
+    const deleteButtonHandler = async (room) => {
         // open dialog (loading state)        
-        setSelectedClass(null); // cause of loading animation
+        setSelectedRoom(null); // cause of loading animation
         setDeleteDiaglogVisible(true);
 
         // update information about selected object 
-        let newClassObj;
+        let newRoom;
 
         try {
-            newClassObj = await getClassById(school.id, classObj.id);
+            newRoom = await getRoomById(school.id, room.id);
         } catch (err) {
             setDeleteDiaglogVisible(false);
-            removeClassById(classObj.id);
+            removeRoomById(room.id);
             return; // TODO: Show notification for already deleted object
         }
 
-        updateClassById(classObj.id, newClassObj);
+        updateRoomById(room.id, newRoom);
 
-        setSelectedClass(newClassObj);
+        setSelectedRoom(newRoom);
     }
 
-    const deleteClassHanlder = async () => {
-        await deleteClass(school.id, selectedClass.id);
-        removeClassById(selectedClass.id);
+    const deleteRoomHanlder = async () => {
+        await deleteRoom(school.id, selectedRoom.id);
+        removeRoomById(selectedRoom.id);
     }
 
     const submitHandler = async () => {
-        validators.name(className)
+        validators.room(roomName.value);
+        validators.roomType(roomType.value);
+
+        const reqBody = {
+            name: roomName.value.trim(),
+            type: roomType.value.trim()
+        };
 
         const res = toggleEditForm
-            ? await editClass(school.id, selectedClass.id, { name: className.value.trim() })
-            : await createClass(school.id, className.value.trim());
+            ? await editRoom(school.id, selectedRoom.id, reqBody)
+            : await createRoom(school.id, reqBody);
 
-        setClasses(res);
+        setRooms(res);
     }
 
     const errorHandler = (error) => alert(error.message);
 
     const resetHandler = () => {
-        className.setValue('');
+        roomName.setValue('');
+        roomType.setValue('');
         setInputStatuses(getDefaultInputStatuses());
         setToggleEditForm(false);
-        setSelectedClass(null);
+        setSelectedRoom(null);
     }
 
     return (
-        classes
+        rooms
             ?
             <>
                 {TEACHER_ROLES[teacher.role] >= TEACHER_ROLES.SYSTEM_ADMIN &&
                     <>
-                        <ClassesForm
+                        <RoomsForm
                             visible={modalFormVisible}
                             setVisible={setModalFormVisible}
                             onSubmit={submitHandler}
                             onError={errorHandler}
                             onReset={resetHandler}
                             inputStatuses={inputStatuses}
-                            className={className}
+                            roomName={roomName}
+                            roomType={roomType}
+                            roomTypeOptions={roomTypeOptions}
                         />
 
                         <Dialog
-                            title={`Are you sure you want to delete ${selectedClass?.name || 'this class'}?`}
+                            title={`Are you sure you want to delete ${selectedRoom?.name || 'this room'}?`}
                             visible={deleteDiaglogVisible}
                             setVisible={setDeleteDiaglogVisible}
-                            onAccept={deleteClassHanlder}
+                            onAccept={deleteRoomHanlder}
                             onError={errorHandler}
-                            isLoading={selectedClass === null}
+                            isLoading={selectedRoom === null}
                         />
                     </>
                 }
 
                 <DataList
-                    data={classes}
+                    data={rooms}
                     actions={{ edit: editButtonHandler, delete: deleteButtonHandler }}
                     filterCallback={filterCallback}
                     onAddButtonPress={addButtonHandler}
-                    DataItem={ClassesDataItem}
+                    DataItem={RoomsDataItem}
                 />
             </>
             :
@@ -157,8 +181,8 @@ export default function Classes() {
     )
 }
 
-function filterCallback(query, classObj) {
-    return classObj.name
+function filterCallback(query, room) {
+    return room.name
         .toLocaleLowerCase()
         .includes(
             query
@@ -168,6 +192,7 @@ function filterCallback(query, classObj) {
 
 function getDefaultInputStatuses() {
     return {
-        className: FORM_STATUS.DEFAULT
+        roomName: FORM_STATUS.DEFAULT,
+        roomType: FORM_STATUS.DEFAULT,
     }
 }

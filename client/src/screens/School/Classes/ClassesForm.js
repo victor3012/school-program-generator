@@ -11,10 +11,7 @@ export default function ClassesForm({
     onError,
     onReset,
     inputStatuses,
-    value,
-    onInputChange,
-    onInputError,
-    onInputErrorResolve
+    className
 }) {
     return (
         <ResponsiveModal
@@ -24,16 +21,16 @@ export default function ClassesForm({
             onReset={onReset}
             inputStatuses={inputStatuses}
             containerStyle={modalFormStyles.responsiveModal}
-            isLoading={value === null}
+            isLoading={className.value === null}
         >
             <Form inputStatuses={inputStatuses} style={modalFormStyles.form}>
                 <Input label='Class name'
                     required
-                    value={value || ''}
+                    value={className.value || ''}
                     validator={validators.room}
-                    onChange={onInputChange}
-                    onError={onInputError}
-                    onErrorResolve={onInputErrorResolve}
+                    onChange={className.onChange}
+                    onError={className.onError}
+                    onErrorResolve={className.onErrorResolve}
                 />
             </Form>
         </ResponsiveModal>

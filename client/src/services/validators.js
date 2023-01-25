@@ -2,12 +2,14 @@ export const stringRegExp = new RegExp(/[a-zA-Z\-\s]*/);
 const emailRegExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 
 export const required = (value, msg = 'Field is required') => {
-    if (!value) {
+    if (!value || !value.trim()) {
         throw new Error(msg);
     }
 }
 
 export const match = (value, regexp, msg = 'Invalid value') => {
+    value = value.trim();
+
     const result = value.match(regexp);
 
     if (!result || result[0] != value) {
@@ -16,7 +18,7 @@ export const match = (value, regexp, msg = 'Invalid value') => {
 }
 
 export const equal = (value, valueToEqual, msg = 'Fields don\'t match') => {
-    if (value != valueToEqual) {
+    if (value.trim() != valueToEqual.trim()) {
         throw new Error(msg);
     }
 }
@@ -32,13 +34,13 @@ export const inCollection = (value, collection, msg = 'Invalid value') => {
 }
 
 export const minLength = (value, length = 1) => {
-    if (value.length < length) {
+    if (value.trim().length < length) {
         throw new Error(`Must be at least ${length} characters long`);
     }
 }
 
 export const maxLength = (value, length = 255) => {
-    if (value.length > length) {
+    if (value.trim().length > length) {
         throw new Error(`Cannot exceed length of ${length} characters`);
     }
 }

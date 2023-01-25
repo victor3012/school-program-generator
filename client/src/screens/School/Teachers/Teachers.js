@@ -1,26 +1,37 @@
-import { useCallback, useContext, useState } from "react";
-import { StyleSheet, Text } from "react-native";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 
 import { SchoolContext } from "../../../contexts/SchoolContext";
 import { DataContext } from "../../../contexts/DataContext";
-import { getTeachers } from "../../../services/schools";
-import { TEACHER_ROLES_NAMES } from "../../../services/util";
-import globalStyles from "../../../styles/globalStyles";
-import styleVar from "../../../styles/styleVar";
+import { deleteTeacher, editTeacher, getTeacherById, getTeachers } from "../../../services/schools";
 import Loader from "../../../components/Common/Loader";
-import DataItemContainer from "../DataItemContainer";
 import DataList from "../DataList";
 import TeachersForm from "./TeachersForm";
-import OptionsMenu from "../../../components/Common/OptionsMenu/OptionsMenu";
-import Option from "../../../components/Common/OptionsMenu/Option";
-import DeleteIcon from "../../../components/Icons/DeleteIcon";
-import EditIcon from "../../../components/Icons/EditIcon";
+import TeachersDataItem from "./TeachersDataItem";
+import Dialog from "../../../components/Common/Dialog";
+import { FORM_STATUS, TEACHER_ROLES, TEACHER_ROLES_NAMES } from "../../../services/util";
+import useInputProps from "../../../hooks/useInputProps";
 
 export default function Teachers() {
-    const { data: teachers, setData: setTeachers } = useContext(DataContext);
-    const { school } = useContext(SchoolContext);
-    const [createModalVisible, setCreateModalVisible] = useState(false);
+    const { data: teachers,
+        setData: setTeachers,
+        removeById: removeTeacherById,
+        updateById: updateTeacherById } = useContext(DataContext);
+
+    const { school, teacher } = useContext(SchoolContext);
+
+    const [modalFormVisible, setModalFormVisible] = useState(false);
+    const [deleteDiaglogVisible, setDeleteDiaglogVisible] = useState(false);
+
+    const [toggleEditForm, setToggleEditForm] = useState(false);
+    const [selectedTeacher, setSelectedTeacher] = useState(null);
+
+    const [inputStatuses, setInputStatuses] = useState(getDefaultInputStatuses());
+
+    const role = useInputProps('role', { defaultValue: TEACHER_ROLES_NAMES.TEACHER, inputStatuses, setInputStatuses });
+    const firstName = useInputProps('firstName', { inputStatuses, setInputStatuses });
+    const lastName = useInputProps('lastName', { inputStatuses, setInputStatuses });
+    const email = useInputProps('email', { inputStatuses, setInputStatuses });
 
     useFocusEffect(useCallback(() => {
         (async () => {
@@ -29,82 +40,160 @@ export default function Teachers() {
         })()
     }, []));
 
-    const addButtonHandler = () => {
-        setCreateModalVisible(true);
+    useEffect(() => {
+        if (toggleEditForm) {
+            role.onErrorResolve();
+            firstName.onErrorResolve();
+            lastName.onErrorResolve();
+            email.onErrorResolve();
+            setModalFormVisible(true);
+        }
+    }, [toggleEditForm])
+
+    const getTeacherRoles = () => {
+        const teacherKeys = Object.keys(TEACHER_ROLES);
+        return teacherKeys.slice(0, teacherKeys.indexOf(teacher.role))
+            .map(role => ({
+                key: role,
+                value: TEACHER_ROLES_NAMES[role]
+            }));
+    }
+
+    const addButtonHandler = () => setModalFormVisible(true);
+
+    const editButtonHandler = async (teacher) => {
+        // open modal form (loading state)
+        role.setValue(null); // cause of loading animation
+        firstName.setValue(null);
+        lastName.setValue(null);
+        email.setValue(null);
+        setToggleEditForm(true);
+
+        // update information about selected object 
+        let newTeacher;
+
+        try {
+            newTeacher = await getTeacherById(school.id, teacher.id);
+        } catch (err) {
+            resetHandler();
+            setModalFormVisible(false);
+            removeTeacherById(teacher.id);
+            return; // TODO: Show notification for already deleted object
+        }
+
+        updateTeacherById(teacher.id, newTeacher);
+
+        setSelectedTeacher(newTeacher);
+
+        role.setValue(newTeacher.role);
+        firstName.setValue(newTeacher.firstName);
+        lastName.setValue(newTeacher.lastName);
+        email.setValue(newTeacher.email);
+    }
+
+    const deleteButtonHandler = async (teacher) => {
+        // open dialog (loading state)        
+        setSelectedTeacher(null); // cause of loading animation
+        setDeleteDiaglogVisible(true);
+
+        // update information about selected object 
+        let newTeacher;
+
+        try {
+            newTeacher = await getTeacherById(school.id, teacher.id);
+        } catch (err) {
+            setDeleteDiaglogVisible(false);
+            removeTeacherById(teacher.id);
+            return; // TODO: Show notification for already deleted object
+        }
+
+        updateTeacherById(teacher.id, newTeacher);
+
+        setSelectedTeacher(newTeacher);
+    }
+
+    const deleteTeacherHanlder = async () => {
+        await deleteTeacher(school.id, selectedTeacher.id);
+        removeTeacherById(selectedTeacher.id);
+    }
+
+    const submitHandler = async () => {
+        validators.role(teacher.role)(role.value);
+        validators.name(firstName.value);
+        validators.name(lastName.value);
+        validators.email(email.value);
+
+        const teacherRole = options.find(o => o.value === role.value).key;
+
+        const reqBody = {
+            firstName: firstName.value.trim(),
+            lastName: lastName.value.trim(),
+            email: email.value.trim(),
+            role: teacherRole
+        }
+
+        const res = toggleEditForm
+            ? await editTeacher(school.id, selectedTeacher.id, reqBody)
+            : await createTeacher(school.id, reqBody);
+
+        setTeachers(res);
+    }
+
+    const errorHandler = (error) => alert(error.message);
+
+    const resetHandler = () => {
+        role.setValue(TEACHER_ROLES_NAMES.TEACHER);
+        firstName.setValue('');
+        lastName.setValue('');
+        email.setValue('');
+        setInputStatuses(getDefaultInputStatuses());
+        setToggleEditForm(false);
+        setSelectedTeacher(null);
     }
 
     return (
         teachers
             ?
             <>
-                <TeachersForm visible={createModalVisible} setVisible={setCreateModalVisible} />
+                {TEACHER_ROLES[teacher.role] >= TEACHER_ROLES.SYSTEM_ADMIN &&
+                    <>
+                        <TeachersForm
+                            visible={modalFormVisible}
+                            setVisible={setModalFormVisible}
+                            onSubmit={submitHandler}
+                            onError={errorHandler}
+                            onReset={resetHandler}
+                            inputStatuses={inputStatuses}
+                            role={role}
+                            firstName={firstName}
+                            lastName={lastName}
+                            email={email}
+                            roleOptions={getTeacherRoles()}
+                        />
+
+                        <Dialog
+                            title={`Are you sure you want to delete ${selectedTeacher?.name || 'this teacher'}?`}
+                            visible={deleteDiaglogVisible}
+                            setVisible={setDeleteDiaglogVisible}
+                            onAccept={deleteTeacherHanlder}
+                            onError={errorHandler}
+                            isLoading={selectedTeacher === null}
+                        />
+                    </>
+                }
 
                 <DataList
                     data={teachers}
+                    actions={{ edit: editButtonHandler, delete: deleteButtonHandler }}
                     filterCallback={filterCallback}
                     onAddButtonPress={addButtonHandler}
-                    DataItem={DataItem}
+                    DataItem={TeachersDataItem}
                 />
             </>
             :
             <Loader />
     )
 }
-
-function DataItem({ data }) {
-    return (
-        <DataItemContainer style={{ cursor: 'default' }}>
-            <Text style={[globalStyles.text, styles.nonselectable, styles.role]}>{TEACHER_ROLES_NAMES[data.role] || data.role}</Text>
-            <Text style={[globalStyles.text, styles.nonselectable, styles.name]}>{getTeacherName(data)}</Text>
-            <OptionsMenu containerStyle={styles.optionsButton}>
-                <Option>
-                    <Text style={[globalStyles.text, styles.emailTitle]}>
-                        Email
-                    </Text>
-                    <Text style={[globalStyles.text, styles.emailText]}>
-                        {data.email}
-                    </Text>
-                </Option>
-                <Option>
-                    <Text style={globalStyles.text}>
-                        Edit
-                    </Text>
-                    <EditIcon />
-                </Option>
-                <Option last>
-                    <Text style={globalStyles.text}>
-                        Delete
-                    </Text>
-                    <DeleteIcon />
-                </Option>
-            </OptionsMenu>
-        </DataItemContainer>
-    )
-}
-
-const styles = StyleSheet.create({
-    nonselectable: {
-        userSelect: 'none'
-    },
-    role: {
-        flex: 1,
-        color: styleVar.gray
-    },
-    name: {
-        flex: 1.5
-    },
-    optionsButton: {
-        flex: 1
-    },
-    emailTitle: {
-        fontSize: styleVar.smallFontSize,
-        marginRight: 5
-    },
-    emailText: {
-        color: styleVar.gray,
-        fontSize: styleVar.smallFontSize
-    }
-})
 
 function getTeacherName(teacher) {
     return `${teacher.firstName} ${teacher.lastName}`
@@ -117,4 +206,13 @@ function filterCallback(query, teacher) {
             query
                 .trim()
                 .toLocaleLowerCase());
+}
+
+function getDefaultInputStatuses() {
+    return {
+        role: FORM_STATUS.DEFAULT,
+        firstName: FORM_STATUS.DEFAULT,
+        lastName: FORM_STATUS.DEFAULT,
+        email: FORM_STATUS.DEFAULT
+    }
 }

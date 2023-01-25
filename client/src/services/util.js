@@ -20,7 +20,9 @@ export function getFormStatus(inputStatuses) {
 }
 
 export const updateInputStatus = (inputStatuses, setInputStatuses, key, value) => {
-    if (inputStatuses[key] === value) {
+    if (!inputStatuses
+        || !setInputStatuses
+        || inputStatuses[key] === value) {
         return;
     }
 

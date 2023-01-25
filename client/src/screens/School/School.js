@@ -1,4 +1,5 @@
 import { useCallback, useContext, useEffect } from "react";
+import { ScrollView, Dimensions } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5'
@@ -9,11 +10,10 @@ import { DataProvider } from '../../contexts/DataContext'
 import styleVar from "../../styles/styleVar";
 import Loader from "../../components/Common/Loader";
 import Teachers from "./Teachers/Teachers";
-import Rooms from "./Rooms";
-import Subjects from "./Subjects";
-import { ScrollView, Dimensions } from "react-native";
-import SchoolIcon from "../../components/Icons/SchoolIcon";
+import Rooms from "./Rooms/Rooms";
+import Subjects from "./Subjects/Subjects";
 import Classes from "./Classes/Classes";
+import SchoolIcon from "../../components/Icons/SchoolIcon";
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 const isWideViewport = WINDOW_WIDTH > 600;

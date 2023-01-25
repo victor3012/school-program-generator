@@ -1,133 +1,77 @@
-import { useContext, useState } from "react"
+import { useContext } from "react"
 
 import Form from "../../../components/Common/Form"
 import Input from "../../../components/Common/Input"
 import ResponsiveModal from "../../../components/Common/ResponsiveModal"
 import SelectInput from "../../../components/Common/SelectInput"
-import { DataContext } from "../../../contexts/DataContext"
 import { SchoolContext } from "../../../contexts/SchoolContext"
-import { createTeacher } from "../../../services/schools"
-import { FORM_STATUS, TEACHER_ROLES, TEACHER_ROLES_NAMES, updateInputStatus } from "../../../services/util"
 import modalFormStyles from "../../../styles/modalFormStyles"
 import validators from "../validators"
 
-export default function TeachersForm({ visible, setVisible }) {
-    const { school, teacher } = useContext(SchoolContext);
-    const { setData: setTeachers } = useContext(DataContext);
-
-    const [role, setRole] = useState(TEACHER_ROLES_NAMES.TEACHER);
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-
-    const [inputStatuses, setInputStatuses] = useState(getDefaultInputStatuses());
-
-    const teacherKeys = Object.keys(TEACHER_ROLES);
-    const options = teacherKeys.slice(0, teacherKeys.indexOf(teacher.role))
-        .map(role => ({
-            key: role,
-            value: TEACHER_ROLES_NAMES[role]
-        }));
-
-    const submitHandler = async () => {
-        try {
-            validators.role(teacher.role)(role);
-            validators.name(firstName);
-            validators.name(lastName);
-            validators.email(email);
-
-            const teacherRole = options.find(o => o.value === role).key;
-            const res = await createTeacher(school.id, { firstName, lastName, email, role: teacherRole });
-            setTeachers(res);
-        } catch (error) {
-            alert(error.message);
-            throw error;
-        }
-    }
-
-    const resetHandler = () => {
-        setInputStatuses(getDefaultInputStatuses());
-        setRole(TEACHER_ROLES_NAMES.TEACHER);
-        setFirstName('');
-        setLastName('');
-        setEmail('');
-    }
-
-    const setInputValid = (inputName) => updateInputStatus(inputStatuses, setInputStatuses, inputName, FORM_STATUS.VALID);
-    const setInputInvalid = (inputName) => updateInputStatus(inputStatuses, setInputStatuses, inputName, FORM_STATUS.INVALID);
-
-    const onRoleChange = (value) => setRole(value);
-    const onFirstNameChange = (value) => setFirstName(value);
-    const onLastNameChange = (value) => setLastName(value);
-    const onEmailChange = (value) => setEmail(value);
-
-    const onRoleError = () => setInputInvalid('role');
-    const onFirstNameError = () => setInputInvalid('firstName');
-    const onLastNameError = () => setInputInvalid('lastName');
-    const onEmailError = () => setInputInvalid('email');
-
-    const onRoleErrorResolve = () => setInputValid('role');
-    const onFirstNameErrorResolve = () => setInputValid('firstName');
-    const onLastNameErrorResolve = () => setInputValid('lastName');
-    const onEmailErrorResolve = () => setInputValid('email');
+export default function TeachersForm({
+    visible,
+    setVisible,
+    onSubmit,
+    onError,
+    onReset,
+    inputStatuses,
+    role,
+    firstName,
+    lastName,
+    email,
+    roleOptions
+}) {
+    const { teacher } = useContext(SchoolContext);
 
     return (
         <ResponsiveModal
             containerStyle={modalFormStyles.responsiveModal}
             inputStatuses={inputStatuses}
-            onSubmit={submitHandler}
-            onReset={resetHandler}
+            onSubmit={onSubmit}
+            onError={onError}
+            onReset={onReset}
             visible={visible}
             setVisible={setVisible}>
             <Form style={modalFormStyles.form} inputStatuses={inputStatuses}>
                 <SelectInput label='Role'
                     required
                     validator={validators.role(teacher.role)}
-                    options={options}
-                    value={role}
-                    setValue={setRole}
-                    onChange={onRoleChange}
-                    onError={onRoleError}
-                    onErrorResolve={onRoleErrorResolve}
+                    options={roleOptions}
+                    value={role.value}
+                    setValue={role.setValue}
+                    onChange={role.onChange}
+                    onError={role.onError}
+                    onErrorResolve={role.onErrorResolve}
                     style={modalFormStyles.input}
                 />
                 <Input label='First name'
                     required
-                    value={firstName}
+                    value={firstName.value}
                     validator={validators.name}
-                    onChange={onFirstNameChange}
-                    onError={onFirstNameError}
-                    onErrorResolve={onFirstNameErrorResolve}
+                    onChange={firstName.onChange}
+                    onError={firstName.onError}
+                    onErrorResolve={firstName.onErrorResolve}
                     style={modalFormStyles.input}
                 />
                 <Input label='Last name'
                     required
-                    value={lastName}
+                    value={lastName.value}
                     validator={validators.name}
-                    onChange={onLastNameChange}
-                    onError={onLastNameError}
-                    onErrorResolve={onLastNameErrorResolve}
+                    onChange={lastName.onChange}
+                    onError={lastName.onError}
+                    onErrorResolve={lastName.onErrorResolve}
                     style={modalFormStyles.input}
                 />
                 <Input label='Email'
                     required
-                    value={email}
+                    value={email.value}
                     validator={validators.email}
-                    onChange={onEmailChange}
-                    onError={onEmailError}
-                    onErrorResolve={onEmailErrorResolve}
+                    onChange={email.onChange}
+                    onError={email.onError}
+                    onErrorResolve={email.onErrorResolve}
                     style={modalFormStyles.input}
                 />
             </Form>
         </ResponsiveModal>
     )
-}
-
-function getDefaultInputStatuses() {
-    return {
-        role: FORM_STATUS.DEFAULT,
-        firstName: FORM_STATUS.DEFAULT,
-        lastName: FORM_STATUS.DEFAULT,
-        email: FORM_STATUS.DEFAULT
-    }
 }
