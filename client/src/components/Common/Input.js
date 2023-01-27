@@ -217,6 +217,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'rgb(180, 214, 250)',
         backgroundColor: styleVar.blueShadow,
+        textAlign: 'center'
     }
 })
 

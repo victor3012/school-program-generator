@@ -11,8 +11,8 @@ import DataItemContainer from "../DataItemContainer"
 export default function TeachersDataItem({ data, actions }) {
     return (
         <DataItemContainer style={{ cursor: 'default' }}>
-            <Text style={[globalStyles.text, styles.nonselectable, styles.role]}>{TEACHER_ROLES_NAMES[data.role] || data.role}</Text>
-            <Text style={[globalStyles.text, styles.nonselectable, styles.name]}>{data.firstName} {data.lastName}</Text>
+            <Text style={[globalStyles.text, styles.centered, styles.role]}>{TEACHER_ROLES_NAMES[data.role] || data.role}</Text>
+            <Text style={[globalStyles.text, styles.centered, styles.name]}>{data.firstName} {data.lastName}</Text>
             <OptionsMenu containerStyle={styles.optionsButton}>
                 <Option>
                     <Text style={[globalStyles.text, styles.emailTitle]}>
@@ -38,10 +38,10 @@ export default function TeachersDataItem({ data, actions }) {
         </DataItemContainer>
     )
 }
-
+ 
 const styles = StyleSheet.create({
-    nonselectable: {
-        userSelect: 'none'
+    centered: {
+        textAlign: 'center'
     },
     role: {
         flex: 1,

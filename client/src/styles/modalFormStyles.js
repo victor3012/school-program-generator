@@ -9,8 +9,5 @@ export default StyleSheet.create({
         margin: 0,
         zIndex: 1,
         shadowOpacity: 0
-    },
-    input: {
-        textAlign: 'center'
     }
 })

@@ -7,11 +7,13 @@ export default function IconButton({ Icon,
     size = styleVar.mediumIconSize,
     color = styleVar.gray,
     style: buttonStyle,
+    ...props
 }) {
     return (
         <TouchableOpacity style={[styles.button, { width: 2 * size, height: 2 * size }, buttonStyle]}
             hitSlop={15}
-            onPress={onPress}>
+            onPress={onPress}
+            {...props}>
             <Icon
                 size={size}
                 color={color} />

@@ -10,8 +10,8 @@ import DataItemContainer from "../DataItemContainer"
 export default function SubjectsDataItem({ data, actions }) {
     return (
         <DataItemContainer key={data.id}>
-            <Text style={[globalStyles.text, styles.nonselectable, styles.type]}>{data.roomType || '-'}</Text>
-            <Text style={[globalStyles.text, styles.nonselectable, styles.name]}>{data.name}</Text>
+            <Text style={[globalStyles.text, styles.centered, styles.type]}>{data.roomType || '-'}</Text>
+            <Text style={[globalStyles.text, styles.centered, styles.name]}>{data.name}</Text>
             <OptionsMenu containerStyle={styles.optionsButton}>
                 <Option onPress={() => actions.edit(data)}>
                     <Text style={globalStyles.text}>
@@ -31,8 +31,8 @@ export default function SubjectsDataItem({ data, actions }) {
 }
 
 const styles = StyleSheet.create({
-    nonselectable: {
-        userSelect: 'none'
+    centered: {
+        textAlign: 'center'
     },
     type: {
         flex: 1,

@@ -123,7 +123,7 @@ export default function Subjects() {
     }
 
     const submitHandler = async () => {
-        validators.name(subjectName.value);
+        validators.subjectName(subjectName.value);
         validators.subjectType(subjectType.value);
         validators.roomType(roomType.value);
 

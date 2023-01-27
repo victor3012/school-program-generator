@@ -1,12 +1,10 @@
-import { StyleSheet, View, TouchableWithoutFeedback, TouchableOpacity, Modal, TouchableHighlight, Pressable, useWindowDimensions } from "react-native";
+import { StyleSheet, View, TouchableWithoutFeedback, TouchableOpacity, Modal, useWindowDimensions } from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
 
 import IconButton from "../IconButton";
 import styleVar from "../../../styles/styleVar";
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, cloneElement } from "react";
 import globalStyles from "../../../styles/globalStyles";
-import { Dimensions } from "react-native";
-
 
 export default function OptionsMenu({
     children,
@@ -19,34 +17,24 @@ export default function OptionsMenu({
 
     const [pos, setPos] = useState({ x: '50%', y: '50%' });
 
-    const { width, height } = useWindowDimensions();
-
-
-    useEffect(() => {
-        if (!(buttonRef?.current)) {
-            return;
-        }
-
-        buttonRef.current.measureInWindow((x, y, buttonWidth) => {
-            setPos({
-                x: x + buttonWidth,
-                y: y - (buttonRef.current?.offsetTop || 0)
-            });
-        });
-
-    }, [buttonRef, width, height])
+    const { width } = useWindowDimensions();
 
     const clickOutsideHandler = () => {
         setVisible(false)
     }
 
-    const buttonClickHandler = () => {
+    const buttonClickHandler = (e) => {
+        setPos({
+            x: e.nativeEvent.pageX,
+            y: e.nativeEvent.pageY
+        });
+
         setVisible(v => !v);
     }
 
-    const xPos = (width > 1000) ? { left: pos.x } : { right: '2.5%' };
+    const xPos = (width > 1000) ? { left: pos.x } : { right: '5%' };
     return (
-        <View style={[styles.container, containerStyle]} ref={buttonRef}>
+        <View style={[styles.container, containerStyle]} ref={buttonRef} >
             <IconButton
                 Icon={() => <Icon
                     size={styleVar.largeIconSize}
@@ -63,9 +51,11 @@ export default function OptionsMenu({
                     style={styles.transparentContainer}>
                     <TouchableWithoutFeedback>
                         <View style={[globalStyles.basicContainer, styles.menu,
-                        { top: pos.y }, xPos, customStyle]}>
+                        { top: pos.y, ...xPos },
+                        (width < 800) && styles.mobileMenu,
+                            customStyle]}>
                             {children.map((child, i) => {
-                                return React.cloneElement(child, { key: i, menuOnPress: clickOutsideHandler })
+                                return cloneElement(child, { key: i, menuOnPress: clickOutsideHandler })
                             })}
                         </View>
                     </TouchableWithoutFeedback>
@@ -98,5 +88,9 @@ const styles = StyleSheet.create({
         borderWidth: 1.5,
         borderColor: styleVar.gray,
         borderRadius: 3,
+    },
+    mobileMenu: {
+        minWidth: 150,
+        maxWidth: '95%'
     }
 })

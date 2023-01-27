@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Text, View, Animated, TouchableHighlight } from "react-native";
+import { Text, View, Animated, TouchableHighlight, Platform } from "react-native";
 import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import Input from "./Input";
 import IconButton from "./IconButton";
@@ -19,6 +19,7 @@ export default function SelectInput(
         validator,
         style: customStyles = {},
         containerStyle = {},
+        zIndex = 10,
         onChange: onChangeText,
         onFocus,
         onBlur,
@@ -34,10 +35,14 @@ export default function SelectInput(
     const dropdown = useRef(null);
 
     useEffect(() => {
+        if (Platform.OS !== 'web') {
+            return;
+        }
+
         let animationValue = 0;
 
         if (focused) {
-            animationValue = Math.min(getOptionsCount() * styles.option.height, styles.dropdown.maxHeight);
+            animationValue = getDropdownHeight();
         }
 
         Animated.timing(
@@ -58,6 +63,10 @@ export default function SelectInput(
         }
 
         return optionsCount;
+    }
+
+    const getDropdownHeight = () => {
+        return Math.min(getOptionsCount() * styles.option.height, styles.dropdown.maxHeight);
     }
 
     const focusHandler = (e) => {
@@ -91,11 +100,9 @@ export default function SelectInput(
     const clearOptionHandler = () => {
         setValue(defaultValue);
     }
-
-
     return (
-        <View elevation={10}
-            style={{ zIndex: 10 }}>
+        <View elevation={zIndex}
+            style={{ zIndex }}>
             <View>
                 <Input
                     label={label}
@@ -122,10 +129,11 @@ export default function SelectInput(
 
             <Animated.ScrollView scrollEnabled={styles.dropdown.maxHeight / getOptionsCount() < styles.option.height}
                 ref={dropdown}
-
                 style={[styles.dropdown, {
-                    height: heightAnimation
-                }, (relativeDropdown && styles.relativeDropdown)]}>
+                    height: Platform.OS == 'web' ? heightAnimation : getDropdownHeight(),
+                    maxHeight: getDropdownHeight()
+                }, (relativeDropdown && styles.relativeDropdown),
+                ((relativeDropdown && Platform.OS !== 'web' && !focused) && { display: 'none' })]}>
                 {
                     (!required && Boolean(value)) &&
                     <TouchableHighlight key='clear-option'

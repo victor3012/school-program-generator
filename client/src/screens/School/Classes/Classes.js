@@ -99,7 +99,7 @@ export default function Classes() {
     }
 
     const submitHandler = async () => {
-        validators.name(className)
+        validators.className(className.value);
 
         const res = toggleEditForm
             ? await editClass(school.id, selectedClass.id, { name: className.value.trim() })

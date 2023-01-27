@@ -64,6 +64,10 @@ export default function AutocompleteInput(
         ).start();
     }, [focused, heightAnimation, displayOptions])
 
+    const getDropdownHeight = () => {
+        return Math.min(getOptionsCount() * styles.option.height, styles.dropdown.maxHeight);
+    }
+
     const focusHandler = (e) => {
         if (onFocus) {
             onFocus(e.nativeEvent.text);
@@ -120,8 +124,10 @@ export default function AutocompleteInput(
             <Animated.ScrollView scrollEnabled={styles.dropdown.maxHeight / displayOptions.length < styles.option.height}
                 ref={dropdown}
                 style={[styles.dropdown, {
-                    height: heightAnimation
-                }, (relativeDropdown && styles.relativeDropdown)]}>
+                    height: Platform.OS == 'web' ? heightAnimation : getDropdownHeight(),
+                    maxHeight: getDropdownHeight()
+                }, (relativeDropdown && styles.relativeDropdown),
+                ((relativeDropdown && Platform.OS !== 'web' && !focused) && { display: 'none' })]}>
                 {displayOptions.map(o =>
                     <TouchableHighlight key={o.key}
                         style={styles.option}

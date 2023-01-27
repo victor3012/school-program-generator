@@ -173,5 +173,6 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: styleVar.largeFontSize,
+        textAlign: 'center'
     }
 });

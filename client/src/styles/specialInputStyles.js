@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import styleVar from "./styleVar";
 
 export default StyleSheet.create({
@@ -21,7 +21,16 @@ export default StyleSheet.create({
         },
         shadowOpacity: 0.35,
         shadowRadius: 4,
-        elevation: 5
+        elevation: 5,
+        borderColor: styleVar.blueShadow,
+        ...Platform.select({
+            ios: {
+                borderWidth: 1
+            },
+            android: {
+                borderWidth: 1
+            }
+        })
     },
     option: {
         height: 40,
@@ -30,7 +39,8 @@ export default StyleSheet.create({
         justifyContent: 'center',
         borderColor: 'lightgray',
         borderBottomWidth: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        position: 'relative'
     },
     row: {
         flexDirection: 'row',

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Text, View, Animated, TouchableHighlight } from "react-native";
+import { Text, View, Animated, TouchableHighlight, Platform } from "react-native";
 import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import Input from "./Input";
 import IconButton from "./IconButton";
@@ -20,6 +20,7 @@ export default function SelectNewOptionInput(
         validator,
         style: customStyles = {},
         containerStyle = {},
+        zIndex = 10,
         onChange: onChangeText,
         onFocus,
         onBlur,
@@ -68,6 +69,10 @@ export default function SelectNewOptionInput(
         return optionsCount;
     }
 
+    const getDropdownHeight = () => {
+        return Math.min(getOptionsCount() * styles.option.height, styles.dropdown.maxHeight);
+    }
+
     const focusHandler = (e) => {
         if (onFocus) {
             onFocus(e.nativeEvent.text);
@@ -112,8 +117,8 @@ export default function SelectNewOptionInput(
     }
 
     return (
-        <View elevation={10}
-            style={{ zIndex: 10 }}>
+        <View elevation={zIndex}
+            style={{ zIndex }}>
             <View>
                 <Input
                     ref={input}
@@ -142,8 +147,10 @@ export default function SelectNewOptionInput(
             <Animated.ScrollView scrollEnabled={styles.dropdown.maxHeight / getOptionsCount() < styles.option.height}
                 ref={dropdown}
                 style={[styles.dropdown, {
-                    height: heightAnimation
-                }, (relativeDropdown && styles.relativeDropdown)]}>
+                    height: Platform.OS == 'web' ? heightAnimation : getDropdownHeight(),
+                    maxHeight: getDropdownHeight()
+                }, (relativeDropdown && styles.relativeDropdown),
+                ((relativeDropdown && Platform.OS !== 'web' && !focused) && { display: 'none' })]}>
                 {
                     Boolean(value) &&
                     <TouchableHighlight key='clear-option'
@@ -181,6 +188,6 @@ export default function SelectNewOptionInput(
                     </TouchableHighlight>
                 )}
             </Animated.ScrollView>
-        </View>
+        </View >
     )
 }

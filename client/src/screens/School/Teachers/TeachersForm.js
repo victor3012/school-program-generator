@@ -42,7 +42,6 @@ export default function TeachersForm({
                     onChange={role.onChange}
                     onError={role.onError}
                     onErrorResolve={role.onErrorResolve}
-                    style={modalFormStyles.input}
                 />
                 <Input label='First name'
                     required
@@ -51,7 +50,6 @@ export default function TeachersForm({
                     onChange={firstName.onChange}
                     onError={firstName.onError}
                     onErrorResolve={firstName.onErrorResolve}
-                    style={modalFormStyles.input}
                 />
                 <Input label='Last name'
                     required
@@ -60,7 +58,6 @@ export default function TeachersForm({
                     onChange={lastName.onChange}
                     onError={lastName.onError}
                     onErrorResolve={lastName.onErrorResolve}
-                    style={modalFormStyles.input}
                 />
                 <Input label='Email'
                     required
@@ -69,7 +66,6 @@ export default function TeachersForm({
                     onChange={email.onChange}
                     onError={email.onError}
                     onErrorResolve={email.onErrorResolve}
-                    style={modalFormStyles.input}
                 />
             </Form>
         </ResponsiveModal>

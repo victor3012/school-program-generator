@@ -1,6 +1,11 @@
 import { TEACHER_ROLES, TEACHER_ROLES_NAMES } from '../../services/util';
 import * as validate from '../../services/validators';
 
+const entityName = (value) => {
+    validate.required(value, 'Name is required');
+    validate.maxLength(value);
+}
+
 export default {
     email: validate.globalValidators.email,
     name: validate.globalValidators.name,
@@ -18,15 +23,9 @@ export default {
             }
         }
     },
-    room: (value) => {
-        validate.required(value, 'Name is required');
-        validate.maxLength(value);
-    },
-    subjectType: (value) => {
-        validate.required(value, 'Subject type is required');
-        validate.maxLength(value);
-    },
-    roomType: (value) => {
-        validate.required(value, 'Room type is required');
-    }
+    room: entityName,
+    subjectType: entityName,
+    roomType: entityName,
+    className: entityName,
+    subjectName: entityName
 }
