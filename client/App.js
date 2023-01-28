@@ -69,45 +69,41 @@ function DrawerNavigation() {
   const CustomDrawerComponent = (props) => <CustomDrawer authContext={authContext} {...props} />
 
   return (
-    <NavigationContainer linking={linking} fallback={<Drawer.Screen name='Loading...' component={Loader} />}>
-      <Drawer.Navigator
-        drawerContent={CustomDrawerComponent}
-        useLegacyImplementation={true}
-        screenOptions={{ gestureHandlerProps: { hitSlop: 25 } }}>
-        {authContext.authLoaded
-          ?
-          <>
-            <Drawer.Screen name="Home" component={Home}
+    authContext.authLoaded
+      ?
+      <NavigationContainer linking={linking} fallback={<Drawer.Screen name='Loading...' component={Loader} />}>
+        <Drawer.Navigator
+          drawerContent={CustomDrawerComponent}
+          useLegacyImplementation={true}
+          screenOptions={{ gestureHandlerProps: { hitSlop: 25 } }}>
+          <Drawer.Screen name="Home" component={Home}
+            options={() => ({
+              drawerIcon: ({ focused }) => <HomeIcon size={styleVar.largeIconSize} {...(focused || { color: styleVar.gray })} />
+            })} />
+          {authContext.isAuth &&
+            <Drawer.Screen name="School" component={School}
               options={() => ({
-                drawerIcon: ({ focused }) => <HomeIcon size={styleVar.largeIconSize} {...(focused || { color: styleVar.gray })} />
+                drawerIcon: ({ focused }) => <SchoolIcon size={styleVar.largeIconSize} {...(focused || { color: styleVar.gray })} />,
+                sceneContainerStyle: { overflow: 'hidden', width: '100%' },
+                drawerItemStyle: { display: 'none' }
               })} />
-            {authContext.isAuth &&
-              <Drawer.Screen name="School" component={School}
-                options={() => ({
-                  drawerIcon: ({ focused }) => <SchoolIcon size={styleVar.largeIconSize} {...(focused || { color: styleVar.gray })} />,
-                  sceneContainerStyle: { overflow: 'hidden', width: '100%' },
-                  drawerItemStyle: { display: 'none' }
-                })} />
-            }
+          }
 
-            {authContext.isAuth ||
-              <Drawer.Screen options={({ route }) => ({
-                drawerIcon: ({ focused }) => <AccountIcon size={styleVar.largeIconSize} {...(focused || { color: styleVar.gray })} />,
-                drawerLabel: 'Profile',
-                sceneContainerStyle: { overflow: 'hidden' },
-                headerStyle: { backgroundColor: styleVar.blue },
-                headerTitleStyle: { color: styleVar.white },
-                headerTintColor: styleVar.white,
-                headerTitle: routeToTitle[getFocusedRouteNameFromRoute(route)] || getFocusedRouteNameFromRoute(route) || routeToTitle.Login
-              })} name="Auth" component={Auth} />
-            }
-          </>
-          :
-          <Drawer.Screen name='Loading...' component={Loader} />
-        }
-
-      </Drawer.Navigator>
-    </NavigationContainer>
+          {authContext.isAuth ||
+            <Drawer.Screen options={({ route }) => ({
+              drawerIcon: ({ focused }) => <AccountIcon size={styleVar.largeIconSize} {...(focused || { color: styleVar.gray })} />,
+              drawerLabel: 'Profile',
+              sceneContainerStyle: { overflow: 'hidden' },
+              headerStyle: { backgroundColor: styleVar.blue },
+              headerTitleStyle: { color: styleVar.white },
+              headerTintColor: styleVar.white,
+              headerTitle: routeToTitle[getFocusedRouteNameFromRoute(route)] || getFocusedRouteNameFromRoute(route) || routeToTitle.Login
+            })} name="Auth" component={Auth} />
+          }
+        </Drawer.Navigator>
+      </NavigationContainer>
+      :
+      <Loader size={null} color={styleVar.white} />
   )
 }
 
