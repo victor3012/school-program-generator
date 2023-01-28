@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { Platform, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
 
-import AntDesignIcon from 'react-native-vector-icons/AntDesign'
-
-import Icon from 'react-native-vector-icons/FontAwesome'
+import PlusIcon from "../../components/Icons/PlusIcon";
+import SearchIcon from "../../components/Icons/SearchIcon";
+import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronLeftIcon, ChevronRightIcon } from '../../components/Icons/Chevron';
 import { SchoolContext } from "../../contexts/SchoolContext";
 import { TEACHER_ROLES } from "../../services/util";
 
@@ -90,7 +90,7 @@ export default function DataList({
 
     const SearchLabel = () => (
         <Text style={[globalStyles.text, { flexDirection: 'row' }]}>
-            <Icon size={styleVar.smallIconSize} color={styleVar.darkBlue} name='search' /> Search
+            <SearchIcon size={styleVar.smallIconSize} /> Search
         </Text>
     )
 
@@ -115,7 +115,7 @@ export default function DataList({
                     && <DataItemContainer
                         style={styles.addItem}
                         onPress={onAddButtonPress}>
-                        <AntDesignIcon name="plus"
+                        <PlusIcon
                             size={70}
                             adjustsFontSizeToFit={true}
                             color={styleVar.blue} />
@@ -129,10 +129,10 @@ export default function DataList({
 
                 <View style={styles.paginationContainer}>
                     <OpacityButton onPress={firstPageHandler} style={styles.paginationButton}>
-                        <Icon size={styleVar.largeIconSize} color={styleVar.darkBlue} name='angle-double-left' />
+                        <ChevronDoubleLeftIcon size={styleVar.largeIconSize} />
                     </OpacityButton>
                     <OpacityButton onPress={prevPageHandler} style={styles.paginationButton}>
-                        <Icon size={styleVar.largeIconSize} color={styleVar.darkBlue} name='angle-left' />
+                        <ChevronLeftIcon size={styleVar.largeIconSize} />
                     </OpacityButton>
 
                     <Text style={[globalStyles.text, styles.paginationText]}>
@@ -140,10 +140,10 @@ export default function DataList({
                     </Text>
 
                     <OpacityButton onPress={nextPageHandler} style={styles.paginationButton}>
-                        <Icon size={styleVar.largeIconSize} color={styleVar.darkBlue} name='angle-right' />
+                        <ChevronRightIcon size={styleVar.largeIconSize} />
                     </OpacityButton>
                     <OpacityButton onPress={lastPageHandler} style={styles.paginationButton}>
-                        <Icon size={styleVar.largeIconSize} color={styleVar.darkBlue} name='angle-double-right' />
+                        <ChevronDoubleRightIcon size={styleVar.largeIconSize} />
                     </OpacityButton>
                 </View>
             </View>
@@ -214,23 +214,3 @@ function getMaxItems(height, itemHeight) {
     const safeHeight = Math.max(height - 330, 0);
     return Math.floor(safeHeight / itemHeight) || 1;
 }
-
-/*
- <View style={{ flexDirection: 'row' }}>
-    <Input style={styles.paginationInput}
-        containerStyle={{ marginTop: 0 }}
-        onChange={(value) => setPaginationIdx(value)}
-        value={paginationIdx}
-    />
-    <Text>/{pagesCount}</Text>
-</View>
-paginationInput: {
-        paddingHorizontal: 0,
-        paddingVertical: 0,
-        marginTop: 0,
-        width: 20,
-        height: 20,
-        borderRadius: 10,
-        textAlign: 'center'
-    }
-*/

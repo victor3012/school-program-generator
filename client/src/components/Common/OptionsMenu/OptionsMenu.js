@@ -1,9 +1,9 @@
+import { useRef, useState, cloneElement } from "react";
 import { StyleSheet, View, TouchableWithoutFeedback, TouchableOpacity, Modal, useWindowDimensions } from "react-native";
-import Icon from "react-native-vector-icons/Entypo";
 
+import OptionsIcon from "../../Icons/OptionsIcon";
 import IconButton from "../IconButton";
 import styleVar from "../../../styles/styleVar";
-import { useRef, useState, cloneElement } from "react";
 import globalStyles from "../../../styles/globalStyles";
 
 export default function OptionsMenu({
@@ -36,10 +36,8 @@ export default function OptionsMenu({
     return (
         <View style={[styles.container, containerStyle]} ref={buttonRef} >
             <IconButton
-                Icon={() => <Icon
-                    size={styleVar.largeIconSize}
-                    color={styleVar.gray}
-                    name='dots-three-horizontal' />}
+                Icon={OptionsIcon}
+                size={styleVar.largeIconSize}
                 style={[styles.button, buttonStyle]}
                 onPress={buttonClickHandler}
             />

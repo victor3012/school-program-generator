@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { Text, View, Animated, TouchableHighlight, Platform } from "react-native";
-import Icon from 'react-native-vector-icons/SimpleLineIcons'
-import Input from "./Input";
+
+import ChevronUpIcon from '../Icons/Chevron/ChevronUpIcon';
+import ChevronDownIcon from '../Icons/Chevron/ChevronDownIcon';
+import XIcon from "../Icons/XIcon";
+
 import IconButton from "./IconButton";
+import Input from "./Input";
 import globalStyles from "../../styles/globalStyles";
 import styles from '../../styles/specialInputStyles';
 import styleVar from "../../styles/styleVar";
-import XIcon from "../Icons/XIcon";
 
 export default function SelectInput(
     {
@@ -123,7 +126,8 @@ export default function SelectInput(
 
                 <IconButton
                     style={globalStyles.InputIconButton}
-                    Icon={(args) => <Icon {...args} name={focused ? 'arrow-up' : 'arrow-down'} color={styleVar.darkBlue} />}
+                    Icon={focused ? ChevronUpIcon : ChevronDownIcon}
+                    iconSize={styleVar.largeIconSize}
                     onPress={() => setFocused(f => !f)} />
             </View>
 

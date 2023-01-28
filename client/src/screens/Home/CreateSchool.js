@@ -1,8 +1,5 @@
 import { useContext, useState } from "react";
-import { View } from 'react-native';
 import { useLinkTo } from "@react-navigation/native";
-
-import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 
 import { AuthContext } from "../../contexts/AuthContext";
 import Input from "../../components/Common/Input";

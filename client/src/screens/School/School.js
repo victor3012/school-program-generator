@@ -2,8 +2,6 @@ import { useCallback, useContext, useEffect } from "react";
 import { ScrollView, Dimensions } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5'
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { SchoolContext, SchoolProvider } from '../../contexts/SchoolContext'
 import { DataProvider } from '../../contexts/DataContext'
@@ -14,6 +12,13 @@ import Rooms from "./Rooms/Rooms";
 import Subjects from "./Subjects/Subjects";
 import Classes from "./Classes/Classes";
 import SchoolIcon from "../../components/Icons/SchoolIcon";
+import TeacherIcon from "../../components/Icons/TeacherIcon";
+import ClassroomIcon from "../../components/Icons/ClassroomIcon";
+import SchoolSubjectIcon from "../../components/Icons/SchoolSubjectIcon";
+import PeopleGroupIcon from "../../components/Icons/PeopleGroupIcon";
+
+
+import MaterialCommunityIcon from "../../components/Icons/Icon";
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 const isWideViewport = WINDOW_WIDTH > 600;
@@ -68,9 +73,8 @@ function SchoolStack({ route, navigation }) {
             <Tab.Screen
                 name="Teachers"
                 options={{
-                    tabBarIcon: ({ focused }) => <FontAwesomeIcon name="chalkboard-teacher"
-                        size={styleVar.mediumIconSize}
-                        color={focused ? styleVar.blue : styleVar.gray} />,
+                    tabBarIcon: ({ focused }) => <TeacherIcon
+                        {...(focused || { color: styleVar.gray })} />,
                     tabBarItemStyle: {
                         flex: 1
                     }
@@ -80,9 +84,8 @@ function SchoolStack({ route, navigation }) {
             <Tab.Screen
                 name="Rooms"
                 options={{
-                    tabBarIcon: ({ focused }) => <MaterialCommunityIcon name="google-classroom"
-                        size={styleVar.mediumIconSize}
-                        color={focused ? styleVar.blue : styleVar.gray} />,
+                    tabBarIcon: ({ focused }) => <ClassroomIcon
+                    {...(focused || { color: styleVar.gray })} />,
                     tabBarItemStyle: {
                         flex: 1,
                     }
@@ -94,8 +97,7 @@ function SchoolStack({ route, navigation }) {
                 options={{
                     tabBarLabel: 'School',
                     tabBarIcon: ({ focused }) => <SchoolIcon
-                        size={styleVar.mediumIconSize}
-                        color={focused ? styleVar.blue : styleVar.gray} />,
+                    {...(focused || { color: styleVar.gray })} />,
                     tabBarItemStyle: {
                         flex: 1.5
                     },
@@ -108,9 +110,8 @@ function SchoolStack({ route, navigation }) {
             <Tab.Screen
                 name="Subjects"
                 options={{
-                    tabBarIcon: ({ focused }) => <FontAwesomeIcon name="book"
-                        size={styleVar.mediumIconSize}
-                        color={focused ? styleVar.blue : styleVar.gray} />,
+                    tabBarIcon: ({ focused }) => <SchoolSubjectIcon
+                    {...(focused || { color: styleVar.gray })} />,
                     tabBarItemStyle: {
                         flex: 1,
                     }
@@ -120,9 +121,8 @@ function SchoolStack({ route, navigation }) {
             <Tab.Screen
                 name="Classes"
                 options={{
-                    tabBarIcon: ({ focused }) => <MaterialCommunityIcon name="account-group"
-                        size={styleVar.mediumIconSize}
-                        color={focused ? styleVar.blue : styleVar.gray} />,
+                    tabBarIcon: ({ focused }) => <PeopleGroupIcon
+                    {...(focused || { color: styleVar.gray })} />,
                     tabBarItemStyle: {
                         flex: 1,
                     }

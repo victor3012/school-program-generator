@@ -1,7 +1,5 @@
 import { useFocusEffect, useLinkTo } from "@react-navigation/native";
 import { Text, View, StyleSheet, Platform } from "react-native";
-import AntDesignIcon from 'react-native-vector-icons/AntDesign'
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import Separator from "../../components/Common/Separator";
 
 import globalStyles from "../../styles/globalStyles";
@@ -11,6 +9,8 @@ import PressableBox from "../../components/Common/PressableBox";
 import CreateSchool from "./CreateSchool";
 import { useCallback, useState } from "react";
 import { getSchools } from "../../services/schools";
+import TeacherIcon from "../../components/Icons/TeacherIcon";
+import ClassroomIcon from "../../components/Icons/ClassroomIcon";
 
 export default function Schools() {
     const linkTo = useLinkTo();
@@ -43,7 +43,7 @@ export default function Schools() {
 
                             <View style={styles.infoContainer}>
                                 <View style={styles.info}>
-                                    <AntDesignIcon name="user"
+                                    <TeacherIcon
                                         size={styleVar.smallIconSize}
                                         color={styleVar.gray} />
                                     <Text selectable={false} style={styles.infoText}>
@@ -51,7 +51,7 @@ export default function Schools() {
                                     </Text>
                                 </View>
                                 <View style={styles.info}>
-                                    <MaterialIcon name="meeting-room"
+                                    <ClassroomIcon
                                         size={styleVar.smallIconSize}
                                         color={styleVar.gray} />
                                     <Text selectable={false} style={styles.infoText}>
@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 10
     },
     infoText: {
+        marginLeft: 5,
         fontSize: styleVar.smallFontSize,
         color: styleVar.gray
     }

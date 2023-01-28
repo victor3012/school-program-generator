@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Text, View, Animated, TouchableHighlight } from "react-native";
-import Icon from 'react-native-vector-icons/SimpleLineIcons'
+
+import ChevronUpIcon from '../Icons/Chevron/ChevronUpIcon';
+import ChevronDownIcon from '../Icons/Chevron/ChevronDownIcon';
 
 import Input from "./Input";
 import IconButton from "./IconButton";
@@ -117,7 +119,8 @@ export default function AutocompleteInput(
 
                 <IconButton
                     style={globalStyles.InputIconButton}
-                    Icon={(args) => <Icon {...args} name={focused ? 'arrow-up' : 'arrow-down'} color={styleVar.darkBlue} />}
+                    Icon={focused ? ChevronUpIcon : ChevronDownIcon}
+                    iconSize={styleVar.largeIconSize}
                     onPress={() => setFocused(f => !f)} />
             </View>
 

@@ -5,9 +5,6 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '
 import { StyleSheet, View } from 'react-native';
 import { useContext } from 'react';
 
-import AntDesignIcon from 'react-native-vector-icons/AntDesign'
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
-
 import { AuthContext, AuthProvider } from './src/contexts/AuthContext';
 import Auth from './src/screens/Auth/Auth';
 import Home from './src/screens/Home/Home';
@@ -18,6 +15,8 @@ import ErrorBoundary from './src/components/ErrorBoundary';
 import Loader from './src/components/Common/Loader';
 import School from './src/screens/School/School';
 import SchoolIcon from './src/components/Icons/SchoolIcon';
+import HomeIcon from './src/components/Icons/HomeIcon';
+import AccountIcon from './src/components/Icons/AccountIcon';
 
 const Drawer = createDrawerNavigator();
 
@@ -80,17 +79,12 @@ function DrawerNavigation() {
           <>
             <Drawer.Screen name="Home" component={Home}
               options={() => ({
-                drawerIcon: ({ focused }) => <FontAwesome5Icon
-                  name="home"
-                  size={styleVar.mediumIconSize}
-                  color={focused ? styleVar.blue : styleVar.gray} />
+                drawerIcon: ({ focused }) => <HomeIcon size={styleVar.largeIconSize} {...(focused || { color: styleVar.gray })} />
               })} />
             {authContext.isAuth &&
               <Drawer.Screen name="School" component={School}
                 options={() => ({
-                  drawerIcon: ({ focused }) => <SchoolIcon
-                    size={styleVar.mediumIconSize}
-                    color={focused ? styleVar.blue : styleVar.gray} />,
+                  drawerIcon: ({ focused }) => <SchoolIcon size={styleVar.largeIconSize} {...(focused || { color: styleVar.gray })} />,
                   sceneContainerStyle: { overflow: 'hidden', width: '100%' },
                   drawerItemStyle: { display: 'none' }
                 })} />
@@ -98,10 +92,7 @@ function DrawerNavigation() {
 
             {authContext.isAuth ||
               <Drawer.Screen options={({ route }) => ({
-                drawerIcon: ({ focused }) => <AntDesignIcon
-                  name='user'
-                  size={styleVar.mediumIconSize}
-                  color={focused ? styleVar.blue : styleVar.gray} />,
+                drawerIcon: ({ focused }) => <AccountIcon size={styleVar.largeIconSize} {...(focused || { color: styleVar.gray })} />,
                 drawerLabel: 'Profile',
                 sceneContainerStyle: { overflow: 'hidden' },
                 headerStyle: { backgroundColor: styleVar.blue },

@@ -13,6 +13,7 @@ export default {
     black: 'rgb(28, 30, 33)',
     gray: 'gray',
     lightgray: 'rgb(201, 201, 201)',
+    green: 'green',
     smallIconSize: 16,
     mediumIconSize: 20,
     largeIconSize: 26,

@@ -1,4 +1,4 @@
-import Icon from 'react-native-vector-icons/AntDesign'
+import Icon from './Icon'
 import styleVar from '../../styles/styleVar'
 
 export default function PlusIcon({

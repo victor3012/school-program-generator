@@ -1,4 +1,4 @@
-import Icon from 'react-native-vector-icons/FontAwesome5'
+import Icon from './Icon'
 import styleVar from '../../styles/styleVar'
 
 export default function EditIcon({
@@ -7,6 +7,6 @@ export default function EditIcon({
     ...props
 }) {
     return (
-        <Icon name='pencil-alt' color={color} size={size} {...props} />
+        <Icon name='file-edit' color={color} size={size} {...props} />
     )
 }

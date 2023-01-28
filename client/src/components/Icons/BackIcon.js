@@ -1,4 +1,4 @@
-import Icon from 'react-native-vector-icons/AntDesign'
+import Icon from './Icon'
 import styleVar from '../../styles/styleVar'
 
 export default function BackIcon({
@@ -7,6 +7,6 @@ export default function BackIcon({
     ...props
 }) {
     return (
-        <Icon name='back' color={color} size={size} {...props} />
+        <Icon name='arrow-left' color={color} size={size} {...props} />
     )
 }

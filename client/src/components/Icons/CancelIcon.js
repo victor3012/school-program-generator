@@ -1,12 +1,12 @@
 import Icon from './Icon'
 import styleVar from '../../styles/styleVar'
 
-export default function DeleteIcon({
+export default function CancelIcon({
     color = styleVar.red,
     size = styleVar.mediumIconSize,
     ...props
 }) {
     return (
-        <Icon name='trash-can-outline' color={color} size={size} {...props} />
+        <Icon name='close-circle' color={color} size={size} {...props} />
     )
 }

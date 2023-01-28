@@ -1,4 +1,4 @@
-import Icon from 'react-native-vector-icons/Octicons'
+import Icon from './Icon'
 import styleVar from '../../styles/styleVar'
 
 export default function XIcon({
@@ -7,6 +7,6 @@ export default function XIcon({
     ...props
 }) {
     return (
-        <Icon name='x' color={color} size={size} {...props} />
+        <Icon name='close' color={color} size={size} {...props} />
     )
 }

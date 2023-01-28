@@ -1,8 +1,9 @@
 import { View } from 'react-native'
-import Icon from 'react-native-vector-icons/Entypo'
 import { REQUEST_STATUS } from '../../services/util'
 import styleVar from '../../styles/styleVar'
 import Loader from './Loader'
+import SuccessIcon from '../Icons/SuccessIcon'
+import CancelIcon from '../Icons/CancelIcon'
 
 export default function SuccessResponse({
     requestStatus = REQUEST_STATUS.FULFILLED,
@@ -29,9 +30,9 @@ export default function SuccessResponse({
 function ResponseIcon({ requestStatus }) {
     switch (requestStatus) {
         case REQUEST_STATUS.FAILED:
-            return <Icon name='circle-with-cross' size={2 * styleVar.largeIconSize} color='red' />
+            return <CancelIcon size={2 * styleVar.largeIconSize} />
         case REQUEST_STATUS.FULFILLED:
-            return <Icon name='check' size={2 * styleVar.largeIconSize} color='green' />
+            return <SuccessIcon size={2 * styleVar.largeIconSize} />
         case REQUEST_STATUS.LOADING:
             return <Loader />
         default:

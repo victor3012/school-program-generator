@@ -5,6 +5,7 @@ import styleVar from "../../styles/styleVar";
 export default function IconButton({ Icon,
     onPress,
     size = styleVar.mediumIconSize,
+    iconSize,
     color = styleVar.gray,
     style: buttonStyle,
     ...props
@@ -15,7 +16,7 @@ export default function IconButton({ Icon,
             onPress={onPress}
             {...props}>
             <Icon
-                size={size}
+                size={iconSize || size}
                 color={color} />
         </TouchableOpacity>
     )
