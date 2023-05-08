@@ -76,16 +76,6 @@ const styles = StyleSheet.create({
         flexDirection: Platform.OS === 'web' ? 'row' : 'column',
         flexWrap: 'wrap'
     },
-    schoolBox: {
-        padding: 15,
-        width: Platform.OS === 'web' ? 300 : '100%',
-        marginHorizontal: Platform.OS === 'web' ? 20 : 0,
-        marginVertical: Platform.OS === 'web' ? 20 : 10,
-        minHeight: 80,
-        display: 'flex',
-        flexDirection: 'column',
-        fontSize: styleVar.largeFontSize,
-    },
     infoContainer: {
         marginTop: 10,
         flexDirection: 'row',

@@ -27,5 +27,6 @@ export default {
     subjectType: entityName,
     roomType: entityName,
     className: entityName,
-    subjectName: entityName
+    subjectName: entityName,
+    timetableName: entityName
 }

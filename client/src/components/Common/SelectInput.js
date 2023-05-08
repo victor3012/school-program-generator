@@ -119,7 +119,7 @@ export default function SelectInput(
                     onBlur={blurHandler}
                     onError={onError}
                     onErrorResolve={onErrorResolve}
-                    required={false}
+                    required={required}
                     editable={false}
                     selectTextOnFocus={false}
                     {...args} />

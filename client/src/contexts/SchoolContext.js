@@ -30,7 +30,7 @@ export function SchoolProvider({ children }) {
 
     const isSchoolLoading = () => {
         return school === null
-            && teacher === null;
+            || teacher === null;
     }
 
     return (

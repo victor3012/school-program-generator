@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect } from "react";
-import { ScrollView, Dimensions } from "react-native";
+import { ScrollView, Dimensions, StyleSheet } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
@@ -19,6 +19,7 @@ import PeopleGroupIcon from "../../components/Icons/PeopleGroupIcon";
 
 
 import MaterialCommunityIcon from "../../components/Icons/Icon";
+import SchoolInfo from "./SchoolInfo/SchoolInfo";
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 const isWideViewport = WINDOW_WIDTH > 600;
@@ -46,30 +47,36 @@ function SchoolStack({ route, navigation }) {
     }, [navigation, school, isSchoolLoading])
 
     const TeachersComponent = (props) => (
-        <ScreenComponent title='Teachers' {...props}>
+        <ScreenComponent title='Teachers' containerStyle={styles.centeredContainer} {...props}>
             <Teachers />
-        </ScreenComponent>
+        </ScreenComponent >
     )
     const RoomsComponent = (props) => (
-        <ScreenComponent title='Rooms' {...props}>
+        <ScreenComponent title='Rooms' containerStyle={styles.centeredContainer} {...props}>
             <Rooms />
+        </ScreenComponent >
+    )
+    const SchoolComponent = (props) => (
+        <ScreenComponent {...props}>
+            <SchoolInfo />
         </ScreenComponent>
     )
-    const SchoolComponent = (props) => <ScreenComponent  {...props} />
 
     const SubjectsComponent = (props) => (
-        <ScreenComponent title='Subjects' {...props}>
+        <ScreenComponent title='Subjects' containerStyle={styles.centeredContainer} {...props}>
             <Subjects />
-        </ScreenComponent>
+        </ScreenComponent >
     )
-    const ClassesComponent = (props) => <ScreenComponent title='Classes' {...props}>
-        <Classes />
-    </ScreenComponent>
+    const ClassesComponent = (props) => (
+        <ScreenComponent title='Classes' containerStyle={styles.centeredContainer} {...props}>
+            <Classes />
+        </ScreenComponent >
+    )
 
     return (
         <Tab.Navigator
             screenOptions={{ headerShown: false, tabBarShowLabel: isWideViewport }}
-            sceneContainerStyle={{ justifyContent: 'center', alignItems: 'center', flex: 1, width: '100%' }}>
+            sceneContainerStyle={{ flex: 1 }}>
             <Tab.Screen
                 name="Teachers"
                 options={{
@@ -85,7 +92,7 @@ function SchoolStack({ route, navigation }) {
                 name="Rooms"
                 options={{
                     tabBarIcon: ({ focused }) => <ClassroomIcon
-                    {...(focused || { color: styleVar.gray })} />,
+                        {...(focused || { color: styleVar.gray })} />,
                     tabBarItemStyle: {
                         flex: 1,
                     }
@@ -97,7 +104,7 @@ function SchoolStack({ route, navigation }) {
                 options={{
                     tabBarLabel: 'School',
                     tabBarIcon: ({ focused }) => <SchoolIcon
-                    {...(focused || { color: styleVar.gray })} />,
+                        {...(focused || { color: styleVar.gray })} />,
                     tabBarItemStyle: {
                         flex: 1.5
                     },
@@ -111,7 +118,7 @@ function SchoolStack({ route, navigation }) {
                 name="Subjects"
                 options={{
                     tabBarIcon: ({ focused }) => <SchoolSubjectIcon
-                    {...(focused || { color: styleVar.gray })} />,
+                        {...(focused || { color: styleVar.gray })} />,
                     tabBarItemStyle: {
                         flex: 1,
                     }
@@ -122,7 +129,7 @@ function SchoolStack({ route, navigation }) {
                 name="Classes"
                 options={{
                     tabBarIcon: ({ focused }) => <PeopleGroupIcon
-                    {...(focused || { color: styleVar.gray })} />,
+                        {...(focused || { color: styleVar.gray })} />,
                     tabBarItemStyle: {
                         flex: 1,
                     }
@@ -137,7 +144,8 @@ function ScreenComponent({
     navigation,
     children,
     title,
-    navOptions
+    navOptions,
+    containerStyle
 }) {
     const { school, isSchoolLoading } = useContext(SchoolContext);
 
@@ -161,10 +169,16 @@ function ScreenComponent({
             ? <Loader />
             :
             <DataProvider>
-                <ScrollView contentContainerStyle={{ padding: 5, flex: 1 }}>
+                <ScrollView contentContainerStyle={[{ padding: 5, flex: 1 }, containerStyle]}>
                     {children}
                 </ScrollView>
             </DataProvider>
     )
 }
 
+const styles = StyleSheet.create({
+    centeredContainer: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+})

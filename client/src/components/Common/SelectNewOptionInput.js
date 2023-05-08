@@ -136,7 +136,7 @@ export default function SelectNewOptionInput(
                     onBlur={blurHandler}
                     onError={onError}
                     onErrorResolve={onErrorResolve}
-                    required={false}
+                    required={required}
                     editable={editable}
                     selectTextOnFocus={editable}
                     {...args} />
@@ -156,7 +156,7 @@ export default function SelectNewOptionInput(
                 }, (relativeDropdown && styles.relativeDropdown),
                 ((relativeDropdown && Platform.OS !== 'web' && !focused) && { display: 'none' })]}>
                 {
-                    Boolean(value) &&
+                    (!required && Boolean(value)) &&
                     <TouchableHighlight key='clear-option'
                         style={styles.option}
                         underlayColor={styleVar.blueShadow}
